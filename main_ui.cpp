@@ -4,7 +4,7 @@
 void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
 {
     if (MainWindow->objectName().isEmpty())
-        MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
+        MainWindow->setObjectName(QString::fromUtf8("Automates Cellulaires"));
     MainWindow->resize(850, 544);
     MainWindow->setMaximumSize(QSize(1000, 900));
     actionEnregistrer = new QAction(MainWindow);
@@ -137,7 +137,7 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
 
     nb_cases = new QSpinBox();
     nb_cases->setRange(2, 50);
-    nb_cases->setValue(2);
+    nb_cases->setValue(30);
     nb_cases->setMaximumWidth(100);
     nb_cases_l = new QLabel("Nombre de cases");
     layout_cases = new QHBoxLayout;
@@ -147,7 +147,7 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
 
     nb_transitions = new QSpinBox();
     nb_transitions->setRange(1, 50);
-    nb_transitions->setValue(1);
+    nb_transitions->setValue(10);
     nb_transitions->setMaximumWidth(100);
     nb_transitions_l = new QLabel("Nombre de transitions");
     layout_transitions = new QHBoxLayout;
@@ -342,8 +342,8 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     Simulation->setEnabled(false);
 
     connect(select_type_automate, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onDimensionItemClicked(QListWidgetItem*)));
-    connect(aff_manuel, SIGNAL(toggled(bool)), this, SLOT(onAffichageButtonClicked(bool)));
 
+    connect(aff_manuel, SIGNAL(toggled(bool)), this, SLOT(onAffichageButtonClicked(bool)));
     connect(bouton_generateur, SIGNAL(clicked()), this, SLOT(onGenerateurButtonClicked()));
     connect(Simulation, SIGNAL(clicked()), this, SLOT(onSimulationButtonClicked()));
 
@@ -400,11 +400,11 @@ void Ui_MainWindow::onDimensionItemClicked(QListWidgetItem* item)
 
 void Ui_MainWindow::onAffichageButtonClicked(bool checked)
 {
-    if(checked)
+    if(checked)//dans le cas de l'affichage manuel
     {
         Temps->setCurrentIndex(1);
     }
-    else
+    else//dans le cas de l'affichage automatique sélectionné
     {
         Temps->setCurrentIndex(0);
     }
@@ -446,11 +446,13 @@ void Ui_MainWindow::onGenerateurButtonClicked()
 
 void Ui_MainWindow::onSimulationButtonClicked()
 {
-    new_Window_dim1 = new AutoCell(nullptr, dimension, nb_transitions->value()); // constructeur, sûrement un autre nom comme on l'a créé avec Qt Designer
-    new_Window_dim1->setNumAutomate(num->value());
+    new_Window_dim1 = new AutoCell(nullptr, dimension, nb_transitions->value(), num->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
     new_Window_dim1->setEtatDepart(etat_depart_table);
-    new_Window_dim1->launchSimulation();
     new_Window_dim1->show();
+    if(!aff_manuel->isChecked())
+    {
+        new_Window_dim1->launchSimulationAuto();
+    }
 }
 
 void Ui_MainWindow::cellActivation(QTableWidgetItem *index) {//méthode pour changer l'état
