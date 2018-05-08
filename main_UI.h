@@ -33,6 +33,9 @@
 #include <QStatusBar>
 #include <QTableWidget>
 #include <QVBoxLayout>
+#include <QFile>
+#include <QTextStream>
+#include <QDir>
 
 QT_BEGIN_NAMESPACE
 
@@ -133,6 +136,7 @@ private slots :
     void synchronizeNumToNumBit(int i);
     void synchronizeNumBitToNum(const QString& s);
     void cellActivation(QTableWidgetItem* index);
+    void onActionEnregistrer();
 };
 
 

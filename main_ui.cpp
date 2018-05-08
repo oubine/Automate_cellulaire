@@ -346,7 +346,7 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     connect(aff_manuel, SIGNAL(toggled(bool)), this, SLOT(onAffichageButtonClicked(bool)));
     connect(bouton_generateur, SIGNAL(clicked()), this, SLOT(onGenerateurButtonClicked()));
     connect(Simulation, SIGNAL(clicked()), this, SLOT(onSimulationButtonClicked()));
-
+    connect(actionEnregistrer, SIGNAL(triggered()), this, SLOT(onActionEnregistrer()));
     QMetaObject::connectSlotsByName(MainWindow);
 } // setupUi
 
@@ -487,5 +487,26 @@ void Ui_MainWindow::synchronizeNumBitToNum(const QString& s) {//synchronisation 
         numBit += numeroBit[counter]->text().toStdString();//on convertit le string Qt en std::string
     }
     num->setValue(NumBitToNum(numBit));//on utilise la méthode fournie dans l'autre TD
+}
+
+void Ui_MainWindow::onActionEnregistrer()
+{
+    if(stacked_settings->currentIndex()==0)
+    {
+
+        QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_1/")));
+        QDir dir;
+        QFile file(path + "config_test");
+        if(!dir.exists(path))
+        {
+            dir.mkpath(path);
+
+            if ( file.open(QIODevice::ReadWrite) )
+            {
+                QTextStream stream(&file);
+                stream << "something";
+            }
+        }
+    }
 }
 
