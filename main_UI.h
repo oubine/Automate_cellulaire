@@ -36,6 +36,9 @@
 #include <QFile>
 #include <QTextStream>
 #include <QDir>
+#include <QFileDialog>
+#include <QtXml>
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 
@@ -122,7 +125,8 @@ public:
        QWidget* page_etat_1;
        QVBoxLayout* layout_page_etat_1;
 
-
+    //enregistrement
+       QFileDialog* fichier;
     void setupUi(QMainWindow *MainWindow);
 
     void retranslateUi(QMainWindow *MainWindow);
@@ -137,6 +141,7 @@ private slots :
     void synchronizeNumBitToNum(const QString& s);
     void cellActivation(QTableWidgetItem* index);
     void onActionEnregistrer();
+    void onActionImporter();
 };
 
 

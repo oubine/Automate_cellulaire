@@ -9,6 +9,7 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     MainWindow->setMaximumSize(QSize(1000, 900));
     actionEnregistrer = new QAction(MainWindow);
     actionEnregistrer->setObjectName(QString::fromUtf8("actionEnregistrer"));
+    actionEnregistrer->setEnabled(false);
     actionImporter = new QAction(MainWindow);
     actionImporter->setObjectName(QString::fromUtf8("actionImporter"));
     centralwidget = new QWidget(MainWindow);
@@ -342,11 +343,11 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     Simulation->setEnabled(false);
 
     connect(select_type_automate, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onDimensionItemClicked(QListWidgetItem*)));
-
     connect(aff_manuel, SIGNAL(toggled(bool)), this, SLOT(onAffichageButtonClicked(bool)));
     connect(bouton_generateur, SIGNAL(clicked()), this, SLOT(onGenerateurButtonClicked()));
     connect(Simulation, SIGNAL(clicked()), this, SLOT(onSimulationButtonClicked()));
     connect(actionEnregistrer, SIGNAL(triggered()), this, SLOT(onActionEnregistrer()));
+    connect(actionImporter, SIGNAL(triggered()), this, SLOT(onActionImporter()));
     QMetaObject::connectSlotsByName(MainWindow);
 } // setupUi
 
@@ -415,7 +416,6 @@ void Ui_MainWindow::onGenerateurButtonClicked()
     unsigned int taille = 26; //pixels de l'état de départ
     if(page_dim1->findChild<QTableWidget*>("etat_depart_table"))//on teste si le tableau existe déjà
     {
-        printf("Ok");
         layout_page_etat_1->removeWidget(etat_depart_table);
         delete etat_depart_table;
     }
@@ -441,6 +441,7 @@ void Ui_MainWindow::onGenerateurButtonClicked()
     connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
     stacked_etat_depart->setCurrentIndex(1);
     Simulation->setEnabled(true);
+    actionEnregistrer->setEnabled(true);
 
 }
 
@@ -491,22 +492,149 @@ void Ui_MainWindow::synchronizeNumBitToNum(const QString& s) {//synchronisation 
 
 void Ui_MainWindow::onActionEnregistrer()
 {
-    if(stacked_settings->currentIndex()==0)
+    if(stacked_settings->currentIndex()==0)//dans le cas des automates de dimension 1
     {
 
         QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_1/")));
         QDir dir;
-        QFile file(path + "config_test");
+        fichier = new QFileDialog;
+        //fichier->setDefaultSuffix(QString::fromUtf8("txt"));
         if(!dir.exists(path))
         {
             dir.mkpath(path);
+        }
 
-            if ( file.open(QIODevice::ReadWrite) )
+        QString nom_fichier = fichier->getSaveFileName(centralwidget,
+                                 QString::fromUtf8("Enregistrement de configuration"),
+                                 path);
+
+        if((nom_fichier.split(".").count()==1))
+        {
+            nom_fichier.append(".xml");
+        }
+
+        QFile file(nom_fichier);
+        if ((file.open(QIODevice::ReadWrite)))
+        {
+            QDomDocument dom(nom_fichier.split("/").last());
+
+            QTextStream stream(&file);
+
+            //QDomElement base = dom.documentElement();
+            QDomElement root = dom.createElement("root");
+            dom.appendChild(root);
+
+            QDomElement regles = dom.createElement("Regles");
+            regles.setAttribute("numero", num->value());
+            root.appendChild(regles);//On associe write_elem à domElem.
+
+            QDomElement generator = dom.createElement("Generateur");
+            generator.setAttribute("nb_cases", nb_cases->value());
+            generator.setAttribute("nb_transitions", nb_transitions->value());
+            root.appendChild(generator);
+
+            QDomElement etat_dep = dom.createElement("Etat_depart");
+            root.appendChild(etat_dep);
+
+            QDomElement etats_dep[nb_cases->value()];
+            for(unsigned int i=0; i<nb_cases->value(); i++)
             {
-                QTextStream stream(&file);
-                stream << "something";
+                etats_dep[i] = dom.createElement("Etat"+QString::number(i));
+                etats_dep[i].setAttribute("active", etat_depart_table->item(0,i)->text()=="_");
+                etat_dep.appendChild(etats_dep[i]);
             }
+
+            QString write_doc = dom.toString();
+            stream << write_doc;
+
+            file.close();
         }
     }
+}
+
+void Ui_MainWindow::onActionImporter()
+{
+    if(stacked_settings->currentIndex()==0)//dans le cas des automates de dimension 1
+    {
+        fichier = new QFileDialog;
+        QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_1/")));
+        QString nom_fichier = fichier->getOpenFileName(centralwidget,
+                                 QString::fromUtf8("Enregistrement de configuration"),
+                                 path);
+
+        QDomDocument dom;
+        QFile file(nom_fichier);
+
+        if ((file.open(QIODevice::ReadOnly)) && (dom.setContent(&file)))
+        {
+            QDomElement docElem = dom.documentElement();
+            QDomNode n = docElem.firstChild();
+            QDomElement e = n.toElement();
+
+            //QMessageBox::information(NULL, "Information", e.tagName());
+            num->setValue(e.attribute("numero").toInt());
+
+            n=n.nextSibling();
+            e=n.toElement();
+            nb_cases->setValue(e.attribute("nb_cases").toInt());
+            //QMessageBox::information(NULL, "Information", e.tagName());
+
+            nb_transitions->setValue(e.attribute("nb_transitions").toInt());
+            //QMessageBox::information(NULL, "Transitions", e.tagName());
+
+            n=n.nextSibling();
+            e=n.toElement();
+
+            n=e.firstChild();
+            e=n.toElement();
+
+            //QMessageBox::information(NULL, "Etat", e.tagName());
+
+            if(page_dim1->findChild<QTableWidget*>("etat_depart_table"))//on teste si le tableau existe déjà
+            {
+                layout_page_etat_1->removeWidget(etat_depart_table);
+                delete etat_depart_table;
+            }
+
+            dimension=nb_cases->value();
+            unsigned int taille = 26; //pixels de l'état de départ
+
+            etat_depart_table = new QTableWidget(1, dimension); //
+            etat_depart_table->setFixedHeight(taille+40); // largeur = nombre_cellules*taille_cellule, hauteur = taille_cellule
+            etat_depart_table->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
+            etat_depart_table->verticalHeader()->setVisible(false); // masque le header vertical
+            etat_depart_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // désactive la scroll barre vertical
+            etat_depart_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn); // désactive la scroll barre horizontal
+
+            for(unsigned int counter = 0; counter < dimension; ++counter) {
+                etat_depart_table->setColumnWidth(counter, taille);
+                if(e.attribute("active").toUInt())
+                {
+                    etat_depart_table->setItem(0, counter, new QTableWidgetItem("_"));
+                    etat_depart_table->item(0, counter)->setBackgroundColor("black");//vide donc couleur = blanc
+                    etat_depart_table->item(0, counter)->setTextColor("black");//idem, on ne veut pas voir le texte à l'intérieur (même pas besoin car c'est une chaîne vide)
+                }
+                else
+                {
+                    etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
+                    etat_depart_table->item(0, counter)->setBackgroundColor("white");//vide donc couleur = blanc
+                    etat_depart_table->item(0, counter)->setTextColor("white");//idem, on ne veut pas voir le texte à l'intérieur (même pas besoin car c'est une chaîne vide)
+                }
+                n=n.nextSibling();
+                e=n.toElement();
+            }
+
+            etat_depart_table->setParent(page_dim1);
+            layout_page_etat_1->addWidget(etat_depart_table);
+            etat_depart_table->setObjectName(QString::fromUtf8("etat_depart_table"));
+            connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+            stacked_etat_depart->setCurrentIndex(1);
+            Simulation->setEnabled(true);
+            actionEnregistrer->setEnabled(true);
+
+            file.close();
+        }
+    }
+
 }
 

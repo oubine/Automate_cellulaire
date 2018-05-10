@@ -233,6 +233,7 @@ void AutoCell::launchSimulationAuto() {//méthode pour lancer la simulation
     // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique
     QEventLoop loop2;
     connect(this,SIGNAL(is_play()), &loop2, SLOT(quit()));
+
     for(unsigned int step = 0; step < nb_transitions; ++step) {
         if(!is_play_v)
         {
