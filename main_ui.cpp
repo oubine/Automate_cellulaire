@@ -38,8 +38,8 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     font.setItalic(true);
     font.setWeight(50);
     select_type_automate->setFont(font);
-    select_type_automate->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    select_type_automate->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    select_type_automate->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+    select_type_automate->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
 
     layout_type_automate->addWidget(select_type_automate);
 
@@ -48,7 +48,7 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
 
     Affichage = new QGroupBox(reglages_generaux);
     Affichage->setObjectName(QString::fromUtf8("Affichage"));
-    Affichage->setMaximumSize(QSize(16777215, 100));
+    Affichage->setMaximumSize(QSize(1500, 100));
     layout_affichage = new QFormLayout(Affichage);
     layout_affichage->setObjectName(QString::fromUtf8("layout_affichage"));
     layout_affichage->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
@@ -77,7 +77,8 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     aff_temps_n->setObjectName(QString::fromUtf8("aff_temps_n"));
     aff_temps_n->setDecimals(3);
     aff_temps_n->setMaximum(60);
-    aff_temps_n->setSingleStep(0.1);
+    aff_temps_n->setSingleStep(0.05);
+    aff_temps_n->setValue(0.05);
 
     temps_aff->addWidget(aff_temps_n);
 
@@ -106,187 +107,41 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     stacked_settings->setObjectName(QString::fromUtf8("stacked_settings"));
     stacked_settings->setEnabled(true);
     stacked_settings->setMinimumSize(QSize(750, 0));
-    stacked_settings->setMaximumSize(QSize(900, 16777215));
+    stacked_settings->setMaximumSize(QSize(900, 1500));
     stacked_settings->setContextMenuPolicy(Qt::DefaultContextMenu);
     stacked_settings->setAcceptDrops(false);
     stacked_settings->setAutoFillBackground(false);
     stacked_settings->setFrameShadow(QFrame::Raised);
     stacked_settings->setLineWidth(1);
+
+    /***********************
+     *
+     * automate dimension 1
+     *
+     *
+     ***********************/
+
     page_dim1 = new QWidget();
     page_dim1->setObjectName(QString::fromUtf8("page_dim1"));
     layout_page_dim1 = new QVBoxLayout(page_dim1);
     layout_page_dim1->setObjectName(QString::fromUtf8("layout_page_dim1"));
+
+    //configuration dimension 1
+
     configuration_dim1 = new QGroupBox(page_dim1);
     configuration_dim1->setObjectName(QString::fromUtf8("configuration_dim1"));
     configuration_dim1->setMaximumSize(QSize(900, 400));
-    layout_etat_depart = new QVBoxLayout(configuration_dim1);
-    layout_etat_depart->setObjectName(QString::fromUtf8("layout_etat_depart"));
+
     regles_dim1 = new QHBoxLayout();
     regles_dim1->setObjectName(QString::fromUtf8("regles_dim1"));
+
+
+    //règles de transition dimension 1
+
     regles_transition = new QGroupBox(configuration_dim1);
     regles_transition->setObjectName(QString::fromUtf8("regles_transition"));
 
     regles_transition->setMaximumSize(QSize(400, 200));
-    //regles_dim1_layout=new QHBoxLayout();//définition d'une layout pour la box des règles en dimension1
-
-    regles_dim1->addWidget(regles_transition);
-    layout_generateur = new QVBoxLayout;
-    generateur = new QGroupBox(configuration_dim1);
-    generateur->setObjectName(QString::fromUtf8("generateur"));
-    generateur->setMaximumSize(QSize(400, 200));
-    regles_dim1->addWidget(generateur);
-
-    nb_cases = new QSpinBox();
-    nb_cases->setRange(2, 50);
-    nb_cases->setValue(30);
-    nb_cases->setMaximumWidth(100);
-    nb_cases_l = new QLabel("Nombre de cases");
-    layout_cases = new QHBoxLayout;
-    layout_cases->addWidget(nb_cases_l);
-    layout_cases->addWidget(nb_cases);
-    layout_generateur->addLayout(layout_cases);
-
-    nb_transitions = new QSpinBox();
-    nb_transitions->setRange(1, 50);
-    nb_transitions->setValue(10);
-    nb_transitions->setMaximumWidth(100);
-    nb_transitions_l = new QLabel("Nombre de transitions");
-    layout_transitions = new QHBoxLayout;
-    layout_transitions->addWidget(nb_transitions_l);
-    layout_transitions->addWidget(nb_transitions);
-    layout_generateur->addLayout(layout_transitions);
-
-    bouton_generateur = new QPushButton;
-    bouton_generateur->setObjectName(QString::fromUtf8("bouton_generateur"));
-    bouton_generateur->setMinimumSize(QSize(0, 50));
-    bouton_generateur->setText(QApplication::translate("MainWindow", "Générer", 0));
-    bouton_generateur->setMaximumSize(QSize(16777215, 50));
-    layout_generateur->addWidget(bouton_generateur);
-    generateur->setLayout(layout_generateur);
-
-    layout_etat_depart->addLayout(regles_dim1);
-
-    etat_depart_l = new QLabel(configuration_dim1);
-    etat_depart_l->setObjectName(QString::fromUtf8("etat_depart_l"));
-    etat_depart_l->setMinimumSize(QSize(100, 20));
-    etat_depart_l->setMaximumSize(QSize(16777215, 20));
-
-    layout_etat_depart->addWidget(etat_depart_l);
-
-    layout_page_dim1->addWidget(configuration_dim1);
-
-    Simulation = new QPushButton(page_dim1);
-    Simulation->setObjectName(QString::fromUtf8("Simulation"));
-    Simulation->setMinimumSize(QSize(0, 50));
-    Simulation->setMaximumSize(QSize(16777215, 50));
-
-    layout_page_dim1->addWidget(Simulation);
-
-    stacked_settings->addWidget(page_dim1);
-    page_dim2 = new QWidget();
-    page_dim2->setObjectName(QString::fromUtf8("page_dim2"));
-    layout_page_dim2 = new QVBoxLayout(page_dim2);
-    layout_page_dim2->setObjectName(QString::fromUtf8("layout_page_dim2"));
-    configuration_dim2 = new QGroupBox(page_dim2);
-    configuration_dim2->setObjectName(QString::fromUtf8("configuration_dim2"));
-    configuration_dim2->setMaximumSize(QSize(900, 400));
-    layout_config_dim2 = new QHBoxLayout(configuration_dim2);
-    layout_config_dim2->setObjectName(QString::fromUtf8("layout_config_dim2"));
-    regles_dim2 = new QHBoxLayout();
-    regles_dim2->setObjectName(QString::fromUtf8("regles_dim2"));
-    regles_transition_dim2 = new QGroupBox(configuration_dim2);
-    regles_transition_dim2->setObjectName(QString::fromUtf8("regles_transition_dim2"));
-    regles_transition_dim2->setMaximumSize(QSize(16777215, 300));
-    gridLayout = new QGridLayout(regles_transition_dim2);
-    gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-
-    regles_creation_l = new QLabel(regles_transition_dim2);
-    regles_creation_l->setObjectName(QString::fromUtf8("regles_creation_l"));
-
-    gridLayout->addWidget(regles_creation_l, 1, 0, 1, 1);
-
-    voisins_n_l = new QLabel(regles_transition_dim2);
-    voisins_n_l->setObjectName(QString::fromUtf8("voisins_n_l"));
-    voisins_n_l->setMaximumSize(QSize(16777215, 15));
-
-    gridLayout->addWidget(voisins_n_l, 0, 0, 1, 1);
-
-    regles_mort_l = new QLabel(regles_transition_dim2);
-    regles_mort_l->setObjectName(QString::fromUtf8("regles_mort_l"));
-
-    gridLayout->addWidget(regles_mort_l, 2, 0, 1, 1);
-
-    for(unsigned int i; i<7; i++)
-    {
-        voisins[i]=new QLabel(regles_transition_dim2);
-        gridLayout->addWidget(voisins[i],0,i+1,1,1);
-        voisins[i]->setObjectName(QString::fromUtf8("voisin").append(QString::number(i+1)));
-        voisins[i]->raise();
-        voisins[i]->setText(QApplication::translate("MainWindow", QString::number(i+1).toUtf8(), 0));
-
-        vie[i]=new QCheckBox(regles_transition_dim2);
-        vie[i]->setObjectName(QString::fromUtf8("vie").append(QString::number(i+1)));
-        gridLayout->addWidget(vie[i],1,i+1,1,1);
-        vie[i]->raise();
-        vie[i]->setText(QString());
-
-        mort[i]=new QCheckBox(regles_transition_dim2);
-        mort[i]->setObjectName(QString::fromUtf8("mort").append(QString::number(i+1)));
-        gridLayout->addWidget(mort[i],2,i+1,1,1);
-        mort[i]->raise();
-        mort[i]->setText(QString());
-
-    }
-
-    voisins_n_l->raise();
-    regles_creation_l->raise();
-    regles_mort_l->raise();
-
-    regles_dim2->addWidget(regles_transition_dim2);
-
-    generateur_dim2 = new QGroupBox(configuration_dim2);
-    generateur_dim2->setObjectName(QString::fromUtf8("generateur_dim2"));
-    generateur_dim2->setMaximumSize(QSize(16777215, 300));
-
-    regles_dim2->addWidget(generateur_dim2);
-
-
-    layout_config_dim2->addLayout(regles_dim2);
-
-
-    layout_page_dim2->addWidget(configuration_dim2);
-
-    Simulation_4 = new QPushButton(page_dim2);
-    Simulation_4->setObjectName(QString::fromUtf8("Simulation_4"));
-    Simulation_4->setMinimumSize(QSize(0, 50));    Simulation_4->setMaximumSize(QSize(16777215, 50));
-
-    layout_page_dim2->addWidget(Simulation_4);
-
-    stacked_settings->addWidget(page_dim2);
-
-    layout_main->addWidget(stacked_settings);
-
-    MainWindow->setCentralWidget(centralwidget);
-    reglages_generaux->raise();
-    stacked_settings->raise();
-    menubar = new QMenuBar(MainWindow);
-    menubar->setObjectName(QString::fromUtf8("menubar"));
-    menubar->setGeometry(QRect(0, 0, 850, 23));
-    menuR_glages_de_l_automate_cellulaire = new QMenu(menubar);
-    menuR_glages_de_l_automate_cellulaire->setObjectName(QString::fromUtf8("menuR_glages_de_l_automate_cellulaire"));
-    MainWindow->setMenuBar(menubar);
-    statusbar = new QStatusBar(MainWindow);
-    statusbar->setObjectName(QString::fromUtf8("statusbar"));
-    MainWindow->setStatusBar(statusbar);
-
-    menubar->addAction(menuR_glages_de_l_automate_cellulaire->menuAction());
-    menuR_glages_de_l_automate_cellulaire->addAction(actionEnregistrer);
-    menuR_glages_de_l_automate_cellulaire->addAction(actionImporter);
-
-    retranslateUi(MainWindow);
-    Temps->setCurrentIndex(1);
-    aff_manuel->setChecked(true);
-    stacked_settings->setCurrentIndex(0);
 
     num = new QSpinBox();//spinbox -> sélection du numéro de l'automate en décimal
     num->setRange(0, 255);//255 automates possibles
@@ -323,14 +178,89 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
         connect(numeroBit[counter], SIGNAL(textChanged(QString)), this, SLOT(synchronizeNumBitToNum(QString)));//on connecte le binaire au décimal pour que la MàJ se fasse automatiquement
     }
     regles_transition->setLayout(numeroc);
-    connect(num, SIGNAL(valueChanged(int)), this, SLOT(synchronizeNumToNumBit(int)));//réciproquement, on connecte le décimal au binaire
-    // Question 2
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
+
+
+
+
+    //generateur dimension 1
+
+
+    regles_dim1->addWidget(regles_transition);
+    layout_generateur = new QVBoxLayout;
+    generateur = new QGroupBox(configuration_dim1);
+    generateur->setObjectName(QString::fromUtf8("generateur"));
+    generateur->setMaximumSize(QSize(400, 200));
+    regles_dim1->addWidget(generateur);
+
+    select_generateur = new QComboBox(generateur);
+    select_generateur->setMaximumSize(QSize(120, 20));
+    select_generateur_l=new QLabel("Génération");
+    layout_select_generateur = new QHBoxLayout;
+    layout_select_generateur->addWidget(select_generateur_l);
+    layout_select_generateur->addWidget(select_generateur);
+    layout_generateur->addLayout(layout_select_generateur);
+
+    select_generateur->addItem(tr("Aléatoire"));
+    select_generateur->addItem(tr("Manuelle"));
+    select_generateur->addItem(tr("1 sur 2"));
+
+
+    nb_cases = new QSpinBox();
+    nb_cases->setRange(2, 50);
+    nb_cases->setValue(30);
+    nb_cases->setMaximumWidth(100);
+    nb_cases_l = new QLabel("Nombre de cases");
+    layout_cases = new QHBoxLayout;
+    layout_cases->addWidget(nb_cases_l);
+    layout_cases->addWidget(nb_cases);
+    layout_generateur->addLayout(layout_cases);
+    nb_cases->setEnabled(false);
+
+    nb_transitions = new QSpinBox();
+    nb_transitions->setRange(1, 50);
+    nb_transitions->setValue(10);
+    nb_transitions->setMaximumWidth(100);
+    nb_transitions_l = new QLabel("Nombre de transitions");
+    layout_transitions = new QHBoxLayout;
+    layout_transitions->addWidget(nb_transitions_l);
+    layout_transitions->addWidget(nb_transitions);
+    layout_generateur->addLayout(layout_transitions);
+    nb_transitions->setEnabled(false);
+
+    bouton_generateur = new QPushButton;
+    bouton_generateur->setObjectName(QString::fromUtf8("bouton_generateur"));
+    bouton_generateur->setMinimumSize(QSize(0, 50));
+    bouton_generateur->setText(QApplication::translate("MainWindow", "Générer", 0));
+    bouton_generateur->setMaximumSize(QSize(1500, 50));
+    layout_generateur->addWidget(bouton_generateur);
+    generateur->setLayout(layout_generateur);
+
+
+
+    //etat de départ dimension 1
+
+    layout_page_etat_0 = new QVBoxLayout;
+    aucun_etat_depart = new QLabel("Générez/Importez un état de départ");
+    layout_page_etat_0->addWidget(aucun_etat_depart);
+    layout_page_etat_0->setAlignment(Qt::AlignHCenter);
+
+    layout_etat_depart = new QVBoxLayout(configuration_dim1);
+    layout_etat_depart->setObjectName(QString::fromUtf8("layout_etat_depart"));
+
+    etat_depart_l = new QLabel(configuration_dim1);
+    etat_depart_l->setObjectName(QString::fromUtf8("etat_depart_l"));
+    etat_depart_l->setMinimumSize(QSize(100, 20));
+    etat_depart_l->setMaximumSize(QSize(1500, 20));
+
+    layout_etat_depart->addWidget(etat_depart_l);
+
     stacked_etat_depart = new QStackedWidget;
     stacked_etat_depart->setObjectName(QString::fromUtf8("stacked_etat_depart"));
     stacked_etat_depart->setEnabled(true);
     page_etat_0 = new QWidget();
     page_etat_0->setObjectName(QString::fromUtf8("page_etat_0"));
+    page_etat_0->setLayout(layout_page_etat_0);
     page_etat_1 = new QWidget();
     page_etat_1->setObjectName(QString::fromUtf8("page_etat_1"));
     layout_page_etat_1 = new QVBoxLayout;
@@ -339,8 +269,197 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     stacked_etat_depart->addWidget(page_etat_0);
     stacked_etat_depart->addWidget(page_etat_1);
     stacked_etat_depart->raise();
+    layout_page_dim1->addWidget(configuration_dim1);
+    layout_etat_depart->addLayout(regles_dim1);
     layout_etat_depart->addWidget(stacked_etat_depart);
+
+    //bouton simulation dimension 1
+    Simulation = new QPushButton(page_dim1);
+    Simulation->setObjectName(QString::fromUtf8("Simulation"));
+    Simulation->setMinimumSize(QSize(0, 50));
+    Simulation->setMaximumSize(QSize(1500, 50));
+
+    layout_page_dim1->addWidget(Simulation);
+
+    stacked_settings->addWidget(page_dim1);
     Simulation->setEnabled(false);
+
+    /************************
+     *
+     * automate dimension 2
+     *
+     *
+     ************************/
+
+    page_dim2 = new QWidget();
+    page_dim2->setObjectName(QString::fromUtf8("page_dim2"));
+    layout_page_dim2 = new QVBoxLayout(page_dim2);
+    layout_page_dim2->setObjectName(QString::fromUtf8("layout_page_dim2"));
+    configuration_dim2 = new QGroupBox(page_dim2);
+    configuration_dim2->setObjectName(QString::fromUtf8("configuration_dim2"));
+    configuration_dim2->setMaximumSize(QSize(900, 400));
+    layout_config_dim2 = new QHBoxLayout(configuration_dim2);
+    layout_config_dim2->setObjectName(QString::fromUtf8("layout_config_dim2"));
+    regles_dim2 = new QHBoxLayout();
+    regles_dim2->setObjectName(QString::fromUtf8("regles_dim2"));
+
+    //règles de transition dim 2
+
+    regles_transition_dim2 = new QGroupBox(configuration_dim2);
+    regles_transition_dim2->setObjectName(QString::fromUtf8("regles_transition_dim2"));
+    regles_transition_dim2->setMaximumSize(QSize(1500, 300));
+    gridLayout = new QGridLayout(regles_transition_dim2);
+    gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+
+    regles_creation_l = new QLabel(regles_transition_dim2);
+    regles_creation_l->setObjectName(QString::fromUtf8("regles_creation_l"));
+
+    gridLayout->addWidget(regles_creation_l, 1, 0, 1, 1);
+
+    voisins_n_l = new QLabel(regles_transition_dim2);
+    voisins_n_l->setObjectName(QString::fromUtf8("voisins_n_l"));
+    voisins_n_l->setMaximumSize(QSize(1500, 15));
+
+    gridLayout->addWidget(voisins_n_l, 0, 0, 1, 1);
+
+    regles_mort_l = new QLabel(regles_transition_dim2);
+    regles_mort_l->setObjectName(QString::fromUtf8("regles_mort_l"));
+
+    gridLayout->addWidget(regles_mort_l, 2, 0, 1, 1);
+
+    for(unsigned int i=0; i<8; i++)
+    {
+        voisins[i]=new QLabel(regles_transition_dim2);
+        gridLayout->addWidget(voisins[i],0,i+1,1,1);
+        voisins[i]->setObjectName(QString::fromUtf8("voisin").append(QString::number(i+1)));
+        voisins[i]->raise();
+        voisins[i]->setText(QApplication::translate("MainWindow", QString::number(i+1).toUtf8(), 0));
+
+        vie[i]=new QCheckBox(regles_transition_dim2);
+        vie[i]->setObjectName(QString::fromUtf8("vie").append(QString::number(i+1)));
+        gridLayout->addWidget(vie[i],1,i+1,1,1);
+        vie[i]->raise();
+        vie[i]->setText(QString());
+
+        mort[i]=new QCheckBox(regles_transition_dim2);
+        mort[i]->setObjectName(QString::fromUtf8("mort").append(QString::number(i+1)));
+        gridLayout->addWidget(mort[i],2,i+1,1,1);
+        mort[i]->raise();
+        mort[i]->setText(QString());
+
+    }
+
+    voisins_n_l->raise();
+    regles_creation_l->raise();
+    regles_mort_l->raise();
+
+    regles_dim2->addWidget(regles_transition_dim2);
+
+
+    //générateur dim 2
+
+    generateur_dim2 = new QGroupBox(configuration_dim2);
+    generateur_dim2->setObjectName(QString::fromUtf8("generateur_dim2"));
+    generateur_dim2->setMaximumSize(QSize(1500, 300));
+
+    regles_dim2->addWidget(generateur_dim2);
+
+
+    layout_config_dim2->addLayout(regles_dim2);
+
+    select_generateur_dim2 = new QComboBox(generateur_dim2);
+    select_generateur_dim2->setMaximumSize(QSize(120, 20));
+    select_generateur_dim2_l=new QLabel("Génération");
+    layout_select_generateur_dim2 = new QHBoxLayout;
+    layout_select_generateur_dim2->addWidget(select_generateur_dim2_l);
+    layout_select_generateur_dim2->addWidget(select_generateur_dim2);
+
+    select_generateur_dim2->addItem(tr("Aléatoire"));
+    select_generateur_dim2->addItem(tr("Manuelle"));
+    select_generateur_dim2->addItem(tr("Symétrique"));
+
+
+    layout_page_dim2->addWidget(configuration_dim2);
+
+    layout_generateur_dim2 = new QVBoxLayout;
+    generateur_dim2->setLayout(layout_generateur_dim2);
+    layout_generateur_dim2->addLayout(layout_select_generateur_dim2);
+    nb_cases_dim2 = new QSpinBox();
+    nb_cases_dim2->setRange(2, 50);
+    nb_cases_dim2->setValue(30);
+    nb_cases_dim2->setMaximumWidth(100);
+    nb_cases_l_dim2 = new QLabel("Nombre de cases");
+    layout_cases_dim2 = new QHBoxLayout;
+    layout_cases_dim2->addWidget(nb_cases_l_dim2);
+    layout_cases_dim2->addWidget(nb_cases_dim2);
+    layout_generateur_dim2->addLayout(layout_cases_dim2);
+    nb_cases_dim2->setEnabled(false);
+
+    nb_transitions_dim2 = new QSpinBox();
+    nb_transitions_dim2->setRange(1, 50);
+    nb_transitions_dim2->setValue(10);
+    nb_transitions_dim2->setMaximumWidth(100);
+    nb_transitions_l_dim2 = new QLabel("Nombre de transitions");
+    layout_transitions_dim2 = new QHBoxLayout;
+    layout_transitions_dim2->addWidget(nb_transitions_l_dim2);
+    layout_transitions_dim2->addWidget(nb_transitions_dim2);
+    layout_generateur_dim2->addLayout(layout_transitions_dim2);
+    nb_transitions_dim2->setEnabled(false);
+
+    bouton_generateur_dim2 = new QPushButton;
+    bouton_generateur_dim2->setObjectName(QString::fromUtf8("bouton_generateur"));
+    bouton_generateur_dim2->setMinimumSize(QSize(0, 50));
+    bouton_generateur_dim2->setText(QApplication::translate("MainWindow", "Générer", 0));
+    bouton_generateur_dim2->setMaximumSize(QSize(1500, 50));
+    layout_generateur_dim2->addWidget(bouton_generateur_dim2);
+    generateur_dim2->setLayout(layout_generateur_dim2);
+
+
+    //bouton simulation dim2
+
+
+    Simulation_dim2 = new QPushButton(page_dim2);
+    Simulation_dim2->setObjectName(QString::fromUtf8("Simulation_dim2"));
+    Simulation_dim2->setMinimumSize(QSize(0, 50));    Simulation_dim2->setMaximumSize(QSize(1500, 50));
+
+    layout_page_dim2->addWidget(Simulation_dim2);
+
+    stacked_settings->addWidget(page_dim2);
+
+    layout_main->addWidget(stacked_settings);
+
+
+    MainWindow->setCentralWidget(centralwidget);
+    reglages_generaux->raise();
+    stacked_settings->raise();
+    menubar = new QMenuBar(MainWindow);
+    menubar->setObjectName(QString::fromUtf8("menubar"));
+    menubar->setGeometry(QRect(0, 0, 850, 23));
+    menuR_glages_de_l_automate_cellulaire = new QMenu(menubar);
+    menuR_glages_de_l_automate_cellulaire->setObjectName(QString::fromUtf8("menuR_glages_de_l_automate_cellulaire"));
+    MainWindow->setMenuBar(menubar);
+    statusbar = new QStatusBar(MainWindow);
+    statusbar->setObjectName(QString::fromUtf8("statusbar"));
+    MainWindow->setStatusBar(statusbar);
+
+    menubar->addAction(menuR_glages_de_l_automate_cellulaire->menuAction());
+    menuR_glages_de_l_automate_cellulaire->addAction(actionEnregistrer);
+    menuR_glages_de_l_automate_cellulaire->addAction(actionImporter);
+
+    retranslateUi(MainWindow);
+    Temps->setCurrentIndex(1);
+    aff_manuel->setChecked(true);
+    stacked_settings->setCurrentIndex(0);
+
+    //connexion des signaux et des slots
+
+    connect(num, SIGNAL(valueChanged(int)), this, SLOT(synchronizeNumToNumBit(int)));//réciproquement, on connecte le décimal au binaire
+
+    for(unsigned int i=0; i<8; ++i)
+    {
+        connect(vie[i], SIGNAL(toggled(bool)), mort[i], SLOT(setDisabled(bool)));
+        connect(mort[i], SIGNAL(toggled(bool)), vie[i], SLOT(setDisabled(bool)));
+    }
 
     connect(select_type_automate, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onDimensionItemClicked(QListWidgetItem*)));
     connect(aff_manuel, SIGNAL(toggled(bool)), this, SLOT(onAffichageButtonClicked(bool)));
@@ -348,7 +467,10 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     connect(Simulation, SIGNAL(clicked()), this, SLOT(onSimulationButtonClicked()));
     connect(actionEnregistrer, SIGNAL(triggered()), this, SLOT(onActionEnregistrer()));
     connect(actionImporter, SIGNAL(triggered()), this, SLOT(onActionImporter()));
+
+    connect(select_generateur, SIGNAL(activated(QString)), this, SLOT(set_Gen_options(QString)));
     QMetaObject::connectSlotsByName(MainWindow);
+
 } // setupUi
 
 
@@ -362,9 +484,9 @@ void Ui_MainWindow::retranslateUi(QMainWindow *MainWindow)
     const bool __sortingEnabled = select_type_automate->isSortingEnabled();
     select_type_automate->setSortingEnabled(false);
     QListWidgetItem *___qlistwidgetitem = select_type_automate->item(0);
-    ___qlistwidgetitem->setText(QApplication::translate("MainWindow", "Automate 1 dimension", 0));
+    ___qlistwidgetitem->setText(QApplication::translate("MainWindow", "Automates 1 dimension", 0));
     QListWidgetItem *___qlistwidgetitem1 = select_type_automate->item(1);
-    ___qlistwidgetitem1->setText(QApplication::translate("MainWindow", "Automate 2 dimensions", 0));
+    ___qlistwidgetitem1->setText(QApplication::translate("MainWindow", "Jeu de la vie", 0));
     select_type_automate->setSortingEnabled(__sortingEnabled);
 
     Affichage->setTitle(QApplication::translate("MainWindow", "Affichage", 0));
@@ -383,7 +505,7 @@ void Ui_MainWindow::retranslateUi(QMainWindow *MainWindow)
     voisins_n_l->setText(QApplication::translate("MainWindow", "Nombre de voisins : ", 0));
     regles_mort_l->setText(QApplication::translate("MainWindow", "R\303\250gle de mort", 0));
     generateur_dim2->setTitle(QApplication::translate("MainWindow", "G\303\251n\303\251rateur", 0));
-    Simulation_4->setText(QApplication::translate("MainWindow", "Lancer !", 0));
+    Simulation_dim2->setText(QApplication::translate("MainWindow", "Lancer !", 0));
     menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("MainWindow", "Enregistrement", 0));
 } // retranslateUi
 
@@ -392,10 +514,15 @@ void Ui_MainWindow::onDimensionItemClicked(QListWidgetItem* item)
 {
     if (select_type_automate->item(0) == item) {
             stacked_settings->setCurrentIndex(0);
+            if(page_dim1->findChild<QTableWidget*>("etat_depart_table"))
+            {
+                actionEnregistrer->setEnabled(true);
+            }
         }
     else if(select_type_automate->item(1) == item)
     {
         stacked_settings->setCurrentIndex(1);
+        actionEnregistrer->setEnabled(false);
     }
 }
 
@@ -413,7 +540,6 @@ void Ui_MainWindow::onAffichageButtonClicked(bool checked)
 
 void Ui_MainWindow::onGenerateurButtonClicked()
 {
-    unsigned int taille = 26; //pixels de l'état de départ
     if(page_dim1->findChild<QTableWidget*>("etat_depart_table"))//on teste si le tableau existe déjà
     {
         layout_page_etat_1->removeWidget(etat_depart_table);
@@ -423,26 +549,38 @@ void Ui_MainWindow::onGenerateurButtonClicked()
     //stacked_etat_depart->setFixedSize(dimension*taille + 50, taille+50);
     etat_depart_table = new QTableWidget(1, dimension); //
     etat_depart_table->setFixedHeight(taille+40); // largeur = nombre_cellules*taille_cellule, hauteur = taille_cellule
+    etat_depart_table->setMaximumWidth(taille*dimension+2);
     etat_depart_table->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
     etat_depart_table->verticalHeader()->setVisible(false); // masque le header vertical
     etat_depart_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // désactive la scroll barre vertical
-    etat_depart_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn); // désactive la scroll barre horizontal
+    etat_depart_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
     // création des items du QTableWidget, initialisés à "" avec un fond blanc
     //on initialise toutes les cases avec un symbole représentant une case à l'état 0, ici, c'est "", une chaîne vide.
+
     for(unsigned int counter = 0; counter < dimension; ++counter) {
         etat_depart_table->setColumnWidth(counter, taille);
         etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
-        etat_depart_table->item(0, counter)->setBackgroundColor("white");//vide donc couleur = blanc
-        etat_depart_table->item(0, counter)->setTextColor("white");//idem, on ne veut pas voir le texte à l'intérieur (même pas besoin car c'est une chaîne vide)
+        etat_depart_table->item(0, counter)->setBackgroundColor("white");
+        etat_depart_table->item(0, counter)->setTextColor("white");
         }
     etat_depart_table->setParent(page_dim1);
     layout_page_etat_1->addWidget(etat_depart_table);
     etat_depart_table->setObjectName(QString::fromUtf8("etat_depart_table"));
     connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
-    stacked_etat_depart->setCurrentIndex(1);
-    Simulation->setEnabled(true);
-    actionEnregistrer->setEnabled(true);
-
+    if(select_generateur->currentText()==tr("Aléatoire"))
+    {
+        Gen_aleatoire();
+    }
+    else if(select_generateur->currentText()==tr("Manuelle"))
+    {
+        stacked_etat_depart->setCurrentIndex(1);
+        Simulation->setEnabled(true);
+        actionEnregistrer->setEnabled(true);
+    }
+    else if(select_generateur->currentText()==tr("1 sur 2"))
+    {
+        Gen_Un_Sur_Deux();
+    }
 }
 
 void Ui_MainWindow::onSimulationButtonClicked()
@@ -531,13 +669,14 @@ void Ui_MainWindow::onActionEnregistrer()
             QDomElement generator = dom.createElement("Generateur");
             generator.setAttribute("nb_cases", nb_cases->value());
             generator.setAttribute("nb_transitions", nb_transitions->value());
+            generator.setAttribute("generation", select_generateur->currentIndex());
             root.appendChild(generator);
 
             QDomElement etat_dep = dom.createElement("Etat_depart");
             root.appendChild(etat_dep);
 
             QDomElement etats_dep[nb_cases->value()];
-            for(unsigned int i=0; i<nb_cases->value(); i++)
+            for(int i=0; i<nb_cases->value(); i++)
             {
                 etats_dep[i] = dom.createElement("Etat"+QString::number(i));
                 etats_dep[i].setAttribute("active", etat_depart_table->item(0,i)->text()=="_");
@@ -582,6 +721,18 @@ void Ui_MainWindow::onActionImporter()
             nb_transitions->setValue(e.attribute("nb_transitions").toInt());
             //QMessageBox::information(NULL, "Transitions", e.tagName());
 
+            select_generateur->setCurrentIndex(e.attribute("generation").toInt());
+            if(select_generateur->currentText()==tr("Manuelle"))
+            {
+                nb_cases->setEnabled(true);
+                nb_transitions->setEnabled(true);
+            }
+            else
+            {
+                nb_cases->setEnabled(false);
+                nb_transitions->setEnabled(false);
+            }
+
             n=n.nextSibling();
             e=n.toElement();
 
@@ -597,7 +748,6 @@ void Ui_MainWindow::onActionImporter()
             }
 
             dimension=nb_cases->value();
-            unsigned int taille = 26; //pixels de l'état de départ
 
             etat_depart_table = new QTableWidget(1, dimension); //
             etat_depart_table->setFixedHeight(taille+40); // largeur = nombre_cellules*taille_cellule, hauteur = taille_cellule
@@ -611,14 +761,14 @@ void Ui_MainWindow::onActionImporter()
                 if(e.attribute("active").toUInt())
                 {
                     etat_depart_table->setItem(0, counter, new QTableWidgetItem("_"));
-                    etat_depart_table->item(0, counter)->setBackgroundColor("black");//vide donc couleur = blanc
-                    etat_depart_table->item(0, counter)->setTextColor("black");//idem, on ne veut pas voir le texte à l'intérieur (même pas besoin car c'est une chaîne vide)
+                    etat_depart_table->item(0, counter)->setBackgroundColor("black");
+                    etat_depart_table->item(0, counter)->setTextColor("black");
                 }
                 else
                 {
                     etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
-                    etat_depart_table->item(0, counter)->setBackgroundColor("white");//vide donc couleur = blanc
-                    etat_depart_table->item(0, counter)->setTextColor("white");//idem, on ne veut pas voir le texte à l'intérieur (même pas besoin car c'est une chaîne vide)
+                    etat_depart_table->item(0, counter)->setBackgroundColor("white");
+                    etat_depart_table->item(0, counter)->setTextColor("white");
                 }
                 n=n.nextSibling();
                 e=n.toElement();
@@ -638,3 +788,86 @@ void Ui_MainWindow::onActionImporter()
 
 }
 
+void Ui_MainWindow::set_Gen_options(QString index)
+{
+    if(index=="Manuelle")
+    {
+        if(stacked_settings->currentIndex()==0)
+        {
+            nb_cases->setEnabled(true);
+        }
+        else if(stacked_settings->currentIndex()==1)
+        {
+            nb_cases_dim2->setEnabled(true);
+        }
+    }
+    else if(index=="Aléatoire")
+    {
+        srand (time(NULL));
+        if(stacked_settings->currentIndex()==0)
+        {
+            nb_cases->setEnabled(false);
+            nb_cases->setValue(rand()%49+1);
+        }
+        else if(stacked_settings->currentIndex()==1)
+        {
+            nb_cases_dim2->setEnabled(false);
+            nb_cases_dim2->setValue(rand()%49+1);
+        }
+    }
+    else if(index=="1 sur 2")
+    {
+        if(stacked_settings->currentIndex()==0)
+        {
+            nb_cases->setEnabled(false);
+        }
+        else if(stacked_settings->currentIndex()==1)
+        {
+            nb_cases_dim2->setEnabled(false);
+        }
+    }
+}
+
+void Ui_MainWindow::Gen_aleatoire()
+{
+    for(unsigned int counter = 0; counter < dimension; ++counter) {
+        etat_depart_table->setColumnWidth(counter, taille);
+        if(rand()%2)
+        {
+            etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
+            etat_depart_table->item(0, counter)->setBackgroundColor("white");
+            etat_depart_table->item(0, counter)->setTextColor("white");
+        }
+        else
+        {
+            etat_depart_table->setItem(0, counter, new QTableWidgetItem("_"));
+            etat_depart_table->item(0, counter)->setBackgroundColor("black");
+            etat_depart_table->item(0, counter)->setTextColor("black");
+        }
+    }
+    stacked_etat_depart->setCurrentIndex(1);
+    Simulation->setEnabled(true);
+    actionEnregistrer->setEnabled(true);
+}
+
+void Ui_MainWindow::Gen_Un_Sur_Deux()
+{
+    for(unsigned int counter = 0; counter < dimension; ++counter) {
+        etat_depart_table->setColumnWidth(counter, taille);
+        if(counter%2)
+        {
+            etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
+            etat_depart_table->item(0, counter)->setBackgroundColor("white");
+            etat_depart_table->item(0, counter)->setTextColor("white");
+        }
+        else
+        {
+            etat_depart_table->setItem(0, counter, new QTableWidgetItem("_"));
+            etat_depart_table->item(0, counter)->setBackgroundColor("black");
+            etat_depart_table->item(0, counter)->setTextColor("black");
+        }
+    }
+    stacked_etat_depart->setCurrentIndex(1);
+    Simulation->setEnabled(true);
+    actionEnregistrer->setEnabled(true);
+}

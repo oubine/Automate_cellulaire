@@ -52,8 +52,8 @@ class Simulateur {
     const Automate& automate;
     Etat** etats;
     const Etat* depart;
-    unsigned int nbMaxEtats;
-    unsigned int rang;
+    int nbMaxEtats;
+    int rang;
     void build(unsigned int c);
     Simulateur(const Simulateur& s);
     Simulateur& operator=(const Simulateur& s);
