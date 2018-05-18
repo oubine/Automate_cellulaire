@@ -39,6 +39,7 @@ Q_OBJECT
     bool affichage_manuel;
     unsigned int temps_affichage;
     bool is_play_v=1;
+    unsigned int taille;
 public:
     explicit AutoCell(QWidget* parent = nullptr);
     explicit AutoCell(QWidget* parent = nullptr, unsigned int dim=1, unsigned int transitions=1, int num=0, bool aff=1, unsigned int tps_aff=500);

@@ -4,7 +4,6 @@
 
 AutoCell::AutoCell(QWidget *parent) : QWidget(parent) {
     // Question 3
-    unsigned int taille = 27; //pixels de l'état de départ
     //numero = new QLabel(QString::number(num_automate),this);
     depart = new QTableWidget(1, dimension);
     for(unsigned int counter = 0; counter < dimension; ++counter) {
@@ -40,10 +39,9 @@ AutoCell::AutoCell(QWidget *parent) : QWidget(parent) {
 }
 
 AutoCell::AutoCell(QWidget *parent, unsigned int dim, unsigned int transitions, int num, bool aff, unsigned int tps_aff) :
-    QWidget(parent), dimension(dim), num_automate(num), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff) {
+    QWidget(parent), dimension(dim), num_automate(num), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff), taille(2) {
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
-    unsigned int taille = 20; //pixels de l'état de départ
     layout_boutons=new QHBoxLayout;
     numero = new QLabel(QString::fromUtf8("Numéro : ").append(QString::number(num_automate)),this);
     layout_numero=new QVBoxLayout;
@@ -109,8 +107,8 @@ AutoCell::AutoCell(QWidget *parent, unsigned int dim, unsigned int transitions, 
     etats->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);//on enlève la scroll barre horizontale
     etats->setEditTriggers(QAbstractItemView::NoEditTriggers); // désactive la modification des états par l'utilisateur
     // set the default size, here i've set it to 20px by 20x
-    etats->horizontalHeader()->setDefaultSectionSize(20);
-    etats->verticalHeader()->setDefaultSectionSize(20);
+    etats->horizontalHeader()->setDefaultSectionSize(taille);
+    etats->verticalHeader()->setDefaultSectionSize(taille);
     // set the resize mode to fixed, so the user cannot change the height/width
     //etats->horizontalHeader()->setResizeMode(QHeaderView::Fixed);
     //etats->verticalHeader()->setResizeMode(QHeaderView::Fixed);

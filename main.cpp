@@ -13,7 +13,6 @@ int main(int argc, char *argv[])
     Ui_MainWindow* main_window = new Ui_MainWindow;
     main_window->setupUi(main);
     main->show();
-
     //AutoCell autoc;
     //autoc.show();
     return app.exec();

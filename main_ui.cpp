@@ -207,7 +207,7 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
 
 
     nb_cases = new QSpinBox();
-    nb_cases->setRange(2, 50);
+    nb_cases->setRange(2, MAX_CASES);
     nb_cases->setValue(30);
     nb_cases->setMaximumWidth(100);
     nb_cases_l = new QLabel("Nombre de cases");
@@ -215,10 +215,10 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     layout_cases->addWidget(nb_cases_l);
     layout_cases->addWidget(nb_cases);
     layout_generateur->addLayout(layout_cases);
-    nb_cases->setEnabled(false);
+    //nb_cases->setEnabled(false);
 
     nb_transitions = new QSpinBox();
-    nb_transitions->setRange(1, 50);
+    nb_transitions->setRange(1, MAX_TRANSITIONS);
     nb_transitions->setValue(10);
     nb_transitions->setMaximumWidth(100);
     nb_transitions_l = new QLabel("Nombre de transitions");
@@ -226,7 +226,7 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     layout_transitions->addWidget(nb_transitions_l);
     layout_transitions->addWidget(nb_transitions);
     layout_generateur->addLayout(layout_transitions);
-    nb_transitions->setEnabled(false);
+    nb_transitions->setEnabled(true);
 
     bouton_generateur = new QPushButton;
     bouton_generateur->setObjectName(QString::fromUtf8("bouton_generateur"));
@@ -722,15 +722,13 @@ void Ui_MainWindow::onActionImporter()
             //QMessageBox::information(NULL, "Transitions", e.tagName());
 
             select_generateur->setCurrentIndex(e.attribute("generation").toInt());
-            if(select_generateur->currentText()==tr("Manuelle"))
+            if(select_generateur->currentText()==tr("Aléatoire"))
             {
-                nb_cases->setEnabled(true);
-                nb_transitions->setEnabled(true);
+                nb_cases->setEnabled(false);
             }
             else
             {
-                nb_cases->setEnabled(false);
-                nb_transitions->setEnabled(false);
+                nb_cases->setEnabled(true);
             }
 
             n=n.nextSibling();
@@ -792,39 +790,20 @@ void Ui_MainWindow::set_Gen_options(QString index)
 {
     if(index=="Manuelle")
     {
-        if(stacked_settings->currentIndex()==0)
-        {
-            nb_cases->setEnabled(true);
-        }
-        else if(stacked_settings->currentIndex()==1)
-        {
-            nb_cases_dim2->setEnabled(true);
-        }
+
+        nb_cases->setEnabled(true);
+
     }
     else if(index=="Aléatoire")
     {
         srand (time(NULL));
-        if(stacked_settings->currentIndex()==0)
-        {
-            nb_cases->setEnabled(false);
-            nb_cases->setValue(rand()%49+1);
-        }
-        else if(stacked_settings->currentIndex()==1)
-        {
-            nb_cases_dim2->setEnabled(false);
-            nb_cases_dim2->setValue(rand()%49+1);
-        }
+        //nb_cases->setEnabled(false);
+        //nb_cases->setValue(rand()%(MAX_CASES-1)+1);
+
     }
     else if(index=="1 sur 2")
     {
-        if(stacked_settings->currentIndex()==0)
-        {
-            nb_cases->setEnabled(false);
-        }
-        else if(stacked_settings->currentIndex()==1)
-        {
-            nb_cases_dim2->setEnabled(false);
-        }
+        nb_cases->setEnabled(true);
     }
 }
 

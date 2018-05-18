@@ -82,11 +82,14 @@ Automate::Automate(const std::string& num) :numero(NumBitToNum(num)),numeroBit(n
 
 void Automate::appliquerTransition(const Etat& dep, Etat& dest) const {
     if (dep.getDimension() != dest.getDimension()) dest = dep;
-    for (unsigned int i = 0; i < dep.getDimension(); i++) {
+    for (int i = 0; i < dep.getDimension(); i++) {
         unsigned short int conf=0;
-        if (i > 0) conf+=dep.getCellule(i - 1) * 4;
+        //if (i > 0) conf+=dep.getCellule(i - 1) * 4;
+        conf+=dep.getCellule(((i-1)%(int)dep.getDimension()+(int)dep.getDimension())%(int)dep.getDimension()) * 4;
         conf+=dep.getCellule(i)*2;
-        if (i < dep.getDimension()-1) conf+=dep.getCellule(i + 1);
+
+        //if (i < dep.getDimension()-1) conf+=dep.getCellule(i + 1);
+        conf+=dep.getCellule(((i+1)%dep.getDimension()+dep.getDimension())%dep.getDimension());
         dest.setCellule(i, numeroBit[7-conf]-'0');
     }
 }

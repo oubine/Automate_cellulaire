@@ -9,6 +9,8 @@
 #ifndef PROJET_LO21_2U14026_H
 #define PROJET_LO21_2U14026_H
 #include "autocell.h"
+#define MAX_CASES 500
+#define MAX_TRANSITIONS 300
 
 #include <QWidget>
 #include <QtCore/QVariant>
@@ -119,7 +121,7 @@ public:
     QPushButton* bouton_generateur;
 
     QStackedWidget* stacked_etat_depart;
-    unsigned int taille=26;//taille des cases du tableau en pixels
+    unsigned int taille=25;//taille des cases du tableau en pixels
     QWidget* page_etat_0;
     QWidget* page_etat_1;
     QLabel *etat_depart_l;
@@ -165,7 +167,7 @@ public:
     void setupUi(QMainWindow *MainWindow);
     void retranslateUi(QMainWindow *MainWindow);
 
-    void Gen_aleatoire();
+    void Gen_aleatoire();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
     void Gen_Un_Sur_Deux();
 
 private slots :
