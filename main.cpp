@@ -1,6 +1,6 @@
 #include <QApplication>
 #include "main_UI.h"
-#include "automate_dim1.h"
+#include "automate.h"
 
 //On a mis des attributs de AutoCell en public pour pouvoir y accéder depuis Ui_MainWindow -> pas top
 //Le num de AutoCell ne semble pas être le bon... -> problème de config ?
