@@ -5,7 +5,7 @@
 #include "main_UI.h"
 #include <iostream>
 
-AutoCell::AutoCell(QWidget *parent) : QWidget(parent) {
+AutoCell::AutoCell(QWidget *parent) : QWidget(parent),taille(10) {
     // Question 3
     //numero = new QLabel(QString::number(num_automate),this);
     depart = new QTableWidget(1, dimension);
@@ -42,7 +42,7 @@ AutoCell::AutoCell(QWidget *parent) : QWidget(parent) {
 }
 
 AutoCell::AutoCell(QWidget *parent, unsigned int dim, unsigned int transitions, int num, bool aff, unsigned int tps_aff) :
-    QWidget(parent), dimension(dim), num_automate(num), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff), taille(2) {
+    QWidget(parent), dimension(dim), num_automate(num), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(20) {
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
@@ -118,8 +118,6 @@ AutoCell::AutoCell(QWidget *parent, unsigned int dim, unsigned int transitions, 
     // on va créer les items, on utilise 2 boucles car on parcourt un tableau 2 dimensions
     for(unsigned int ligne = 0; ligne < nb_transitions; ++ligne) {
         // fixe les dimensions des lignes et des colonnes
-        etats->setColumnWidth(ligne, taille);
-        etats->setRowHeight(ligne, taille);
         for(unsigned int colonne = 0; colonne < dimension; ++colonne) {//on initialise toutes les cellules à l'état mort
             etats->setItem(ligne, colonne, new QTableWidgetItem(""));//symbole choisi pour représenter une cellule morte
             etats->item(ligne, colonne)->setBackgroundColor("white");//la cellule est morte, donc blanche
