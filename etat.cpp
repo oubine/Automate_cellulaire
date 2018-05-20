@@ -5,7 +5,6 @@
 
 Etat::Etat(unsigned int n, unsigned short int dim) : taille(n), dimension(dim), valeur(new int [int(pow(n,dim))])
 {
-    std::cout<<int(pow(n,dim))<<"\n";
     for (unsigned int i = 0; i < pow(n,dim); i++) valeur[i] = 0;
 }
 

@@ -151,7 +151,6 @@ void AutoCell::launchSimulation() {//méthode pour lancer la simulation
         sim.next();
         // on récupère le dernier état
         const Etat1D& etat = sim.dernier();
-        std::cout << etat << " lel\n";
         // on l'affiche
         for(unsigned int colonne = 0; colonne < dimension; ++colonne) {
             if (etat.getCellule(colonne) == true) {

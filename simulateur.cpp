@@ -42,7 +42,6 @@ void Simulateur::run(unsigned int nb_steps) {
 }
 
 const Etat1D& Simulateur::dernier() const {
-    std::cout<<*etats[rang%nbMaxEtats]<<"\n";
     return *etats[rang%nbMaxEtats];
 }
 

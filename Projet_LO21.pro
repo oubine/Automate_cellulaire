@@ -14,7 +14,9 @@ HEADERS += \
     automate.h \
     etat.h \
     automatemanager.h \
-    simulateur.h
+    simulateur.h \
+    motif.h \
+    index.h
 
 SOURCES += \
     main.cpp \
@@ -26,4 +28,6 @@ SOURCES += \
     automate.cpp \
     etat.cpp \
     automatemanager.cpp \
-    simulateur.cpp
+    simulateur.cpp \
+    motif.cpp \
+    index.cpp

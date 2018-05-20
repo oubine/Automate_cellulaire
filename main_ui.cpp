@@ -592,7 +592,6 @@ void Ui_MainWindow::onSimulationButtonClicked()
     {
         new_Window_dim1->launchSimulationAuto();
     }
-    else new_Window_dim1->launchSimulation();
 }
 
 void Ui_MainWindow::cellActivation(QTableWidgetItem *index) {//méthode pour changer l'état
