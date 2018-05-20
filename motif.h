@@ -22,7 +22,7 @@ class Motif //classe abstraite
  * est constitué de la couronne des 8 cellules adjacentes. Le motif associé serait
  * donc le tableau suivant : [(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
  * chaque couple étant en réalité un objet Index2D.
- * Autre exemple, les 256 automates classiques à une dimension aurait pour motif associé :
+ * Autre exemple, les 256 automates élémentaires à une dimension aurait pour motif associé :
  * [Index1D(-1),Index1D(0),Index1D(1)]
  * L'ordre des index importe (si motif [1,0,-1], les automates 1D seraient inversés par ex)*/
 {
@@ -33,6 +33,7 @@ protected:
 public:
     void ajouterVoisin(Index* i);
     Motif() : voisinage(nullptr),nbVoisins(0),nbMaxVoisins(0){}
+    Motif(Index** voisinage, int nbVoisins): voisinage(voisinage), nbVoisins(nbVoisins), nbMaxVoisins(nbVoisins){}
     virtual ~Motif() {delete[] voisinage;}
     unsigned int getNbVoisins() const {return nbVoisins;}
 

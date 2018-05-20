@@ -39,6 +39,8 @@ public:
     Index1D& operator-=(const int& i){this->setIndex(this->i-i); return *this;}
     Index1D& operator++(){this->setIndex(this->getIndex()+1); return *this;}//++i
     Index1D operator++(int){Index1D temp = *this; ++*this; return temp;}//i++
+    Index1D& operator--(){this->setIndex(this->getIndex()-1); return *this;}//--i
+    Index1D operator--(int){Index1D temp = *this; --*this; return temp;}//i--
     Index1D& operator%=(const int& d){this->setIndex(this->getIndex()%d); return *this;}
     //autre
 };
@@ -59,15 +61,13 @@ public:
     IndexTab1D(int i, int tailleTab):Index1D(i),tailleTab(tailleTab){}
     //getter/setter
     int getTailleTab() const {return tailleTab;}
-    void setIndex(int i){
-        this->Index1D::setIndex(i);
-        while (this->getIndex() < 0)
-            this->Index1D::setIndex(this->getIndex()+tailleTab);
-            //équivaut à (*this)+=tailleTab mais on ne peut pas l'utiliser car
-            //la surcharge du += utilise la fonction setIndex => boucle infinie
-        this->Index1D::setIndex(this->getIndex()%tailleTab); //de même avec %=
-    }
+    void setIndex(int i);
     void setTailleTab(unsigned int tailleTab) {this->tailleTab = tailleTab; this->setIndex(this->getIndex());}
+    //surcharge opérateurs
+    IndexTab1D& operator++(){this->setIndex(this->getIndex()+1); return *this;}//++i
+    IndexTab1D operator++(int){IndexTab1D temp = *this; ++*this; return temp;}//i++
+    IndexTab1D& operator--(){this->setIndex(this->getIndex()-1); return *this;}//--i
+    IndexTab1D operator--(int){IndexTab1D temp = *this; --*this; return temp;}//i--
 };
 
 class Index2D : public Index
@@ -115,6 +115,11 @@ public:
     void setJ(int j){this->setJ(j); while (this->getJ() < 0) this->setJ(this->getJ()+maxJ); this->setJ(this->getJ()%maxJ);}
     void setIndex(int i, int j){this->setI(i);this->setJ(j);}
     void setIndex(int i){this->setI(i/(int)maxJ);this->setJ(i%maxJ);}
+    //surcharge opérateurs
+    IndexTab2D& operator++(){this->setIndex(this->getIndex()+1); return *this;}//++i
+    IndexTab2D operator++(int){IndexTab2D temp = *this; ++*this; return temp;}//i++
+    IndexTab2D& operator--(){this->setIndex(this->getIndex()-1); return *this;}//--i
+    IndexTab2D operator--(int){IndexTab2D temp = *this; --*this; return temp;}//i--
     };
 
 std::ostream& operator<<(std::ostream& f, const Index& i);

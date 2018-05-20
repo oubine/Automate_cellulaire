@@ -48,7 +48,7 @@ void Etat1D::setCellule(unsigned int i, int val) {
     valeur[i] = val;
 }
 
-bool Etat1D::getCellule(unsigned int i) const {
+int Etat1D::getCellule(unsigned int i) const {
     if (i >= taille) throw EtatException("Erreur Cellule");
     return valeur[i];
 }
