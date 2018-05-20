@@ -14,7 +14,7 @@ private:
 
 
 class Motif //classe abstraite
-/* Les motifs sont les "patterns" qui constituent le voisinage utilisés par
+/* Les motifs sont les "patterns" qui constituent le voisinage utilisé par
  * les automates pour appliquer les règles qui leurs sont associées.
  * Les motifs sont constitués d'une liste d'Index relatifs par rapport à
  * la cellule considérée par l'automate.

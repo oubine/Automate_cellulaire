@@ -1,13 +1,5 @@
-/********************************************************************************
-** Form generated from reading UI file 'Projet_LO21_2U14026.ui'
-**
-** Created by: Qt User Interface Compiler version 4.8.7
-**
-** WARNING! All changes made in this file will be lost when recompiling UI file!
-********************************************************************************/
-
-#ifndef PROJET_LO21_2U14026_H
-#define PROJET_LO21_2U14026_H
+#ifndef PROJET_LO21
+#define PROJET_LO21
 #include "autocell.h"
 #define MAX_CASES 500
 #define MAX_TRANSITIONS 300
@@ -46,13 +38,19 @@
 
 QT_BEGIN_NAMESPACE
 
-class Ui_MainWindow : public QObject
+//On a fait cette implémentation car l'héritage virtual ne fonctionne pas avec Q_Object.
+//Pour ajouter un nouvel automate :
+// - faire la classe correpondant à la nouvelle fenêtre de l'automate
+// - redéfinir les méthodes !!! en prenant en compte les automates déjà implantés (différencier les pages avec des if)
+// - ajouter des générateurs si besoin et les gérer avec set_Gen_options
+// - définir le comportement de Enregistrer et Importer !!! en prenant en compte les automates déjà implantés (différencier les pages avec des if)
+
+
+class Fenetre_Principale : public QObject
 {
     Q_OBJECT
-    AutoCell *new_Window_dim1;
-public:
     //général
-
+protected:
     QStatusBar *statusbar;
     QWidget *centralwidget;
     QVBoxLayout *layout_main;
@@ -85,6 +83,24 @@ public:
     QLabel *unite_temps_aff;
     QWidget *page_aff_man;
 
+public:
+    Fenetre_Principale(QMainWindow *MainWindow);
+    virtual void Noms(QMainWindow *MainWindow);
+
+    void Gen_aleatoire();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
+    void Gen_Un_Sur_Deux();
+
+private slots :
+    virtual void onDimensionItemClicked(QListWidgetItem* item)=0;
+    void onAffichageButtonClicked(bool);
+    virtual void onActionEnregistrer()=0;
+    virtual void onActionImporter()=0;
+};
+
+class Fenetre_AutoDim1 : public Fenetre_Principale
+{
+    Q_OBJECT
+protected:
 
     //automate de dimension 1
     QVBoxLayout* couche;
@@ -132,6 +148,33 @@ public:
 
     QPushButton *Simulation;
 
+    //enregistrement
+    bool enregistrer_autodim1=0;
+
+    AutoCell *new_Window_dim1;
+public :
+    Fenetre_AutoDim1(QMainWindow *MainWindow);
+    void Gen_aleatoire();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
+    void Gen_Un_Sur_Deux();
+    void Noms(QMainWindow *MainWindow);
+
+
+private slots :
+    void onDimensionItemClicked(QListWidgetItem*);
+    void onGenerateurButtonClicked();
+    void onSimulationButtonClicked();
+    void synchronizeNumToNumBit(int i);
+    void synchronizeNumBitToNum(const QString& s);
+    void cellActivation(QTableWidgetItem* index);
+    void onActionEnregistrer();
+    void onActionImporter();
+    void set_Gen_options(QString);
+};
+
+class Fenetre_AutoDim2 : public Fenetre_AutoDim1
+{
+    Q_OBJECT
+protected:
     //automate de dimension 2
     QWidget *page_dim2;
     QVBoxLayout *layout_page_dim2;
@@ -162,32 +205,20 @@ public:
     QPushButton* bouton_generateur_dim2;
 
     QPushButton *Simulation_dim2;
+    //enregistrement
+    bool enregistrer_autodim2=0;
 
-
-    void setupUi(QMainWindow *MainWindow);
-    void retranslateUi(QMainWindow *MainWindow);
-
-    void Gen_aleatoire();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
-    void Gen_Un_Sur_Deux();
+public:
+    void Noms(QMainWindow *MainWindow);
+    Fenetre_AutoDim2(QMainWindow *MainWindow);
 
 private slots :
-    void onDimensionItemClicked(QListWidgetItem* item);
-    void onAffichageButtonClicked(bool);
-    void onGenerateurButtonClicked();
-    void onSimulationButtonClicked();
-    void synchronizeNumToNumBit(int i);
-    void synchronizeNumBitToNum(const QString& s);
-    void cellActivation(QTableWidgetItem* index);
-    void onActionEnregistrer();
-    void onActionImporter();
-    void set_Gen_options(QString);
+    void onDimensionItemClicked(QListWidgetItem*);
 };
 
-
 namespace Ui {
-    class MainWindow: public Ui_MainWindow {};
-} // namespace Ui
-
+    //class MainWindow: public Fenetre_Principale {};
+}
 QT_END_NAMESPACE
 
-#endif // PROJET_LO21_2U14026_H
+#endif

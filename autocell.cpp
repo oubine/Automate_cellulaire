@@ -59,7 +59,7 @@ AutoCell::AutoCell(QWidget *parent, unsigned int dim, unsigned int transitions, 
         suivant->setObjectName(QString::fromUtf8("suivant"));
         suivant->setMinimumSize(QSize(0, 15));
         suivant->setMaximumSize(QSize(50, 15));
-        suivant->setText(QApplication::translate("MainWindow", "Next", 0));
+        suivant->setText(QApplication::translate("AutoCell LO21", "Next", 0));
         layout_boutons->addWidget(suivant);
         connect(suivant, SIGNAL(clicked()), this, SLOT(onSuivantButtonClicked()));
     }
@@ -205,7 +205,7 @@ void AutoCell::onSuivantButtonClicked()
                 }
             }
         }
-        transition->setText(QApplication::translate("MainWindow", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
+        transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
     }
     }
 
@@ -239,7 +239,7 @@ void AutoCell::launchSimulationAuto() {//méthode pour lancer la simulation
             loop2.exec();//si on est sur pause, on attend de réappuyer sur play pour continuer l'exécution
         }
         transition_courante++;
-        transition->setText(QApplication::translate("MainWindow", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
+        transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
         // on récupère le dernier état
         sim.next();
         const Etat1D& etat = sim.dernier();

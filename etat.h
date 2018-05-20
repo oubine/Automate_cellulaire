@@ -17,7 +17,7 @@ class Etat
 //classe abstraite
 {
 protected:
-    unsigned int taille;
+    unsigned int taille;//ce qu'on appelait avant dimension : c'est la taille du tableau représentant un état de l'automate
     const unsigned short int dimension;
     int* valeur;
 public:

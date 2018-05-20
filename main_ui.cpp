@@ -1,125 +1,177 @@
 #include "main_UI.h"
 #include "automate.h"
 
-void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
+Fenetre_Principale::Fenetre_Principale(QMainWindow *MainWindow)
 {
     if (MainWindow->objectName().isEmpty())
         MainWindow->setObjectName(QString::fromUtf8("Automates Cellulaires"));
-    MainWindow->resize(850, 544);
-    MainWindow->setMaximumSize(QSize(1000, 900));
-    actionEnregistrer = new QAction(MainWindow);
-    actionEnregistrer->setObjectName(QString::fromUtf8("actionEnregistrer"));
-    actionEnregistrer->setEnabled(false);
-    actionImporter = new QAction(MainWindow);
-    actionImporter->setObjectName(QString::fromUtf8("actionImporter"));
-    centralwidget = new QWidget(MainWindow);
-    centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-    layout_main = new QVBoxLayout(centralwidget);
-    layout_main->setObjectName(QString::fromUtf8("layout_main"));
-    reglages_generaux = new QGroupBox(centralwidget);
-    reglages_generaux->setObjectName(QString::fromUtf8("reglages_generaux"));
-    reglages_generaux->setMaximumSize(QSize(1000, 150));
-    layout_reglages_generaux = new QHBoxLayout(reglages_generaux);
-    layout_reglages_generaux->setObjectName(QString::fromUtf8("layout_reglages_generaux"));
-    type_automate = new QGroupBox(reglages_generaux);
-    type_automate->setObjectName(QString::fromUtf8("type_automate"));
-    type_automate->setMinimumSize(QSize(260, 90));
-    type_automate->setMaximumSize(QSize(300, 100));
-    layout_type_automate = new QVBoxLayout(type_automate);
-    layout_type_automate->setObjectName(QString::fromUtf8("layout_type_automate"));
-    select_type_automate = new QListWidget(type_automate);
-    new QListWidgetItem(select_type_automate);
-    new QListWidgetItem(select_type_automate);
-    select_type_automate->setObjectName(QString::fromUtf8("select_type_automate"));
-    QFont font;
-    font.setFamily(QString::fromUtf8("Sans Serif"));
-    font.setPointSize(14);
-    font.setBold(false);
-    font.setItalic(true);
-    font.setWeight(50);
-    select_type_automate->setFont(font);
-    select_type_automate->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
-    select_type_automate->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+       MainWindow->resize(850, 544);
+       MainWindow->setMaximumSize(QSize(1000, 900));
+       actionEnregistrer = new QAction(MainWindow);
+       actionEnregistrer->setObjectName(QString::fromUtf8("actionEnregistrer"));
+       actionEnregistrer->setEnabled(false);
+       actionImporter = new QAction(MainWindow);
+       actionImporter->setObjectName(QString::fromUtf8("actionImporter"));
 
-    layout_type_automate->addWidget(select_type_automate);
+       centralwidget = new QWidget(MainWindow);
+       centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
+       layout_main = new QVBoxLayout(centralwidget);
+       layout_main->setObjectName(QString::fromUtf8("layout_main"));
+       reglages_generaux = new QGroupBox(centralwidget);
+       reglages_generaux->setObjectName(QString::fromUtf8("reglages_generaux"));
+       reglages_generaux->setMaximumSize(QSize(1000, 150));
+       layout_reglages_generaux = new QHBoxLayout(reglages_generaux);
+       layout_reglages_generaux->setObjectName(QString::fromUtf8("layout_reglages_generaux"));
+       type_automate = new QGroupBox(reglages_generaux);
+       type_automate->setObjectName(QString::fromUtf8("type_automate"));
+       type_automate->setMinimumSize(QSize(260, 90));
+       type_automate->setMaximumSize(QSize(300, 100));
+       layout_type_automate = new QVBoxLayout(type_automate);
+       layout_type_automate->setObjectName(QString::fromUtf8("layout_type_automate"));
+        select_type_automate = new QListWidget(type_automate);
+        select_type_automate->setObjectName(QString::fromUtf8("select_type_automate"));
+       QFont font;
+       font.setFamily(QString::fromUtf8("Sans Serif"));
+       font.setPointSize(14);
+       font.setBold(false);
+       font.setItalic(true);
+       font.setWeight(50);
+       select_type_automate->setFont(font);
+       select_type_automate->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+       select_type_automate->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded);
+        layout_type_automate->addWidget(select_type_automate);
 
+       layout_reglages_generaux->addWidget(type_automate);
+       Affichage = new QGroupBox(reglages_generaux);
+       Affichage->setObjectName(QString::fromUtf8("Affichage"));
+       Affichage->setMaximumSize(QSize(1500, 100));
+       layout_affichage = new QFormLayout(Affichage);
+       layout_affichage->setObjectName(QString::fromUtf8("layout_affichage"));
+       layout_affichage->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
+       aff_manuel = new QRadioButton(Affichage);
+       aff_manuel->setObjectName(QString::fromUtf8("aff_manuel"));
 
-    layout_reglages_generaux->addWidget(type_automate);
+       layout_affichage->setWidget(0, QFormLayout::LabelRole, aff_manuel);
+\
+       aff_auto = new QRadioButton(Affichage);
+       aff_auto->setObjectName(QString::fromUtf8("aff_auto"));
+       aff_auto->setMinimumSize(QSize(0, 50));
 
-    Affichage = new QGroupBox(reglages_generaux);
-    Affichage->setObjectName(QString::fromUtf8("Affichage"));
-    Affichage->setMaximumSize(QSize(1500, 100));
-    layout_affichage = new QFormLayout(Affichage);
-    layout_affichage->setObjectName(QString::fromUtf8("layout_affichage"));
-    layout_affichage->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
-    aff_manuel = new QRadioButton(Affichage);
-    aff_manuel->setObjectName(QString::fromUtf8("aff_manuel"));
+       layout_affichage->setWidget(1, QFormLayout::LabelRole, aff_auto);
 
-    layout_affichage->setWidget(0, QFormLayout::LabelRole, aff_manuel);
+       Temps = new QStackedWidget(Affichage);
+       Temps->setObjectName(QString::fromUtf8("Temps"));
+       Temps->setMinimumSize(QSize(0, 50));
+       Temps->setMaximumSize(QSize(250, 70));
+       page_aff_auto = new QWidget();
+       page_aff_auto->setObjectName(QString::fromUtf8("page_aff_auto"));
+       layout_aff_auto = new QVBoxLayout(page_aff_auto);
+       layout_aff_auto->setObjectName(QString::fromUtf8("layout_page_dim2_11"));
+       temps_aff = new QHBoxLayout();
+       temps_aff->setObjectName(QString::fromUtf8("temps_aff"));
+       aff_temps_n = new QDoubleSpinBox(page_aff_auto);
+       aff_temps_n->setObjectName(QString::fromUtf8("aff_temps_n"));
+       aff_temps_n->setDecimals(3);
+       aff_temps_n->setMaximum(60);
+       aff_temps_n->setSingleStep(0.05);
+       aff_temps_n->setValue(0.05);
 
-    aff_auto = new QRadioButton(Affichage);
-    aff_auto->setObjectName(QString::fromUtf8("aff_auto"));
-    aff_auto->setMinimumSize(QSize(0, 50));
+       temps_aff->addWidget(aff_temps_n);
 
-    layout_affichage->setWidget(1, QFormLayout::LabelRole, aff_auto);
+       unite_temps_aff = new QLabel(page_aff_auto);
+       unite_temps_aff->setObjectName(QString::fromUtf8("unite_temps_aff"));
 
-    Temps = new QStackedWidget(Affichage);
-    Temps->setObjectName(QString::fromUtf8("Temps"));
-    Temps->setMinimumSize(QSize(0, 50));
-    Temps->setMaximumSize(QSize(250, 70));
-    page_aff_auto = new QWidget();
-    page_aff_auto->setObjectName(QString::fromUtf8("page_aff_auto"));
-    layout_aff_auto = new QVBoxLayout(page_aff_auto);
-    layout_aff_auto->setObjectName(QString::fromUtf8("layout_page_dim2_11"));
-    temps_aff = new QHBoxLayout();
-    temps_aff->setObjectName(QString::fromUtf8("temps_aff"));
-    aff_temps_n = new QDoubleSpinBox(page_aff_auto);
-    aff_temps_n->setObjectName(QString::fromUtf8("aff_temps_n"));
-    aff_temps_n->setDecimals(3);
-    aff_temps_n->setMaximum(60);
-    aff_temps_n->setSingleStep(0.05);
-    aff_temps_n->setValue(0.05);
-
-    temps_aff->addWidget(aff_temps_n);
-
-    unite_temps_aff = new QLabel(page_aff_auto);
-    unite_temps_aff->setObjectName(QString::fromUtf8("unite_temps_aff"));
-
-    temps_aff->addWidget(unite_temps_aff);
+       temps_aff->addWidget(unite_temps_aff);
 
 
-    layout_aff_auto->addLayout(temps_aff);
+       layout_aff_auto->addLayout(temps_aff);
 
-    Temps->addWidget(page_aff_auto);
-    page_aff_man = new QWidget();
-    page_aff_man->setObjectName(QString::fromUtf8("page_aff_man"));
-    Temps->addWidget(page_aff_man);
+       Temps->addWidget(page_aff_auto);
+       page_aff_man = new QWidget();
+       page_aff_man->setObjectName(QString::fromUtf8("page_aff_man"));
+       Temps->addWidget(page_aff_man);
 
-    layout_affichage->setWidget(1, QFormLayout::FieldRole, Temps);
-
-
-    layout_reglages_generaux->addWidget(Affichage);
+       layout_affichage->setWidget(1, QFormLayout::FieldRole, Temps);
 
 
-    layout_main->addWidget(reglages_generaux);
+       layout_reglages_generaux->addWidget(Affichage);
 
-    stacked_settings = new QStackedWidget(centralwidget);
-    stacked_settings->setObjectName(QString::fromUtf8("stacked_settings"));
-    stacked_settings->setEnabled(true);
-    stacked_settings->setMinimumSize(QSize(750, 0));
-    stacked_settings->setMaximumSize(QSize(900, 1500));
-    stacked_settings->setContextMenuPolicy(Qt::DefaultContextMenu);
-    stacked_settings->setAcceptDrops(false);
-    stacked_settings->setAutoFillBackground(false);
-    stacked_settings->setFrameShadow(QFrame::Raised);
-    stacked_settings->setLineWidth(1);
 
+       layout_main->addWidget(reglages_generaux);
+
+       stacked_settings = new QStackedWidget(centralwidget);
+
+       stacked_settings->setObjectName(QString::fromUtf8("stacked_settings"));
+       stacked_settings->setEnabled(true);
+       stacked_settings->setMinimumSize(QSize(750, 0));
+       stacked_settings->setMaximumSize(QSize(900, 1500));
+       stacked_settings->setContextMenuPolicy(Qt::DefaultContextMenu);
+       stacked_settings->setAcceptDrops(false);
+       stacked_settings->setAutoFillBackground(false);
+       stacked_settings->setFrameShadow(QFrame::Raised);
+       stacked_settings->setLineWidth(1);
+
+       layout_main->addWidget(stacked_settings);
+
+
+       MainWindow->setCentralWidget(centralwidget);
+       reglages_generaux->raise();
+       stacked_settings->raise();
+       menubar = new QMenuBar(MainWindow);
+       menubar->setObjectName(QString::fromUtf8("menubar"));
+       menubar->setGeometry(QRect(0, 0, 850, 23));
+       menuR_glages_de_l_automate_cellulaire = new QMenu(menubar);
+       menuR_glages_de_l_automate_cellulaire->setObjectName(QString::fromUtf8("menuR_glages_de_l_automate_cellulaire"));
+       MainWindow->setMenuBar(menubar);
+       statusbar = new QStatusBar(MainWindow);
+       statusbar->setObjectName(QString::fromUtf8("statusbar"));
+       MainWindow->setStatusBar(statusbar);
+
+       menubar->addAction(menuR_glages_de_l_automate_cellulaire->menuAction());
+       menuR_glages_de_l_automate_cellulaire->addAction(actionEnregistrer);
+       menuR_glages_de_l_automate_cellulaire->addAction(actionImporter);
+
+       Temps->setCurrentIndex(1);
+       aff_manuel->setChecked(true);
+       stacked_settings->setCurrentIndex(0);
+
+       //connexion des signaux et des slots
+
+       connect(select_type_automate, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onDimensionItemClicked(QListWidgetItem*)));
+       connect(aff_manuel, SIGNAL(toggled(bool)), this, SLOT(onAffichageButtonClicked(bool)));
+       connect(actionEnregistrer, SIGNAL(triggered()), this, SLOT(onActionEnregistrer()));
+       connect(actionImporter, SIGNAL(triggered()), this, SLOT(onActionImporter()));
+} // setupUi
+
+
+void Fenetre_Principale::Noms(QMainWindow *MainWindow)
+{
+    MainWindow->setWindowTitle(QApplication::translate("AutoCell LO21", "AutoCell LO21", 0));
+    actionEnregistrer->setText(QApplication::translate("AutoCell LO21", "Enregistrer", 0));
+    actionImporter->setText(QApplication::translate("AutoCell LO21", "Importer", 0));
+    type_automate->setTitle(QApplication::translate("AutoCell LO21", "S\303\251lectionner le type d'automate : ", 0));
+
+    const bool __sortingEnabled = select_type_automate->isSortingEnabled();
+    select_type_automate->setSortingEnabled(false);
+    select_type_automate->setSortingEnabled(__sortingEnabled);
+
+    Affichage->setTitle(QApplication::translate("AutoCell LO21", "Affichage", 0));
+    aff_manuel->setText(QApplication::translate("AutoCell LO21", "Manuel", 0));
+    aff_auto->setText(QApplication::translate("AutoCell LO21", "Automatique", 0));
+    unite_temps_aff->setText(QApplication::translate("AutoCell LO21", "sec", 0));
+
+    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Enregistrement", 0));
+} // retranslateUi
+
+Fenetre_AutoDim1::Fenetre_AutoDim1(QMainWindow *MainWindow):Fenetre_Principale(MainWindow)
+{
     /***********************
      *
      * automate dimension 1
      *
      *
      ***********************/
+    select_type_automate->insertItem(select_type_automate->count(), "Automates 1 dimension");
 
     page_dim1 = new QWidget();
     page_dim1->setObjectName(QString::fromUtf8("page_dim1"));
@@ -231,7 +283,7 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     bouton_generateur = new QPushButton;
     bouton_generateur->setObjectName(QString::fromUtf8("bouton_generateur"));
     bouton_generateur->setMinimumSize(QSize(0, 50));
-    bouton_generateur->setText(QApplication::translate("MainWindow", "Générer", 0));
+    bouton_generateur->setText(QApplication::translate("AutoCell LO21", "Générer", 0));
     bouton_generateur->setMaximumSize(QSize(1500, 50));
     layout_generateur->addWidget(bouton_generateur);
     generateur->setLayout(layout_generateur);
@@ -284,6 +336,46 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     stacked_settings->addWidget(page_dim1);
     Simulation->setEnabled(false);
 
+    Noms(MainWindow);
+
+    //connexions
+    connect(num, SIGNAL(valueChanged(int)), this, SLOT(synchronizeNumToNumBit(int)));//réciproquement, on connecte le décimal au binaire
+
+    connect(bouton_generateur, SIGNAL(clicked()), this, SLOT(onGenerateurButtonClicked()));
+    connect(Simulation, SIGNAL(clicked()), this, SLOT(onSimulationButtonClicked()));
+    connect(select_generateur, SIGNAL(activated(QString)), this, SLOT(set_Gen_options(QString)));
+
+    QMetaObject::connectSlotsByName(MainWindow);
+}
+
+void Fenetre_AutoDim1::Noms(QMainWindow *MainWindow)
+{
+    MainWindow->setWindowTitle(QApplication::translate("AutoCell LO21", "AutoCell LO21", 0));
+    actionEnregistrer->setText(QApplication::translate("AutoCell LO21", "Enregistrer", 0));
+    actionImporter->setText(QApplication::translate("AutoCell LO21", "Importer", 0));
+    type_automate->setTitle(QApplication::translate("AutoCell LO21", "S\303\251lectionner le type d'automate : ", 0));
+
+    const bool __sortingEnabled = select_type_automate->isSortingEnabled();
+    select_type_automate->setSortingEnabled(false);
+    //QListWidgetItem *___qlistwidgetitem = select_type_automate->item(0);
+    //___qlistwidgetitem->setText(QApplication::translate("AutoCell LO21", "Automates 1 dimension", 0));
+    select_type_automate->setSortingEnabled(__sortingEnabled);
+
+    Affichage->setTitle(QApplication::translate("AutoCell LO21", "Affichage", 0));
+    aff_manuel->setText(QApplication::translate("AutoCell LO21", "Manuel", 0));
+    aff_auto->setText(QApplication::translate("AutoCell LO21", "Automatique", 0));
+    unite_temps_aff->setText(QApplication::translate("AutoCell LO21", "sec", 0));
+    configuration_dim1->setTitle(QApplication::translate("AutoCell LO21", "Configuration", 0));
+    regles_transition->setTitle(QApplication::translate("AutoCell LO21", "R\303\250gles de transition", 0));
+    generateur->setTitle(QApplication::translate("AutoCell LO21", "G\303\251n\303\251rateur", 0));
+    etat_depart_l->setText(QApplication::translate("AutoCell LO21", "\303\211tat de d\303\251part", 0));
+    Simulation->setText(QApplication::translate("AutoCell LO21", "Lancer !", 0));
+
+    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Enregistrement", 0));
+} // retranslateUi
+
+Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(MainWindow)
+{
     /************************
      *
      * automate dimension 2
@@ -291,8 +383,12 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
      *
      ************************/
 
+    select_type_automate->insertItem(select_type_automate->count(), "Jeu de la vie");
+
     page_dim2 = new QWidget();
     page_dim2->setObjectName(QString::fromUtf8("page_dim2"));
+    stacked_settings->addWidget(page_dim2);
+
     layout_page_dim2 = new QVBoxLayout(page_dim2);
     layout_page_dim2->setObjectName(QString::fromUtf8("layout_page_dim2"));
     configuration_dim2 = new QGroupBox(page_dim2);
@@ -333,7 +429,7 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
         gridLayout->addWidget(voisins[i],0,i+1,1,1);
         voisins[i]->setObjectName(QString::fromUtf8("voisin").append(QString::number(i+1)));
         voisins[i]->raise();
-        voisins[i]->setText(QApplication::translate("MainWindow", QString::number(i+1).toUtf8(), 0));
+        voisins[i]->setText(QApplication::translate("AutoCell LO21", QString::number(i+1).toUtf8(), 0));
 
         vie[i]=new QCheckBox(regles_transition_dim2);
         vie[i]->setObjectName(QString::fromUtf8("vie").append(QString::number(i+1)));
@@ -409,7 +505,7 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     bouton_generateur_dim2 = new QPushButton;
     bouton_generateur_dim2->setObjectName(QString::fromUtf8("bouton_generateur"));
     bouton_generateur_dim2->setMinimumSize(QSize(0, 50));
-    bouton_generateur_dim2->setText(QApplication::translate("MainWindow", "Générer", 0));
+    bouton_generateur_dim2->setText(QApplication::translate("AutoCell LO21", "Générer", 0));
     bouton_generateur_dim2->setMaximumSize(QSize(1500, 50));
     layout_generateur_dim2->addWidget(bouton_generateur_dim2);
     generateur_dim2->setLayout(layout_generateur_dim2);
@@ -423,37 +519,11 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
     Simulation_dim2->setMinimumSize(QSize(0, 50));    Simulation_dim2->setMaximumSize(QSize(1500, 50));
 
     layout_page_dim2->addWidget(Simulation_dim2);
-
-    stacked_settings->addWidget(page_dim2);
-
-    layout_main->addWidget(stacked_settings);
-
-
-    MainWindow->setCentralWidget(centralwidget);
-    reglages_generaux->raise();
-    stacked_settings->raise();
-    menubar = new QMenuBar(MainWindow);
-    menubar->setObjectName(QString::fromUtf8("menubar"));
-    menubar->setGeometry(QRect(0, 0, 850, 23));
-    menuR_glages_de_l_automate_cellulaire = new QMenu(menubar);
-    menuR_glages_de_l_automate_cellulaire->setObjectName(QString::fromUtf8("menuR_glages_de_l_automate_cellulaire"));
-    MainWindow->setMenuBar(menubar);
-    statusbar = new QStatusBar(MainWindow);
-    statusbar->setObjectName(QString::fromUtf8("statusbar"));
-    MainWindow->setStatusBar(statusbar);
-
-    menubar->addAction(menuR_glages_de_l_automate_cellulaire->menuAction());
-    menuR_glages_de_l_automate_cellulaire->addAction(actionEnregistrer);
-    menuR_glages_de_l_automate_cellulaire->addAction(actionImporter);
-
-    retranslateUi(MainWindow);
-    Temps->setCurrentIndex(1);
-    aff_manuel->setChecked(true);
     stacked_settings->setCurrentIndex(0);
 
-    //connexion des signaux et des slots
+    Noms(MainWindow);
 
-    connect(num, SIGNAL(valueChanged(int)), this, SLOT(synchronizeNumToNumBit(int)));//réciproquement, on connecte le décimal au binaire
+    //connexions
 
     for(unsigned int i=0; i<8; ++i)
     {
@@ -461,72 +531,62 @@ void Ui_MainWindow::setupUi(QMainWindow *MainWindow)
         connect(mort[i], SIGNAL(toggled(bool)), vie[i], SLOT(setDisabled(bool)));
     }
 
-    connect(select_type_automate, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onDimensionItemClicked(QListWidgetItem*)));
-    connect(aff_manuel, SIGNAL(toggled(bool)), this, SLOT(onAffichageButtonClicked(bool)));
-    connect(bouton_generateur, SIGNAL(clicked()), this, SLOT(onGenerateurButtonClicked()));
-    connect(Simulation, SIGNAL(clicked()), this, SLOT(onSimulationButtonClicked()));
-    connect(actionEnregistrer, SIGNAL(triggered()), this, SLOT(onActionEnregistrer()));
-    connect(actionImporter, SIGNAL(triggered()), this, SLOT(onActionImporter()));
-
-    connect(select_generateur, SIGNAL(activated(QString)), this, SLOT(set_Gen_options(QString)));
     QMetaObject::connectSlotsByName(MainWindow);
 
-} // setupUi
+}
 
-
-void Ui_MainWindow::retranslateUi(QMainWindow *MainWindow)
+void Fenetre_AutoDim2::Noms(QMainWindow *MainWindow)
 {
-    MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", 0));
-    actionEnregistrer->setText(QApplication::translate("MainWindow", "Enregistrer", 0));
-    actionImporter->setText(QApplication::translate("MainWindow", "Importer", 0));
-    type_automate->setTitle(QApplication::translate("MainWindow", "S\303\251lectionner le type d'automate : ", 0));
+    MainWindow->setWindowTitle(QApplication::translate("AutoCell LO21", "AutoCell LO21", 0));
+    actionEnregistrer->setText(QApplication::translate("AutoCell LO21", "Enregistrer", 0));
+    actionImporter->setText(QApplication::translate("AutoCell LO21", "Importer", 0));
+    type_automate->setTitle(QApplication::translate("AutoCell LO21", "S\303\251lectionner le type d'automate : ", 0));
 
     const bool __sortingEnabled = select_type_automate->isSortingEnabled();
     select_type_automate->setSortingEnabled(false);
-    QListWidgetItem *___qlistwidgetitem = select_type_automate->item(0);
-    ___qlistwidgetitem->setText(QApplication::translate("MainWindow", "Automates 1 dimension", 0));
-    QListWidgetItem *___qlistwidgetitem1 = select_type_automate->item(1);
-    ___qlistwidgetitem1->setText(QApplication::translate("MainWindow", "Jeu de la vie", 0));
+    //QListWidgetItem *___qlistwidgetitem1 = select_type_automate->item(select_type_automate->count());
+    //___qlistwidgetitem1->setText(QApplication::translate("AutoCell LO21", "Jeu de la vie", 0));
     select_type_automate->setSortingEnabled(__sortingEnabled);
 
-    Affichage->setTitle(QApplication::translate("MainWindow", "Affichage", 0));
-    aff_manuel->setText(QApplication::translate("MainWindow", "Manuel", 0));
-    aff_auto->setText(QApplication::translate("MainWindow", "Automatique", 0));
-    unite_temps_aff->setText(QApplication::translate("MainWindow", "sec", 0));
-    configuration_dim1->setTitle(QApplication::translate("MainWindow", "Configuration", 0));
-    regles_transition->setTitle(QApplication::translate("MainWindow", "R\303\250gles de transition", 0));
-    generateur->setTitle(QApplication::translate("MainWindow", "G\303\251n\303\251rateur", 0));
-    etat_depart_l->setText(QApplication::translate("MainWindow", "\303\211tat de d\303\251part", 0));
-    Simulation->setText(QApplication::translate("MainWindow", "Lancer !", 0));
-    configuration_dim2->setTitle(QApplication::translate("MainWindow", "Configuration", 0));
-    regles_transition_dim2->setTitle(QApplication::translate("MainWindow", "R\303\250gles de transition", 0));
+    Affichage->setTitle(QApplication::translate("AutoCell LO21", "Affichage", 0));
+    aff_manuel->setText(QApplication::translate("AutoCell LO21", "Manuel", 0));
+    aff_auto->setText(QApplication::translate("AutoCell LO21", "Automatique", 0));
+    unite_temps_aff->setText(QApplication::translate("AutoCell LO21", "sec", 0));
+    configuration_dim2->setTitle(QApplication::translate("AutoCell LO21", "AutoCell LO21", 0));
+    regles_transition_dim2->setTitle(QApplication::translate("AutoCell LO21", "R\303\250gles de transition", 0));
 
-    regles_creation_l->setText(QApplication::translate("MainWindow", "R\303\250gle de cr\303\251ation", 0));
-    voisins_n_l->setText(QApplication::translate("MainWindow", "Nombre de voisins : ", 0));
-    regles_mort_l->setText(QApplication::translate("MainWindow", "R\303\250gle de mort", 0));
-    generateur_dim2->setTitle(QApplication::translate("MainWindow", "G\303\251n\303\251rateur", 0));
-    Simulation_dim2->setText(QApplication::translate("MainWindow", "Lancer !", 0));
-    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("MainWindow", "Enregistrement", 0));
+    regles_creation_l->setText(QApplication::translate("AutoCell LO21", "R\303\250gle de cr\303\251ation", 0));
+    voisins_n_l->setText(QApplication::translate("AutoCell LO21", "Nombre de voisins : ", 0));
+    regles_mort_l->setText(QApplication::translate("AutoCell LO21", "R\303\250gle de mort", 0));
+    generateur_dim2->setTitle(QApplication::translate("AutoCell LO21", "G\303\251n\303\251rateur", 0));
+    Simulation_dim2->setText(QApplication::translate("AutoCell LO21", "Lancer !", 0));
+    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Enregistrement", 0));
 } // retranslateUi
 
-
-void Ui_MainWindow::onDimensionItemClicked(QListWidgetItem* item)
+void Fenetre_AutoDim1::onDimensionItemClicked(QListWidgetItem* item)
 {
     if (select_type_automate->item(0) == item) {
             stacked_settings->setCurrentIndex(0);
-            if(page_dim1->findChild<QTableWidget*>("etat_depart_table"))
-            {
-                actionEnregistrer->setEnabled(true);
-            }
+            actionEnregistrer->setEnabled(enregistrer_autodim1);
+
+        }
+}
+
+void Fenetre_AutoDim2::onDimensionItemClicked(QListWidgetItem* item)
+{
+    if (select_type_automate->item(0) == item) {
+            stacked_settings->setCurrentIndex(0);
+            actionEnregistrer->setEnabled(enregistrer_autodim1);
+
         }
     else if(select_type_automate->item(1) == item)
     {
         stacked_settings->setCurrentIndex(1);
-        actionEnregistrer->setEnabled(false);
+        actionEnregistrer->setEnabled(enregistrer_autodim2);
     }
 }
 
-void Ui_MainWindow::onAffichageButtonClicked(bool checked)
+void Fenetre_Principale::onAffichageButtonClicked(bool checked)
 {
     if(checked)//dans le cas de l'affichage manuel
     {
@@ -538,7 +598,7 @@ void Ui_MainWindow::onAffichageButtonClicked(bool checked)
     }
 }
 
-void Ui_MainWindow::onGenerateurButtonClicked()
+void Fenetre_AutoDim1::onGenerateurButtonClicked()
 {
     if(page_dim1->findChild<QTableWidget*>("etat_depart_table"))//on teste si le tableau existe déjà
     {
@@ -575,7 +635,8 @@ void Ui_MainWindow::onGenerateurButtonClicked()
     {
         stacked_etat_depart->setCurrentIndex(1);
         Simulation->setEnabled(true);
-        actionEnregistrer->setEnabled(true);
+        enregistrer_autodim1=true;
+        actionEnregistrer->setEnabled(enregistrer_autodim1);
     }
     else if(select_generateur->currentText()==tr("1 sur 2"))
     {
@@ -583,7 +644,7 @@ void Ui_MainWindow::onGenerateurButtonClicked()
     }
 }
 
-void Ui_MainWindow::onSimulationButtonClicked()
+void Fenetre_AutoDim1::onSimulationButtonClicked()
 {
     new_Window_dim1 = new AutoCell(nullptr, dimension, nb_transitions->value(), num->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
     new_Window_dim1->setEtatDepart(etat_depart_table);
@@ -594,7 +655,7 @@ void Ui_MainWindow::onSimulationButtonClicked()
     }
 }
 
-void Ui_MainWindow::cellActivation(QTableWidgetItem *index) {//méthode pour changer l'état
+void Fenetre_AutoDim1::cellActivation(QTableWidgetItem *index) {//méthode pour changer l'état
     if (etat_depart_table->item(0, index->column())->text() == "") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
         etat_depart_table->item(0, index->column())->setText("_");
 
@@ -610,14 +671,14 @@ void Ui_MainWindow::cellActivation(QTableWidgetItem *index) {//méthode pour cha
     }
 }
 
-void Ui_MainWindow::synchronizeNumToNumBit(int i) {//synchronisation de numéro de l'automate en décimal vers binaire
+void Fenetre_AutoDim1::synchronizeNumToNumBit(int i) {//synchronisation de numéro de l'automate en décimal vers binaire
     std::string numBit = NumToNumBit(i);//string correspondant au numéro en binaire
     for(unsigned int counter = 0; counter < 8; ++counter) {
         numeroBit[counter]->setText(QString(numBit[counter]));//on convertit le std::string en string de Qt grâce à la méthode disponible dans Qt
     }
 }
 
-void Ui_MainWindow::synchronizeNumBitToNum(const QString& s) {//synchronisation de numéro de l'automate en binaire vers décimal
+void Fenetre_AutoDim1::synchronizeNumBitToNum(const QString& s) {//synchronisation de numéro de l'automate en binaire vers décimal
     if (s == "") {//on vérifie si la chaîne est vide
         return;
     }
@@ -628,7 +689,7 @@ void Ui_MainWindow::synchronizeNumBitToNum(const QString& s) {//synchronisation 
     num->setValue(NumBitToNum(numBit));//on utilise la méthode fournie dans l'autre TD
 }
 
-void Ui_MainWindow::onActionEnregistrer()
+void Fenetre_AutoDim1::onActionEnregistrer()
 {
     if(stacked_settings->currentIndex()==0)//dans le cas des automates de dimension 1
     {
@@ -691,7 +752,7 @@ void Ui_MainWindow::onActionEnregistrer()
     }
 }
 
-void Ui_MainWindow::onActionImporter()
+void Fenetre_AutoDim1::onActionImporter()
 {
     if(stacked_settings->currentIndex()==0)//dans le cas des automates de dimension 1
     {
@@ -778,7 +839,8 @@ void Ui_MainWindow::onActionImporter()
             connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
             stacked_etat_depart->setCurrentIndex(1);
             Simulation->setEnabled(true);
-            actionEnregistrer->setEnabled(true);
+            enregistrer_autodim1=true;
+            actionEnregistrer->setEnabled(enregistrer_autodim1);
 
             file.close();
         }
@@ -786,7 +848,7 @@ void Ui_MainWindow::onActionImporter()
 
 }
 
-void Ui_MainWindow::set_Gen_options(QString index)
+void Fenetre_AutoDim1::set_Gen_options(QString index)
 {
     if(index=="Manuelle")
     {
@@ -807,7 +869,7 @@ void Ui_MainWindow::set_Gen_options(QString index)
     }
 }
 
-void Ui_MainWindow::Gen_aleatoire()
+void Fenetre_AutoDim1::Gen_aleatoire()
 {
     for(unsigned int counter = 0; counter < dimension; ++counter) {
         etat_depart_table->setColumnWidth(counter, taille);
@@ -826,10 +888,11 @@ void Ui_MainWindow::Gen_aleatoire()
     }
     stacked_etat_depart->setCurrentIndex(1);
     Simulation->setEnabled(true);
-    actionEnregistrer->setEnabled(true);
+    enregistrer_autodim1=true;
+    actionEnregistrer->setEnabled(enregistrer_autodim1);
 }
 
-void Ui_MainWindow::Gen_Un_Sur_Deux()
+void Fenetre_AutoDim1::Gen_Un_Sur_Deux()
 {
     for(unsigned int counter = 0; counter < dimension; ++counter) {
         etat_depart_table->setColumnWidth(counter, taille);
@@ -848,5 +911,6 @@ void Ui_MainWindow::Gen_Un_Sur_Deux()
     }
     stacked_etat_depart->setCurrentIndex(1);
     Simulation->setEnabled(true);
-    actionEnregistrer->setEnabled(true);
+    enregistrer_autodim1=true;
+    actionEnregistrer->setEnabled(enregistrer_autodim1);
 }
