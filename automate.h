@@ -71,9 +71,9 @@ class AutomateElementaire : public Automate1D
 private :
     unsigned short int numeroRegleTransition;
 public:
-    Automate1D(unsigned short int num) : Automate(NumToNumBit(num)),numeroRegleTransition(num) {creerMotif();}
-    Automate1D(const std::string& num) : Automate(num), numeroRegleTransition(NumBitToNum(num)){creerMotif();}
-    Automate1D(const Automate1D& a) : Automate(a){}
+    AutomateElementaire(unsigned short int num) : Automate1D(NumToNumBit(num)),numeroRegleTransition(num) {}
+    AutomateElementaire(const std::string& num) : Automate1D(num), numeroRegleTransition(NumBitToNum(num)){}
+    AutomateElementaire(const Automate1D& a) : Automate(a){}
 
 };
 
