@@ -1,6 +1,7 @@
 #ifndef INDEX_H
 #define INDEX_H
 #include <ostream>
+#include <vector>
 
 class IndexException {
 public:
@@ -14,116 +15,95 @@ class Index
 //classe abstraite permettant le polymorphisme des index
 {
 public:
-    virtual int getIndex() const = 0;
-    virtual void setIndex(int i)= 0;
+    virtual unsigned int getIndex() const = 0;
+    virtual void setIndex(int iAbsolu)= 0;
 };
 
 
-class Index1D : public Index
-//permet de stocker des index et ajoute des opérations usuelles (somme,différence)
-{
-private:
-    int i;
-public:
-    //constructeurs
-    Index1D():i(0){}
-    Index1D(int i):i(i){}
-    //getter/setter
-    int getIndex() const {return i;}
-    void setIndex(int i){this->i = i;}
-    //surcharge opérateurs
-    Index1D& operator=(const Index1D& i){this->setIndex(i.getIndex()); return *this;}
-    Index1D& operator+=(const Index1D& i){this->setIndex(this->i+i.getIndex()); return *this;}
-    Index1D& operator+=(const int& j){this->setIndex(this->getIndex()+j); return *this;}
-    Index1D& operator-=(const Index1D& i){this->setIndex(this->i-i.getIndex()); return *this;}
-    Index1D& operator-=(const int& i){this->setIndex(this->i-i); return *this;}
-    Index1D& operator++(){this->setIndex(this->getIndex()+1); return *this;}//++i
-    Index1D operator++(int){Index1D temp = *this; ++*this; return temp;}//i++
-    Index1D& operator--(){this->setIndex(this->getIndex()-1); return *this;}//--i
-    Index1D operator--(int){Index1D temp = *this; --*this; return temp;}//i--
-    Index1D& operator%=(const int& d){this->setIndex(this->getIndex()%d); return *this;}
-    //autre
-};
-inline Index1D& operator+(const Index1D& i, const Index1D& j){Index1D k = i; return k += j;}
-inline Index1D& operator+(const Index1D& i, const int j){Index1D k = i; return k += j;}
-inline Index1D& operator+(const int& i, const Index1D& j){Index1D k = j; return k+=i;}
-inline Index1D& operator-(const Index1D& i, const Index1D& j){Index1D k = i; return k-=j;}
-inline Index1D& operator-(const Index1D& i, const int& j){Index1D k = i; return k-=j;}
-inline Index1D& operator-(const int& i, const Index1D& j){Index1D k = j;  return k-=i;}
-
-class IndexTab1D : public Index1D
+class IndexTab1D : public Index
 //permet d'accéder aux éléments d'un tableau1D en simplifiant les opérations sur les index (gère les index négatifs)
 {
 private:
+    int i;
     int tailleTab;
 public:
     //constructeurs
-    IndexTab1D(int i, int tailleTab):Index1D(i),tailleTab(tailleTab){}
+    IndexTab1D(int i, int tailleTab):i(i),tailleTab(tailleTab){}
     //getter/setter
     int getTailleTab() const {return tailleTab;}
+    unsigned int getIndex() const {return i;}
     void setIndex(int i);
     void setTailleTab(unsigned int tailleTab) {this->tailleTab = tailleTab; this->setIndex(this->getIndex());}
     //surcharge opérateurs
+    IndexTab1D& operator=(const IndexTab1D& i){this->setIndex(i.getIndex()); return *this;}
+    IndexTab1D& operator+=(const IndexTab1D& i){this->setIndex(this->i+i.getIndex()); return *this;}
+    IndexTab1D& operator+=(const int& j){this->setIndex(this->getIndex()+j); return *this;}
+    IndexTab1D& operator+=(const std::vector<int> v);
+    IndexTab1D& operator-=(const IndexTab1D& i){this->setIndex(this->i-i.getIndex()); return *this;}
+    IndexTab1D& operator-=(const int& i){this->setIndex(this->i-i); return *this;}
+    IndexTab1D& operator+=(const std::vector<int> v);
     IndexTab1D& operator++(){this->setIndex(this->getIndex()+1); return *this;}//++i
     IndexTab1D operator++(int){IndexTab1D temp = *this; ++*this; return temp;}//i++
     IndexTab1D& operator--(){this->setIndex(this->getIndex()-1); return *this;}//--i
     IndexTab1D operator--(int){IndexTab1D temp = *this; --*this; return temp;}//i--
 };
 
-class Index2D : public Index
-//permet de stocker des index2D et ajoute des opérations usuelles (somme,différence)
-{
-private:
-    int i;
-    int j;
-public:
-    //constructeurs
-    Index2D(int i, int j):i(i),j(j){}
-    //getter/setter
-    int getIndex() const {return i*10000+j;}
-    int getI() const {return i;}
-    int getJ() const {return j;}
-    virtual void setI(int i){this->i = i;}
-    virtual void setJ(int j){this->j = j;}
-    void setIndex(int i){throw IndexException("Appel de setIndex pour un Index2D"); i++;}
-    //surcharge opérateurs
-    Index2D& operator=(const Index2D& index){this->i = index.getI(); this->j = index.getJ(); return *this;}
-    Index2D& operator+=(const Index2D& index){this->setI(this->i+index.getI());this->setJ(this->j+index.getJ()); return *this;}
-    Index2D& operator-=(const Index2D& index){this->setI(this->i-index.getI());this->setJ(this->j-index.getJ()); return *this;}
-};
-
-inline Index2D& operator+(const Index2D& i, const Index2D& j){Index2D k = i; return k+=j;}
-inline Index2D& operator-(const Index2D& i, const Index2D& j){Index2D k = i; return k-=j;}
+inline IndexTab1D& operator+(const IndexTab1D& i, const IndexTab1D& j){IndexTab1D k = i; return k += j;}
+inline IndexTab1D& operator+(const IndexTab1D& i, const std::vector<int>& j){IndexTab1D k = i; return k += j;}
+inline IndexTab1D& operator+(const IndexTab1D& i, const int j){IndexTab1D k = i; return k += j;}
+inline IndexTab1D& operator+(const int& i, const IndexTab1D& j){IndexTab1D k = j; return k+=i;}
+inline IndexTab1D& operator-(const IndexTab1D& i, const IndexTab1D& j){IndexTab1D k = i; return k-=j;}
+inline IndexTab1D& operator-(const IndexTab1D& i, const std::vector<int>& j){IndexTab1D k = i; return k -= j;}
+inline IndexTab1D& operator-(const IndexTab1D& i, const int& j){IndexTab1D k = i; return k-=j;}
+inline IndexTab1D& operator-(const int& i, const IndexTab1D& j){IndexTab1D k = j;  return k-=i;}
 
 
-class IndexTab2D : public Index2D
+
+class IndexTab2D : public Index
 //permet d'accéder aux éléments d'un tableau2D en simplifiant les opérations sur les index
 {
 private:
-    int maxI;
-    int maxJ;
+    IndexTab1D i;
+    IndexTab1D j;
     int tailleTab;
 public:
     //constructeurs
-    IndexTab2D(int i, int j, int maxI, int maxJ):Index2D(i,j),maxI(maxI),maxJ(maxJ),tailleTab(maxI*maxJ){}
+    IndexTab2D(int i, int j, int maxI, int maxJ):i(i,maxI),j(j,maxJ),tailleTab(maxI*maxJ){}
     //getter/setter
-    int getIndex() const {return this->getI()*maxI+this->getJ();}
+    unsigned int getI() const {return i.getIndex();}
+    unsigned int getJ() const {return j.getIndex();}
+    unsigned int getIndex() const {return i.getIndex()*j.getTailleTab()+j.getIndex();}
     int getTailleTab() const {return tailleTab;}
-    int getMaxI() const {return maxI;}
-    int getMaxJ() const {return maxJ;}
-    void setI(int i){this->setI(i); while (this->getI() < 0) this->setI(this->getI()+maxI); this->setI(this->getI()%maxI);}
-    void setJ(int j){this->setJ(j); while (this->getJ() < 0) this->setJ(this->getJ()+maxJ); this->setJ(this->getJ()%maxJ);}
+    int getMaxI() const {return i.getTailleTab();}
+    int getMaxJ() const {return j.getTailleTab();}
+    void setI(int i){this->i.setIndex(i);}
+    void setJ(int j){this->j.setIndex(j);}
     void setIndex(int i, int j){this->setI(i);this->setJ(j);}
-    void setIndex(int i){this->setI(i/(int)maxJ);this->setJ(i%maxJ);}
+    void setIndex(int indexAbsolu){this->setI(indexAbsolu/(int)j.getTailleTab());this->setJ(indexAbsolu%j.getTailleTab());}
     //surcharge opérateurs
     IndexTab2D& operator++(){this->setIndex(this->getIndex()+1); return *this;}//++i
     IndexTab2D operator++(int){IndexTab2D temp = *this; ++*this; return temp;}//i++
     IndexTab2D& operator--(){this->setIndex(this->getIndex()-1); return *this;}//--i
     IndexTab2D operator--(int){IndexTab2D temp = *this; --*this; return temp;}//i--
-    };
+    IndexTab2D& operator+=(const IndexTab2D& index){i += index.getI(); j += index.getJ(); return *this;}
+    IndexTab2D& operator+=(const int& k){this->setIndex(this->getIndex()+k); return *this;}
+    IndexTab2D& operator+=(const std::vector<int>& v);
+    IndexTab2D& operator-=(const IndexTab2D& index){i -= index.getI(); j -= index.getJ(); return *this;}
+    IndexTab2D& operator-=(const int& k){this->setIndex(this->getIndex()-k); return *this;}
+    IndexTab2D& operator-=(const std::vector<int>& v);
+};
 
-std::ostream& operator<<(std::ostream& f, const Index& i);
-std::ostream& operator<<(std::ostream& f, const Index2D& i);
+IndexTab2D& operator+(const IndexTab2D& i, const std::vector<int> v){IndexTab2D a = i;return a += v;}
+IndexTab2D& operator-(const IndexTab2D& i, const std::vector<int> v){IndexTab2D a = i;return a -= v;}
+inline IndexTab2D& operator+(const IndexTab2D& i, const IndexTab2D& j){IndexTab2D k = i; return k += j;}
+inline IndexTab2D& operator+(const IndexTab2D& i, const int j){IndexTab2D k = i; return k += j;}
+inline IndexTab2D& operator+(const int& i, const IndexTab2D& j){IndexTab2D k = j; return k+=i;}
+inline IndexTab2D& operator-(const IndexTab2D& i, const IndexTab2D& j){IndexTab2D k = i; return k-=j;}
+inline IndexTab2D& operator-(const IndexTab2D& i, const int& j){IndexTab2D k = i; return k-=j;}
+inline IndexTab2D& operator-(const int& i, const IndexTab2D& j){IndexTab2D k = j;  return k-=i;}
+
+
+std::ostream& operator<<(std::ostream& f, const IndexTab1D& i);
 std::ostream& operator<<(std::ostream& f, const IndexTab2D& i);
 
 #endif // INDEX_H

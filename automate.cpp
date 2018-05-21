@@ -3,13 +3,6 @@
 
 
 
-
-std::ostream& operator<<(std::ostream& f, const Automate& A) {
-    f << "Automate ayant pour regle : " << A.getRegleTransition() << "\n";
-    return f;
-}
-
-
 unsigned short int NumBitToNum(const std::string& num) {
     if (num.size() != 8) throw AutomateException("Numero d'automate indefini");
     int puissance = 1;
@@ -39,13 +32,6 @@ std::string NumToNumBit(unsigned short int num) {
     return numeroBit;
 }
 
-void Automate1D::creerMotif()
-{
-    Index1D* tab = new Index1D[3] {Index1D(-1),Index1D(0),Index1D(1)};
-    Index* tab2 = dynamic_cast<Index*>(tab);
-    Motif m(&tab2,3);
-    this->setMotif(m);
-}
 
 
 
