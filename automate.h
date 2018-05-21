@@ -39,21 +39,34 @@ class Automate
 protected:
     std::vector<int> regleTransition;
     std::vector<std::vector<int>> motif; //si automate1D la deuxième couche de vector ne contient qu'un seul élément
-
-    virtual ~Automate(){}
+    unsigned int *valVoisinage;
+    //constructeurs / destructeurs
+    virtual ~Automate(){delete[] valVoisinage;}
     Automate();
     Automate(std::vector<int> regle) : regleTransition(regle){}
+    Automate(std::vector<int> regle,std::vector<std::vector<int>> motif) : regleTransition(regle), motif(motif), valVoisinage(new unsigned int[motif.size()]){}
     Automate(const Automate& a);
     Automate& operator=(const Automate& a);
     friend class AutomateManager;
 public:
     virtual void appliquerTransition(const Etat& dep, Etat& dest) const = 0;
+    //getter / setter
+    void setMotif(std::vector<std::vector<int>> m){motif = m; valVoisinage = new unsigned int[m.size()];}
+    std::vector<std::vector<int>> getMotif() const {return motif;}
+    void setVoisin(int i, unsigned int val) {valVoisinage[i] = val;}
+    unsigned int getVoisin(int i) const {return valVoisinage[i];}
+    unsigned int* getVoisinage() {return valVoisinage;}
+    unsigned int nbVoisins() {return motif.size();}
+    std::vector<int> getRegleTransition() const {return regleTransition;}
 };
 
 
 unsigned short int NumBitToNum(const std::string& num);
 std::string NumToNumBit(unsigned short int num);
-
+std::vector<unsigned int> regleStrToVector(const std::string& regleBit);
+std::string vectorToRegleStr(const std::vector<unsigned int> &regle);
+std::vector<unsigned int> intToBase(unsigned int val, unsigned int base);
+unsigned int baseToInt(const std::vector<unsigned int>& nb, unsigned int base);
 
 class Automate1D : public Automate
 {
@@ -61,22 +74,23 @@ class Automate1D : public Automate
 public:
     Automate1D():Automate(){}
     Automate1D(std::vector<int> regle):Automate(regle){}
-    void appliquerTransition(const Etat& dep, Etat& dest) const;
+    Automate1D(std::vector<int> regle, std::vector<std::vector<int>> motif):Automate(regle,motif){}
+    void appliquerTransition(const Etat& dep, Etat& dest);
 };
 
 
 
-class AutomateElementaire : public Automate1D
+/*class AutomateElementaire : public Automate1D
 {
 private :
     unsigned short int numeroRegleTransition;
 public:
-    AutomateElementaire(unsigned short int num) : Automate1D(NumToNumBit(num)),numeroRegleTransition(num) {}
+    AutomateElementaire(unsigned short int num) : Automate1D(NumToNumBit(num),),numeroRegleTransition(num) {}
     AutomateElementaire(const std::string& num) : Automate1D(num), numeroRegleTransition(NumBitToNum(num)){}
     AutomateElementaire(const Automate1D& a) : Automate(a){}
 
 };
-
+*/
 
 
 

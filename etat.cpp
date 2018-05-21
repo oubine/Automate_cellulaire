@@ -3,10 +3,7 @@
 #include "automate.h"
 #include <iostream>
 
-Etat::Etat(unsigned int n, unsigned short int dim) : taille(n), dimension(dim), valeur(new int [int(pow(n,dim))])
-{
-    for (unsigned int i = 0; i < pow(n,dim); i++) valeur[i] = 0;
-}
+Etat::Etat(unsigned int n, unsigned short int dim) : taille(n), dimension(dim), valeur(new int [int(pow(n,dim))]()){}
 
 Etat::Etat(const Etat& e): taille(e.taille), dimension(e.dimension), valeur(new int[int(pow(e.taille,e.dimension))])
 {

@@ -8,13 +8,13 @@ void IndexTab1D::setIndex(int i)
     this->i %= tailleTab;
 }
 
-IndexTab1D& IndexTab1D::operator+=(const std::vector<int> v)
+IndexTab1D& IndexTab1D::operator+=(const std::vector<int>& v)
 {
     if(v.size() != 1) throw IndexException("Somme d'un index1D avec un vecteur de dim != 1");
     return (*this) += v[0];
 }
 
-IndexTab1D& IndexTab1D::operator-=(const std::vector<int> v)
+IndexTab1D& IndexTab1D::operator-=(const std::vector<int>& v)
 {
     if(v.size() != 1) throw IndexException("Somme d'un index1D avec un vecteur de dim != 1");
     return (*this) -= v[0];

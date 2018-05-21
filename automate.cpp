@@ -3,6 +3,26 @@
 
 
 
+
+void Automate1D::appliquerTransition(const Etat& dep, Etat& dest) {
+    if (this->getMotif().size() == 0) throw AutomateException("Motif non défini");
+    if (dep.getTaille() != dest.getTaille()) dest = dep;
+    auto iExamine = IndexTab1D(0,dep.getTaille());
+    for (unsigned int i = 0; i < dep.getTaille(); i++)
+    {//iExamine : index de la case de l'état de départ examinée
+        for(unsigned int j = 0; j < this->getMotif().size(); j++)
+        {//this->getMotif()[j] : index relatif des voisins par rapport à la case examinée
+            this->setVoisin(j,dep.getCellule((iExamine+this->getMotif()[j]).getIndex()));
+        }
+        unsigned int etat = baseToInt(std::vector<unsigned int>(this->getVoisinage(),this->getVoisinage()+this->nbVoisins()),dep.getValMax()+1);
+        dest.setCellule(i, this->getRegleTransition()[this->getRegleTransition().size()-1-etat]);
+        iExamine++;
+    }
+}
+
+
+
+
 unsigned short int NumBitToNum(const std::string& num) {
     if (num.size() != 8) throw AutomateException("Numero d'automate indefini");
     int puissance = 1;
@@ -32,31 +52,47 @@ std::string NumToNumBit(unsigned short int num) {
     return numeroBit;
 }
 
-
-
-
-void Automate1D::appliquerTransition(const Etat& dep, Etat& dest) const {
-    if (dep.getTaille() != dest.getTaille()) dest = dep;
-    for (auto i = dep.begin();  !i.isDone(); i.next()) {
-
-        if (i > 0) conf+=dep.getCellule(i - 1) * 4;
-        conf+=dep.getCellule(i)*2;
-        if (i < dep.getTaille()-1) conf+=dep.getCellule(i) + 1;
-        dest.setCellule(i, regleTransition[7-conf]-'0');
+std::vector<unsigned int> regleStrToVector(const std::string& regleBit)
+{
+    std::vector<unsigned int> result;
+    for(auto it = regleBit.begin(); it != regleBit.end(); it++)
+    {
+        result.push_back((int) *it - '0');
     }
+    return result;
 }
 
-/*void Automate1D::appliquerTransition(const Etat& dep, Etat& dest) const {
-    if(dep.getDimension() != 1 || dest.getDimension()!=1) throw AutomateException("Applique une transition sur un état de dimension non appropriée.");
-    if (dep.getTaille() != dest.getTaille()) dest = dep;
-    for (unsigned int i = 0; i < dep.getTaille(); i++) {
-        unsigned short int conf=0;
-        if (i > 0) conf+=dep.getCellule(i - 1) * 4;
-        conf+=dep.getCellule(i)*2;
-        if (i < dep.getTaille()-1) conf+=dep.getCellule(i + 1);
-        dest.setCellule(i, regleTransition[7-conf]-'0');
-    }}*/
+std::string vectorToRegleStr(const std::vector<unsigned int> &regle)
+{
+    std::string result;
+    for(auto it = regle.begin(); it != regle.end(); it++)
+    {
+        result += (char) *it + '0';
+    }
+    return result;
+}
 
 
+std::vector<unsigned int> intToBase(unsigned int val, unsigned int base)
+{
+    std::vector<unsigned int> resultat;
+    while (val != 0)
+    {
+        resultat.insert(resultat.begin(),val%base);
+        val /= (unsigned int) base;
+    }
+    return resultat;
+}
+
+unsigned int baseToInt(const std::vector<unsigned int>& nb, unsigned int base)
+{
+    unsigned int resultat = 0;
+    for(auto it = nb.begin(); it != nb.end(); it++)
+    {
+        resultat += *it;
+        resultat *= base;
+    }
+    return resultat/base;
+}
 
 

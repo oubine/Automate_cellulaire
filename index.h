@@ -38,10 +38,10 @@ public:
     IndexTab1D& operator=(const IndexTab1D& i){this->setIndex(i.getIndex()); return *this;}
     IndexTab1D& operator+=(const IndexTab1D& i){this->setIndex(this->i+i.getIndex()); return *this;}
     IndexTab1D& operator+=(const int& j){this->setIndex(this->getIndex()+j); return *this;}
-    IndexTab1D& operator+=(const std::vector<int> v);
+    IndexTab1D& operator+=(const std::vector<int>& v);
     IndexTab1D& operator-=(const IndexTab1D& i){this->setIndex(this->i-i.getIndex()); return *this;}
     IndexTab1D& operator-=(const int& i){this->setIndex(this->i-i); return *this;}
-    IndexTab1D& operator+=(const std::vector<int> v);
+    IndexTab1D& operator-=(const std::vector<int>& v);
     IndexTab1D& operator++(){this->setIndex(this->getIndex()+1); return *this;}//++i
     IndexTab1D operator++(int){IndexTab1D temp = *this; ++*this; return temp;}//i++
     IndexTab1D& operator--(){this->setIndex(this->getIndex()-1); return *this;}//--i
