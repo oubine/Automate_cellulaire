@@ -6,16 +6,6 @@
 
 int main(int argc, char *argv[])
 {
-    /*
-    Motif m;
-    Index2D* i = new Index2D(3,4);
-    Index2D* j = new Index2D(-3,4);
-    Index2D* k = new Index2D(0,2);
-    m.ajouterVoisin(i);
-    m.ajouterVoisin(j);
-    m.ajouterVoisin(k);
-    std::cout << m;
-    */
     QApplication app(argc, argv);
     QMainWindow *main = new QMainWindow;
 

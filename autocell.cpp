@@ -173,8 +173,9 @@ void AutoCell::onSuivantButtonClicked()
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
     for(unsigned int counter = 0; counter < dimension; ++counter) {
         if(depart->item(0, counter)->text() != "") {
-                e.setCellule(counter, true);
+                e.setCellule(counter, 1);
         }
+        else e.setCellule(counter, 0);
     }
     // on récupère l'automate correspondant au numéro de l'interface graphique, en utilisant l'AutomateManager
     // à noter, il n'est pas nécessaire d'instancier un objet AutomateManager, comme il s'agit d'un singleton,
@@ -191,7 +192,7 @@ void AutoCell::onSuivantButtonClicked()
             // on applique la transition
             sim.next();
             // on récupère le dernier état
-            const Etat& etat = sim.dernier();
+            const Etat1D& etat = sim.dernier();
             // on l'affiche
             for(unsigned int colonne = 0; colonne < dimension; ++colonne) {
                 if (etat.getCellule(colonne) == true) {

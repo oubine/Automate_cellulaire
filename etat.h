@@ -27,7 +27,10 @@ public:
     //Etat(const unsigned short int dim):taille(0),dimension(dim),valeur(nullptr){}
     Etat(unsigned int taille, unsigned short int dim, unsigned int valMax):taille(taille),dimension(dim),valeur(new unsigned int [(int)(pow(taille,dim))]()),valMax(valMax){}
     virtual ~Etat() { delete[] valeur; }
-    Etat(const Etat& e): taille(e.taille), dimension(e.dimension), valeur(new unsigned int[(int)(pow(e.taille,e.dimension))]()),valMax(e.valMax){}
+    Etat(const Etat& e): taille(e.taille), dimension(e.dimension), valeur(new unsigned int[(int)(pow(e.taille,e.dimension))]),valMax(e.valMax)
+    {
+        for (unsigned int i = 0; i < (unsigned int) pow(e.getTaille(),e.getDimension()); i++) valeur[i] = e.getCellule(i);
+    }
     Etat& operator=(const Etat& e);
     unsigned int getTaille() const { return taille; }
     unsigned int getDimension() const { return dimension; }
