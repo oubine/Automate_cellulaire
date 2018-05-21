@@ -7,6 +7,7 @@
 void Automate1D::appliquerTransition(const Etat& dep, Etat& dest) {
     if (this->getMotif().size() == 0) throw AutomateException("Motif non défini");
     if (dep.getTaille() != dest.getTaille()) dest = dep;
+    std::cout<<dep<<"\n";
     auto iExamine = IndexTab1D(0,dep.getTaille());
     for (unsigned int i = 0; i < dep.getTaille(); i++)
     {//iExamine : index de la case de l'état de départ examinée
@@ -18,6 +19,7 @@ void Automate1D::appliquerTransition(const Etat& dep, Etat& dest) {
         dest.setCellule(i, this->getRegleTransition()[this->getRegleTransition().size()-1-etat]);
         iExamine++;
     }
+    std::cout<<dest<<"\n\n";
 }
 
 

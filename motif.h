@@ -1,7 +1,7 @@
 #ifndef MOTIF_H
 #define MOTIF_H
 
-#include <ostream>
+/*#include <ostream>
 #include <vector>
 #include "index.h"
 
@@ -15,7 +15,7 @@ private:
 
 
 
-/*class Motif1D :
+class Motif1D :
 {
     std::vector<int> voisinage;
 public:

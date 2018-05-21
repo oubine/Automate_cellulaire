@@ -20,10 +20,10 @@ void AutomateManager::libererAutomateManager() {
     handler.instance = nullptr;
 }
 
-const Automate1D& AutomateManager::getAutomate(unsigned long int num) {
-    if (!automates[num]) automates[num] = new Automate1D(num);
+AutomateElementaire& AutomateManager::getAutomate(unsigned long int num) {
+    if (!automates[num]) automates[num] = new AutomateElementaire(num);
     return *automates[num];
 }
-const Automate1D& AutomateManager::getAutomate(const std::string& numBit) {
+AutomateElementaire& AutomateManager::getAutomate(const std::string& numBit) {
     return getAutomate(NumBitToNum(numBit));
 }

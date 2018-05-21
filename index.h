@@ -93,14 +93,14 @@ public:
     IndexTab2D& operator-=(const std::vector<int>& v);
 };
 
-IndexTab2D& operator+(const IndexTab2D& i, const std::vector<int> v){IndexTab2D a = i;return a += v;}
-IndexTab2D& operator-(const IndexTab2D& i, const std::vector<int> v){IndexTab2D a = i;return a -= v;}
 inline IndexTab2D& operator+(const IndexTab2D& i, const IndexTab2D& j){IndexTab2D k = i; return k += j;}
 inline IndexTab2D& operator+(const IndexTab2D& i, const int j){IndexTab2D k = i; return k += j;}
 inline IndexTab2D& operator+(const int& i, const IndexTab2D& j){IndexTab2D k = j; return k+=i;}
 inline IndexTab2D& operator-(const IndexTab2D& i, const IndexTab2D& j){IndexTab2D k = i; return k-=j;}
 inline IndexTab2D& operator-(const IndexTab2D& i, const int& j){IndexTab2D k = i; return k-=j;}
 inline IndexTab2D& operator-(const int& i, const IndexTab2D& j){IndexTab2D k = j;  return k-=i;}
+inline IndexTab2D& operator+(const IndexTab2D& i, const std::vector<int>& v){IndexTab2D a = i;return a += v;}
+inline IndexTab2D& operator-(const IndexTab2D& i, const std::vector<int>& v){IndexTab2D a = i;return a -= v;}
 
 
 std::ostream& operator<<(std::ostream& f, const IndexTab1D& i);

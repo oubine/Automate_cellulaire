@@ -1,7 +1,5 @@
-#include "motif.h"
-#include <iostream>
 
-void Motif::ajouterVoisin(Index* i)
+/*void Motif::ajouterVoisin(Index* i)
 {
     if(nbVoisins == nbMaxVoisins)
     {
@@ -23,3 +21,4 @@ std::ostream& operator<<(std::ostream& f, const Motif& m)
     }
     return f;
 }
+*/

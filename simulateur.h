@@ -5,7 +5,7 @@
 #include "automate.h"
 
 class Simulateur {
-    const Automate& automate;
+    Automate& automate;
     Etat1D** etats;
     const Etat1D* depart;
     unsigned int nbMaxEtats;
@@ -14,8 +14,8 @@ class Simulateur {
     Simulateur(const Simulateur& s);
     Simulateur& operator=(const Simulateur& s);
 public:
-    Simulateur(const Automate& a, unsigned int buffer = 2);
-    Simulateur(const Automate& a, const Etat1D& dep, unsigned int buffer = 2);
+    Simulateur(Automate& a, unsigned int buffer = 2);
+    Simulateur(Automate& a, const Etat1D& dep, unsigned int buffer = 2);
     void setEtatDepart(const Etat1D& e);
     void run(unsigned int nbSteps); // génère les n prochains états
     void next(); // génère le prochain état

@@ -132,7 +132,7 @@ AutoCell::AutoCell(QWidget *parent, unsigned int dim, unsigned int transitions, 
 
 void AutoCell::launchSimulation() {//méthode pour lancer la simulation
     // création de l'état
-    Etat1D e(dimension);
+    Etat1D e(dimension,1);
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
     for(unsigned int counter = 0; counter < dimension; ++counter) {
         if(depart->item(0, counter)->text() != "") {
@@ -142,7 +142,7 @@ void AutoCell::launchSimulation() {//méthode pour lancer la simulation
     // on récupère l'automate correspondant au numéro de l'interface graphique, en utilisant l'AutomateManager
     // à noter, il n'est pas nécessaire d'instancier un objet AutomateManager, comme il s'agit d'un singleton,
     // on peut considérer que l'objet existe déjà dans le système
-    const Automate1D& a = AutomateManager::getAutomateManager().getAutomate(num_automate);
+    Automate1D& a = AutomateManager::getAutomateManager().getAutomate(num_automate);
     // on construit l'objet simulateur correspondant
     Simulateur sim(a, e, dimension);
     // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique
@@ -169,7 +169,7 @@ void AutoCell::launchSimulation() {//méthode pour lancer la simulation
 void AutoCell::onSuivantButtonClicked()
 {
     // création de l'état
-    Etat1D e(dimension);
+    Etat1D e(dimension,1);
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
     for(unsigned int counter = 0; counter < dimension; ++counter) {
         if(depart->item(0, counter)->text() != "") {
@@ -179,7 +179,7 @@ void AutoCell::onSuivantButtonClicked()
     // on récupère l'automate correspondant au numéro de l'interface graphique, en utilisant l'AutomateManager
     // à noter, il n'est pas nécessaire d'instancier un objet AutomateManager, comme il s'agit d'un singleton,
     // on peut considérer que l'objet existe déjà dans le système
-    const Automate1D& a = AutomateManager::getAutomateManager().getAutomate(num_automate);
+    Automate1D& a = AutomateManager::getAutomateManager().getAutomate(num_automate);
     // on construit l'objet simulateur correspondant
     Simulateur sim(a, e, dimension);
     if(transition_courante<nb_transitions)
@@ -216,7 +216,7 @@ void AutoCell::launchSimulationAuto() {//méthode pour lancer la simulation
     //loop.exec();
 
     // création de l'état
-    Etat1D e(dimension);
+    Etat1D e(dimension,1);
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
     for(unsigned int counter = 0; counter < dimension; ++counter) {
         if(depart->item(0, counter)->text() != "") {
@@ -226,7 +226,7 @@ void AutoCell::launchSimulationAuto() {//méthode pour lancer la simulation
     // on récupère l'automate correspondant au numéro de l'interface graphique, en utilisant l'AutomateManager
     // à noter, il n'est pas nécessaire d'instancier un objet AutomateManager, comme il s'agit d'un singleton,
     // on peut considérer que l'objet existe déjà dans le système
-    const Automate1D& a = AutomateManager::getAutomateManager().getAutomate(num_automate);
+    Automate1D& a = AutomateManager::getAutomateManager().getAutomate(num_automate);
     // on construit l'objet simulateur correspondant
     Simulateur sim(a, e, dimension);
     // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique

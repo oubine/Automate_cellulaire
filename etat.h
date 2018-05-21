@@ -16,7 +16,6 @@ private:
 };
 
 class Etat
-//classe abstraite
 {
 protected:
     unsigned int taille;//ce qu'on appelait avant dimension : c'est la taille du tableau représentant un état de l'automate
@@ -33,35 +32,36 @@ public:
     unsigned int getTaille() const { return taille; }
     unsigned int getDimension() const { return dimension; }
     unsigned int getValMax() const {return valMax;}
-    virtual void setCellule(unsigned int index, unsigned int val) = 0;
-    virtual unsigned int getCellule(unsigned int index) const = 0;
+    virtual void setCellule(unsigned int index, unsigned int val);
+    void setCellule(const Index& i, unsigned int val) {this->setCellule(i.getIndex(),val);}
+    virtual unsigned int getCellule(unsigned int index) const;
+    unsigned int getCellule(const Index& i) { return this->getCellule(i.getIndex());}
 };
 
 
 class Etat1D : public Etat
 {
 public:
-    Etat1D(const Etat1D& e): Etat(e){}
     Etat1D(unsigned int taille, unsigned int valMax): Etat(taille,1,valMax){}
-    void setCellule(unsigned int i, unsigned int val);
+    /*void setCellule(unsigned int i, unsigned int val);
     void setCellule(IndexTab1D &i, unsigned int val){this->setCellule(i.getIndex(),val);}
     unsigned int getCellule(unsigned int i) const;
     unsigned int getCellule(IndexTab1D &i) const {return this->getCellule(i.getIndex());}
-
+*/
 };
 
 class Etat2D : public Etat
 {
 public:
-    Etat2D(const Etat2D& e): Etat(e){}
     Etat2D(unsigned int taille, unsigned int valMax): Etat(taille,2,valMax){}
-    void setCellule(unsigned int index, unsigned int val);
+    /*void setCellule(unsigned int index, unsigned int val);
     void setCellule(IndexTab2D i, unsigned int val){this->setCellule(i.getIndex(),val);}
     unsigned int getCellule(unsigned int i) const;
     unsigned int getCellule(Index1D i) const {return this->getCellule(i.getIndex());}
-
+*/
 };
 
+std::ostream& operator<<(std::ostream& f, const Etat& e);
 std::ostream& operator<<(std::ostream& f, const Etat1D& e);
 std::ostream& operator<<(std::ostream& f, const Etat2D& e);
 

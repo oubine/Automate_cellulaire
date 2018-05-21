@@ -1,12 +1,12 @@
 #include "simulateur.h"
 #include <iostream>
 
-Simulateur::Simulateur(const Automate& a, unsigned int buffer):
+Simulateur::Simulateur(Automate& a, unsigned int buffer):
     automate(a), etats(nullptr), depart(nullptr), nbMaxEtats(buffer),rang(0) {
     etats = new Etat1D*[nbMaxEtats];
     for (unsigned int i = 0; i < nbMaxEtats; i++) etats[i] = nullptr;
 }
-Simulateur::Simulateur(const Automate& a, const Etat1D& dep, unsigned int buffer):
+Simulateur::Simulateur(Automate& a, const Etat1D& dep, unsigned int buffer):
     automate(a), etats(nullptr), depart(&dep), nbMaxEtats(buffer),rang(0) {
     etats = new Etat1D*[nbMaxEtats];
     for (unsigned int i = 0; i < nbMaxEtats; i++) etats[i] = nullptr;
@@ -16,7 +16,7 @@ Simulateur::Simulateur(const Automate& a, const Etat1D& dep, unsigned int buffer
 void Simulateur::build(unsigned int cellule) {
     if (etats[0] == nullptr) throw AutomateException("l'état de départ du simulateur n'a pas été défini");
     if (cellule >= nbMaxEtats) throw AutomateException("erreur taille buffer");
-    if (etats[cellule] == nullptr) etats[cellule] = new Etat1D(etats[0]->getTaille());
+    if (etats[cellule] == nullptr) etats[cellule] = new Etat1D(etats[0]->getTaille(),1);
 }
 
 void Simulateur::setEtatDepart(const Etat1D& e) {
