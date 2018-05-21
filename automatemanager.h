@@ -1,7 +1,7 @@
 #ifndef AUTOMATEMANAGER
 #define AUTOMATEMANAGER
 
-#include "automate.h"
+#include "automate1d.h"
 
 class AutomateManager {
     AutomateElementaire* automates[256];

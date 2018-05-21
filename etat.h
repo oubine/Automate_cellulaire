@@ -29,7 +29,7 @@ public:
     virtual ~Etat() { delete[] valeur; }
     Etat(const Etat& e): taille(e.taille), dimension(e.dimension), valeur(new unsigned int[(int)(pow(e.taille,e.dimension))]),valMax(e.valMax)
     {
-        for (unsigned int i = 0; i < (unsigned int) pow(e.getTaille(),e.getDimension()); i++) valeur[i] = e.getCellule(i);
+        for (unsigned int i = 0; i < e.size(); i++) valeur[i] = e.getCellule(i);
     }
     Etat& operator=(const Etat& e);
     unsigned int getTaille() const { return taille; }
@@ -39,6 +39,7 @@ public:
     void setCellule(const Index& i, unsigned int val) {this->setCellule(i.getIndex(),val);}
     virtual unsigned int getCellule(unsigned int index) const;
     unsigned int getCellule(const Index& i) { return this->getCellule(i.getIndex());}
+    unsigned int size() const {return (unsigned int) pow(taille,dimension);}
 };
 
 

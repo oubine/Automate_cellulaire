@@ -24,9 +24,12 @@ IndexTab1D& IndexTab1D::operator-=(const std::vector<int>& v)
 IndexTab2D& IndexTab2D::operator+=(const std::vector<int>& v)
 {
     if(v.size() != 2) throw IndexException("Somme d'un index2D avec un vecteur de dim != 2.");
+        std::cout<<"+=";
     this->i += v[0];
+            std::cout<<"\nlelele "<<this->i<<" , ";
     this->j += v[1];
-    return *this;
+                std::cout<<this->j<<"\n";
+    return (*this);
 }
 
 IndexTab2D& IndexTab2D::operator-=(const std::vector<int>& v)

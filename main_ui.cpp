@@ -1,5 +1,5 @@
 #include "main_UI.h"
-#include "automate.h"
+#include "automate1d.h"
 
 Fenetre_Principale::Fenetre_Principale(QMainWindow *MainWindow)
 {
