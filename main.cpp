@@ -5,6 +5,7 @@
 #include <iostream>
 #include "motif.h"
 #include "etat.h"
+#include "index.h"
 
 int main(int argc, char *argv[])
 {
@@ -20,9 +21,8 @@ int main(int argc, char *argv[])
     VarianteJeuDeLaVie a({0,0,1,2,0,0,0,0,0});
     std::cout<<e<<"\n";
     Etat2D e2(20,1);
-    for(int i = 0; i < 10; i ++)
+    for(int i = 0; i < 50; i ++)
     {
-        std::cout<<"test0\n";
         a.appliquerTransition(e,e2);
         e = e2;
         std::cout<<e<<"\n";

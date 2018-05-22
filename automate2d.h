@@ -11,7 +11,7 @@ public:
     Automate2D():Automate(){}
     Automate2D(std::vector<unsigned int> regle):Automate(regle){}
     Automate2D(std::vector<unsigned int> regle, std::vector<std::vector<int>> motif):Automate(regle,motif){}
-    void appliquerTransition(const Etat& dep, Etat& dest);
+    void appliquerTransition(const Etat& dep, Etat& dest) final;
 };
 
 

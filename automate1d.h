@@ -12,7 +12,7 @@ public:
     Automate1D():Automate(){}
     Automate1D(std::vector<unsigned int> regle):Automate(regle){}
     Automate1D(std::vector<unsigned int> regle, std::vector<std::vector<int>> motif):Automate(regle,motif){}
-    void appliquerTransition(const Etat& dep, Etat& dest);
+    void appliquerTransition(const Etat& dep, Etat& dest) final;
 };
 
 
@@ -40,8 +40,7 @@ public:
         motif[2][0] = 1;
         this->setMotif(motif);
     }
-    virtual void appliquerTransition(const Etat& dep, Etat& dest){this->Automate1D::appliquerTransition(dep,dest);}
-};
+ };
 
 
 

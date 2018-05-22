@@ -38,7 +38,7 @@ private:
 /*Pour créer un nouvel automate, faire hériter une classe d'Automate1D ou 2D
 et définir le motif et la règle de transition dans le constructeur de cette sous-classe.*/
 
-class Automate
+class Automate //classe abstraite
 {
 protected:
     std::vector<unsigned int> regleTransition;
