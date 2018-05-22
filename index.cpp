@@ -1,5 +1,4 @@
 #include "index.h"
-#include <typeinfo>
 
 void IndexTab1D::setIndex(int i)
 {
