@@ -988,7 +988,6 @@ void Fenetre_AutoDim2::onGenerateurButtonClicked()
         }
     }
 
-
     etat_depart_table_dim2->setParent(page_dim2);
     layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
     etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));

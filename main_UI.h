@@ -92,7 +92,7 @@ public:
 
 private slots :
     virtual void onDimensionItemClicked(QListWidgetItem* item)=0;
-    void onAffichageButtonClicked(bool);
+    virtual void onAffichageButtonClicked(bool);
     virtual void onActionEnregistrer()=0;
     virtual void onActionImporter()=0;
 };
@@ -165,7 +165,7 @@ private slots :
     void onSimulationButtonClicked();
     void synchronizeNumToNumBit(int i);
     void synchronizeNumBitToNum(const QString& s);
-    void cellActivation(QTableWidgetItem* index);
+    virtual void cellActivation(QTableWidgetItem* index);
     void onActionEnregistrer();
     void onActionImporter();
 };
