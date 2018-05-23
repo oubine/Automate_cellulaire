@@ -1,6 +1,6 @@
 #ifndef PROJET_LO21
 #define PROJET_LO21
-#include "autocell.h"
+#include "Window.h"
 #define MAX_CASES 500
 #define MAX_TRANSITIONS 300
 
@@ -151,7 +151,7 @@ protected:
     //enregistrement
     bool enregistrer_autodim1=0;
 
-    AutoCell *new_Window_dim1;
+    Window_Dim1 *new_Window_dim1;
 public :
     Fenetre_AutoDim1(QMainWindow *MainWindow);
     void Gen_aleatoire();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
@@ -168,7 +168,6 @@ private slots :
     void cellActivation(QTableWidgetItem* index);
     void onActionEnregistrer();
     void onActionImporter();
-    void set_Gen_options(QString);
 };
 
 class Fenetre_AutoDim2 : public Fenetre_AutoDim1
@@ -179,7 +178,9 @@ protected:
     QWidget *page_dim2;
     QVBoxLayout *layout_page_dim2;
     QGroupBox *configuration_dim2;
-    QHBoxLayout *layout_config_dim2;
+    QVBoxLayout *layout_config_dim2;
+    QVBoxLayout *layout_etat_depart_dim2;
+
 
     QHBoxLayout *regles_dim2;
     QGroupBox *regles_transition_dim2;
@@ -203,17 +204,36 @@ protected:
     QSpinBox* nb_transitions_dim2;
     QLabel* nb_transitions_l_dim2;
     QPushButton* bouton_generateur_dim2;
+    unsigned int dimension_dim2;
+
+    QStackedWidget* stacked_etat_depart_dim2;
+    unsigned int taille_dim2=25;//taille des cases du tableau en pixels
+    QWidget* page_etat_0_dim2;
+    QWidget* page_etat_1_dim2;
+    QLabel *etat_depart_l_dim2;
+    QVBoxLayout* layout_page_etat_0_dim2;
+    QVBoxLayout* layout_page_etat_1_dim2;
+    QTableWidget *etat_depart_table_dim2;
+    QLabel* aucun_etat_depart_dim2;
 
     QPushButton *Simulation_dim2;
     //enregistrement
     bool enregistrer_autodim2=0;
 
+    Window_Dim2* new_Window_dim2;
+
 public:
     void Noms(QMainWindow *MainWindow);
     Fenetre_AutoDim2(QMainWindow *MainWindow);
-
+    void Gen_aleatoire();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
+    void Gen_Un_Sur_Deux();
 private slots :
     void onDimensionItemClicked(QListWidgetItem*);
+    void onGenerateurButtonClicked();
+    void onSimulationButtonClicked();
+    void cellActivation(QTableWidgetItem* index);
+    //void onActionEnregistrer();
+    //void onActionImporter();
 };
 
 namespace Ui {

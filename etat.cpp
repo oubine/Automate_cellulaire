@@ -32,7 +32,7 @@ std::ostream& operator<<(std::ostream& f, const Etat2D& e)
     {
         for(int j = 0; j < 2; j++)
         {
-             f << char(e.getCellule(i)+176);
+             f << char(e.getCellule(i)+48);
         }
         i++;
         if(i.getJ() == 0) f << '\n';  

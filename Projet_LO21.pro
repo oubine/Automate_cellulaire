@@ -7,7 +7,6 @@ CONFIG += console
 
 HEADERS += \
     main_UI.h \
-    autocell.h \
     automate.h \
     etat.h \
     automatemanager.h \
@@ -15,12 +14,12 @@ HEADERS += \
     motif.h \
     index.h \
     automate1d.h \
-    automate2d.h
+    automate2d.h \
+    Window.h
 
 SOURCES += \
     main.cpp \
     main_ui.cpp \
-    autocell.cpp \
     automate.cpp \
     etat.cpp \
     automatemanager.cpp \
@@ -28,4 +27,5 @@ SOURCES += \
     motif.cpp \
     index.cpp \
     automate1d.cpp \
-    automate2d.cpp
+    automate2d.cpp \
+    Window.cpp
