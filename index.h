@@ -47,16 +47,14 @@ public:
     IndexTab1D operator++(int){IndexTab1D temp = *this; ++*this; return temp;}//i++
     IndexTab1D& operator--(){this->setIndex(this->getIndex()-1); return *this;}//--i
     IndexTab1D operator--(int){IndexTab1D temp = *this; --*this; return temp;}//i--
+    IndexTab1D operator+(const IndexTab1D& j){IndexTab1D k = *this; return k += j;}
+    IndexTab1D operator+(const std::vector<int>& j){IndexTab1D k = *this; return k += j;}
+    IndexTab1D operator+(const int& j){IndexTab1D k = *this; return k += j;}
+    IndexTab1D operator-(const IndexTab1D& j){IndexTab1D k = *this; return k-=j;}
+    IndexTab1D operator-(const std::vector<int>& j){IndexTab1D k = *this; return k -= j;}
+    IndexTab1D operator-(const int& j){IndexTab1D k = *this; return k-=j;}
 };
 
-inline IndexTab1D operator+(const IndexTab1D& i, const IndexTab1D& j){IndexTab1D k = i; return k += j;}
-inline IndexTab1D operator+(const IndexTab1D& i, const std::vector<int>& j){IndexTab1D k = i; return k += j;}
-inline IndexTab1D operator+(const IndexTab1D& i, const int& j){IndexTab1D k = i; return k += j;}
-inline IndexTab1D operator+(const int& i, const IndexTab1D& j){IndexTab1D k = j; return k+=i;}
-inline IndexTab1D operator-(const IndexTab1D& i, const IndexTab1D& j){IndexTab1D k = i; return k-=j;}
-inline IndexTab1D operator-(const IndexTab1D& i, const std::vector<int>& j){IndexTab1D k = i; return k -= j;}
-inline IndexTab1D operator-(const IndexTab1D& i, const int& j){IndexTab1D k = i; return k-=j;}
-inline IndexTab1D operator-(const int& i, const IndexTab1D& j){IndexTab1D k = j;  return k-=i;}
 
 std::ostream& operator<<(std::ostream& f, const IndexTab1D& i);
 

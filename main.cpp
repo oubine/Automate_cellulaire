@@ -3,6 +3,7 @@
 #include "automate.h"
 #include "automate2d.h"
 #include <iostream>
+#include <typeinfo>
 #include "motif.h"
 #include "etat.h"
 #include "index.h"
@@ -21,7 +22,7 @@ int main(int argc, char *argv[])
     VarianteJeuDeLaVie a({0,0,1,2,0,0,0,0,0});
     std::cout<<e<<"\n";
     Etat2D e2(20,1);
-    for(int i = 0; i < 50; i ++)
+    for(int i = 0; i < 10; i ++)
     {
         a.appliquerTransition(e,e2);
         e = e2;
@@ -31,6 +32,7 @@ int main(int argc, char *argv[])
 
     Fenetre_AutoDim1* fendim1 = new Fenetre_AutoDim1(main);
     Fenetre_AutoDim2* fendim2 = new Fenetre_AutoDim2(main);
+    std::cout << typeid(fendim1).name() << " , "<<typeid(fendim2).name()<<"\n";
     main->show();
     //AutoCell autoc;
     //autoc.show();
