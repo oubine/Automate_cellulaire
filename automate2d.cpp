@@ -13,8 +13,6 @@ void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
     {//iExamine : index de la case de l'état de départ examinée
         for(unsigned int j = 0; j < this->getMotif().size(); j++)
         {//this->getMotif()[j] : index relatif des voisins par rapport à la case examinée
-            /*iExamine = IndexTab2D(0,0,dep.getTaille(),dep.getTaille());
-            iExamine += this->getMotif()[j];*/
             this->setVoisin(j,dep.getCellule(iExamine+this->getMotif()[j]));
         }
         unsigned int etat = baseToInt(std::vector<unsigned int>(this->getVoisinage(),this->getVoisinage()+this->nbVoisins()),dep.getValMax()+1);
