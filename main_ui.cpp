@@ -343,7 +343,6 @@ Fenetre_AutoDim1::Fenetre_AutoDim1(QMainWindow *MainWindow):Fenetre_Principale(M
 
     connect(bouton_generateur, SIGNAL(clicked()), this, SLOT(onGenerateurButtonClicked()));
     connect(Simulation, SIGNAL(clicked()), this, SLOT(onSimulationButtonClicked()));
-    connect(select_generateur, SIGNAL(activated(QString)), this, SLOT(set_Gen_options(QString)));
 
     QMetaObject::connectSlotsByName(MainWindow);
 }
@@ -374,194 +373,7 @@ void Fenetre_AutoDim1::Noms(QMainWindow *MainWindow)
     menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Enregistrement", 0));
 } // retranslateUi
 
-Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(MainWindow)
-{
-    /************************
-     *
-     * automate dimension 2
-     *
-     *
-     ************************/
 
-    select_type_automate->insertItem(select_type_automate->count(), "Jeu de la vie");
-
-    page_dim2 = new QWidget();
-    page_dim2->setObjectName(QString::fromUtf8("page_dim2"));
-    stacked_settings->addWidget(page_dim2);
-
-    layout_page_dim2 = new QVBoxLayout(page_dim2);
-    layout_page_dim2->setObjectName(QString::fromUtf8("layout_page_dim2"));
-    configuration_dim2 = new QGroupBox(page_dim2);
-    configuration_dim2->setObjectName(QString::fromUtf8("configuration_dim2"));
-    configuration_dim2->setMaximumSize(QSize(900, 400));
-    layout_config_dim2 = new QHBoxLayout(configuration_dim2);
-    layout_config_dim2->setObjectName(QString::fromUtf8("layout_config_dim2"));
-    regles_dim2 = new QHBoxLayout();
-    regles_dim2->setObjectName(QString::fromUtf8("regles_dim2"));
-
-    //règles de transition dim 2
-
-    regles_transition_dim2 = new QGroupBox(configuration_dim2);
-    regles_transition_dim2->setObjectName(QString::fromUtf8("regles_transition_dim2"));
-    regles_transition_dim2->setMaximumSize(QSize(1500, 300));
-    gridLayout = new QGridLayout(regles_transition_dim2);
-    gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
-
-    regles_creation_l = new QLabel(regles_transition_dim2);
-    regles_creation_l->setObjectName(QString::fromUtf8("regles_creation_l"));
-
-    gridLayout->addWidget(regles_creation_l, 1, 0, 1, 1);
-
-    voisins_n_l = new QLabel(regles_transition_dim2);
-    voisins_n_l->setObjectName(QString::fromUtf8("voisins_n_l"));
-    voisins_n_l->setMaximumSize(QSize(1500, 15));
-
-    gridLayout->addWidget(voisins_n_l, 0, 0, 1, 1);
-
-    regles_mort_l = new QLabel(regles_transition_dim2);
-    regles_mort_l->setObjectName(QString::fromUtf8("regles_mort_l"));
-
-    gridLayout->addWidget(regles_mort_l, 2, 0, 1, 1);
-
-    for(unsigned int i=0; i<8; i++)
-    {
-        voisins[i]=new QLabel(regles_transition_dim2);
-        gridLayout->addWidget(voisins[i],0,i+1,1,1);
-        voisins[i]->setObjectName(QString::fromUtf8("voisin").append(QString::number(i+1)));
-        voisins[i]->raise();
-        voisins[i]->setText(QApplication::translate("AutoCell LO21", QString::number(i+1).toUtf8(), 0));
-
-        vie[i]=new QCheckBox(regles_transition_dim2);
-        vie[i]->setObjectName(QString::fromUtf8("vie").append(QString::number(i+1)));
-        gridLayout->addWidget(vie[i],1,i+1,1,1);
-        vie[i]->raise();
-        vie[i]->setText(QString());
-
-        mort[i]=new QCheckBox(regles_transition_dim2);
-        mort[i]->setObjectName(QString::fromUtf8("mort").append(QString::number(i+1)));
-        gridLayout->addWidget(mort[i],2,i+1,1,1);
-        mort[i]->raise();
-        mort[i]->setText(QString());
-
-    }
-
-    voisins_n_l->raise();
-    regles_creation_l->raise();
-    regles_mort_l->raise();
-
-    regles_dim2->addWidget(regles_transition_dim2);
-
-
-    //générateur dim 2
-
-    generateur_dim2 = new QGroupBox(configuration_dim2);
-    generateur_dim2->setObjectName(QString::fromUtf8("generateur_dim2"));
-    generateur_dim2->setMaximumSize(QSize(1500, 300));
-
-    regles_dim2->addWidget(generateur_dim2);
-
-
-    layout_config_dim2->addLayout(regles_dim2);
-
-    select_generateur_dim2 = new QComboBox(generateur_dim2);
-    select_generateur_dim2->setMaximumSize(QSize(120, 20));
-    select_generateur_dim2_l=new QLabel("Génération");
-    layout_select_generateur_dim2 = new QHBoxLayout;
-    layout_select_generateur_dim2->addWidget(select_generateur_dim2_l);
-    layout_select_generateur_dim2->addWidget(select_generateur_dim2);
-
-    select_generateur_dim2->addItem(tr("Aléatoire"));
-    select_generateur_dim2->addItem(tr("Manuelle"));
-    select_generateur_dim2->addItem(tr("Symétrique"));
-
-
-    layout_page_dim2->addWidget(configuration_dim2);
-
-    layout_generateur_dim2 = new QVBoxLayout;
-    generateur_dim2->setLayout(layout_generateur_dim2);
-    layout_generateur_dim2->addLayout(layout_select_generateur_dim2);
-    nb_cases_dim2 = new QSpinBox();
-    nb_cases_dim2->setRange(2, 50);
-    nb_cases_dim2->setValue(30);
-    nb_cases_dim2->setMaximumWidth(100);
-    nb_cases_l_dim2 = new QLabel("Nombre de cases");
-    layout_cases_dim2 = new QHBoxLayout;
-    layout_cases_dim2->addWidget(nb_cases_l_dim2);
-    layout_cases_dim2->addWidget(nb_cases_dim2);
-    layout_generateur_dim2->addLayout(layout_cases_dim2);
-    nb_cases_dim2->setEnabled(false);
-
-    nb_transitions_dim2 = new QSpinBox();
-    nb_transitions_dim2->setRange(1, 50);
-    nb_transitions_dim2->setValue(10);
-    nb_transitions_dim2->setMaximumWidth(100);
-    nb_transitions_l_dim2 = new QLabel("Nombre de transitions");
-    layout_transitions_dim2 = new QHBoxLayout;
-    layout_transitions_dim2->addWidget(nb_transitions_l_dim2);
-    layout_transitions_dim2->addWidget(nb_transitions_dim2);
-    layout_generateur_dim2->addLayout(layout_transitions_dim2);
-    nb_transitions_dim2->setEnabled(false);
-
-    bouton_generateur_dim2 = new QPushButton;
-    bouton_generateur_dim2->setObjectName(QString::fromUtf8("bouton_generateur"));
-    bouton_generateur_dim2->setMinimumSize(QSize(0, 50));
-    bouton_generateur_dim2->setText(QApplication::translate("AutoCell LO21", "Générer", 0));
-    bouton_generateur_dim2->setMaximumSize(QSize(1500, 50));
-    layout_generateur_dim2->addWidget(bouton_generateur_dim2);
-    generateur_dim2->setLayout(layout_generateur_dim2);
-
-
-    //bouton simulation dim2
-
-
-    Simulation_dim2 = new QPushButton(page_dim2);
-    Simulation_dim2->setObjectName(QString::fromUtf8("Simulation_dim2"));
-    Simulation_dim2->setMinimumSize(QSize(0, 50));    Simulation_dim2->setMaximumSize(QSize(1500, 50));
-
-    layout_page_dim2->addWidget(Simulation_dim2);
-    stacked_settings->setCurrentIndex(0);
-
-    Noms(MainWindow);
-
-    //connexions
-
-    for(unsigned int i=0; i<8; ++i)
-    {
-        connect(vie[i], SIGNAL(toggled(bool)), mort[i], SLOT(setDisabled(bool)));
-        connect(mort[i], SIGNAL(toggled(bool)), vie[i], SLOT(setDisabled(bool)));
-    }
-
-    QMetaObject::connectSlotsByName(MainWindow);
-
-}
-
-void Fenetre_AutoDim2::Noms(QMainWindow *MainWindow)
-{
-    MainWindow->setWindowTitle(QApplication::translate("AutoCell LO21", "AutoCell LO21", 0));
-    actionEnregistrer->setText(QApplication::translate("AutoCell LO21", "Enregistrer", 0));
-    actionImporter->setText(QApplication::translate("AutoCell LO21", "Importer", 0));
-    type_automate->setTitle(QApplication::translate("AutoCell LO21", "S\303\251lectionner le type d'automate : ", 0));
-
-    const bool __sortingEnabled = select_type_automate->isSortingEnabled();
-    select_type_automate->setSortingEnabled(false);
-    //QListWidgetItem *___qlistwidgetitem1 = select_type_automate->item(select_type_automate->count());
-    //___qlistwidgetitem1->setText(QApplication::translate("AutoCell LO21", "Jeu de la vie", 0));
-    select_type_automate->setSortingEnabled(__sortingEnabled);
-
-    Affichage->setTitle(QApplication::translate("AutoCell LO21", "Affichage", 0));
-    aff_manuel->setText(QApplication::translate("AutoCell LO21", "Manuel", 0));
-    aff_auto->setText(QApplication::translate("AutoCell LO21", "Automatique", 0));
-    unite_temps_aff->setText(QApplication::translate("AutoCell LO21", "sec", 0));
-    configuration_dim2->setTitle(QApplication::translate("AutoCell LO21", "AutoCell LO21", 0));
-    regles_transition_dim2->setTitle(QApplication::translate("AutoCell LO21", "R\303\250gles de transition", 0));
-
-    regles_creation_l->setText(QApplication::translate("AutoCell LO21", "R\303\250gle de cr\303\251ation", 0));
-    voisins_n_l->setText(QApplication::translate("AutoCell LO21", "Nombre de voisins : ", 0));
-    regles_mort_l->setText(QApplication::translate("AutoCell LO21", "R\303\250gle de mort", 0));
-    generateur_dim2->setTitle(QApplication::translate("AutoCell LO21", "G\303\251n\303\251rateur", 0));
-    Simulation_dim2->setText(QApplication::translate("AutoCell LO21", "Lancer !", 0));
-    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Enregistrement", 0));
-} // retranslateUi
 
 void Fenetre_AutoDim1::onDimensionItemClicked(QListWidgetItem* item)
 {
@@ -570,20 +382,6 @@ void Fenetre_AutoDim1::onDimensionItemClicked(QListWidgetItem* item)
             actionEnregistrer->setEnabled(enregistrer_autodim1);
 
         }
-}
-
-void Fenetre_AutoDim2::onDimensionItemClicked(QListWidgetItem* item)
-{
-    if (select_type_automate->item(0) == item) {
-            stacked_settings->setCurrentIndex(0);
-            actionEnregistrer->setEnabled(enregistrer_autodim1);
-
-        }
-    else if(select_type_automate->item(1) == item)
-    {
-        stacked_settings->setCurrentIndex(1);
-        actionEnregistrer->setEnabled(enregistrer_autodim2);
-    }
 }
 
 void Fenetre_Principale::onAffichageButtonClicked(bool checked)
@@ -646,12 +444,15 @@ void Fenetre_AutoDim1::onGenerateurButtonClicked()
 
 void Fenetre_AutoDim1::onSimulationButtonClicked()
 {
-    new_Window_dim1 = new AutoCell(nullptr, dimension, nb_transitions->value(), num->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
-    new_Window_dim1->setEtatDepart(etat_depart_table);
-    new_Window_dim1->show();
-    if(!aff_manuel->isChecked())
+    if(stacked_settings->currentIndex()==0)
     {
-        new_Window_dim1->launchSimulationAuto();
+        new_Window_dim1 = new Window_Dim1(nullptr, dimension, nb_transitions->value(), num->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
+        new_Window_dim1->setEtatDepart(etat_depart_table);
+        new_Window_dim1->show();
+        if(!aff_manuel->isChecked())
+        {
+            new_Window_dim1->launchSimulationAuto();
+        }
     }
 }
 
@@ -848,29 +649,10 @@ void Fenetre_AutoDim1::onActionImporter()
 
 }
 
-void Fenetre_AutoDim1::set_Gen_options(QString index)
-{
-    if(index=="Manuelle")
-    {
-
-        nb_cases->setEnabled(true);
-
-    }
-    else if(index=="Aléatoire")
-    {
-        srand (time(NULL));
-        //nb_cases->setEnabled(false);
-        //nb_cases->setValue(rand()%(MAX_CASES-1)+1);
-
-    }
-    else if(index=="1 sur 2")
-    {
-        nb_cases->setEnabled(true);
-    }
-}
 
 void Fenetre_AutoDim1::Gen_aleatoire()
 {
+    srand(time(NULL));
     for(unsigned int counter = 0; counter < dimension; ++counter) {
         etat_depart_table->setColumnWidth(counter, taille);
         if(rand()%2)
@@ -913,4 +695,388 @@ void Fenetre_AutoDim1::Gen_Un_Sur_Deux()
     Simulation->setEnabled(true);
     enregistrer_autodim1=true;
     actionEnregistrer->setEnabled(enregistrer_autodim1);
+}
+
+Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(MainWindow)
+{
+    /************************
+     *
+     * automate dimension 2
+     *
+     *
+     ************************/
+
+    select_type_automate->insertItem(select_type_automate->count(), "Jeu de la vie");
+
+    page_dim2 = new QWidget();
+    page_dim2->setObjectName(QString::fromUtf8("page_dim2"));
+    stacked_settings->addWidget(page_dim2);
+
+    layout_page_dim2 = new QVBoxLayout(page_dim2);
+    layout_page_dim2->setObjectName(QString::fromUtf8("layout_page_dim2"));
+    configuration_dim2 = new QGroupBox(page_dim2);
+    configuration_dim2->setObjectName(QString::fromUtf8("configuration_dim2"));
+    configuration_dim2->setMaximumSize(QSize(900, 900));
+    layout_config_dim2 = new QVBoxLayout(configuration_dim2);
+    layout_config_dim2->setObjectName(QString::fromUtf8("layout_config_dim2"));
+    regles_dim2 = new QHBoxLayout();
+    regles_dim2->setObjectName(QString::fromUtf8("regles_dim2"));
+
+    //règles de transition dim 2
+
+    regles_transition_dim2 = new QGroupBox(configuration_dim2);
+    regles_transition_dim2->setObjectName(QString::fromUtf8("regles_transition_dim2"));
+    regles_transition_dim2->setMaximumSize(QSize(1500, 300));
+    gridLayout = new QGridLayout(regles_transition_dim2);
+    gridLayout->setObjectName(QString::fromUtf8("gridLayout"));
+
+    regles_creation_l = new QLabel(regles_transition_dim2);
+    regles_creation_l->setObjectName(QString::fromUtf8("regles_creation_l"));
+
+    gridLayout->addWidget(regles_creation_l, 1, 0, 1, 1);
+
+    voisins_n_l = new QLabel(regles_transition_dim2);
+    voisins_n_l->setObjectName(QString::fromUtf8("voisins_n_l"));
+    voisins_n_l->setMaximumSize(QSize(1500, 15));
+
+    gridLayout->addWidget(voisins_n_l, 0, 0, 1, 1);
+
+    regles_mort_l = new QLabel(regles_transition_dim2);
+    regles_mort_l->setObjectName(QString::fromUtf8("regles_mort_l"));
+
+    gridLayout->addWidget(regles_mort_l, 2, 0, 1, 1);
+
+    for(unsigned int i=0; i<8; i++)
+    {
+        voisins[i]=new QLabel(regles_transition_dim2);
+        gridLayout->addWidget(voisins[i],0,i+1,1,1);
+        voisins[i]->setObjectName(QString::fromUtf8("voisin").append(QString::number(i+1)));
+        voisins[i]->raise();
+        voisins[i]->setText(QApplication::translate("AutoCell LO21", QString::number(i+1).toUtf8(), 0));
+
+        vie[i]=new QCheckBox(regles_transition_dim2);
+        vie[i]->setObjectName(QString::fromUtf8("vie").append(QString::number(i+1)));
+        gridLayout->addWidget(vie[i],1,i+1,1,1);
+        vie[i]->raise();
+        vie[i]->setText(QString());
+
+        mort[i]=new QCheckBox(regles_transition_dim2);
+        mort[i]->setObjectName(QString::fromUtf8("mort").append(QString::number(i+1)));
+        gridLayout->addWidget(mort[i],2,i+1,1,1);
+        mort[i]->raise();
+        mort[i]->setText(QString());
+
+    }
+
+    voisins_n_l->raise();
+    regles_creation_l->raise();
+    regles_mort_l->raise();
+
+    regles_dim2->addWidget(regles_transition_dim2);
+
+
+    //générateur dim 2
+
+    generateur_dim2 = new QGroupBox(configuration_dim2);
+    generateur_dim2->setObjectName(QString::fromUtf8("generateur_dim2"));
+    generateur_dim2->setMaximumSize(QSize(1500, 300));
+
+    regles_dim2->addWidget(generateur_dim2);
+
+
+    layout_config_dim2->addLayout(regles_dim2);
+
+    select_generateur_dim2 = new QComboBox(generateur_dim2);
+    select_generateur_dim2->setMaximumSize(QSize(120, 20));
+    select_generateur_dim2_l=new QLabel("Génération");
+    layout_select_generateur_dim2 = new QHBoxLayout;
+    layout_select_generateur_dim2->addWidget(select_generateur_dim2_l);
+    layout_select_generateur_dim2->addWidget(select_generateur_dim2);
+
+    select_generateur_dim2->addItem(tr("Aléatoire"));
+    select_generateur_dim2->addItem(tr("Manuelle"));
+    select_generateur_dim2->addItem(tr("1 sur 2"));
+
+
+    layout_page_dim2->addWidget(configuration_dim2);
+
+    layout_generateur_dim2 = new QVBoxLayout;
+    generateur_dim2->setLayout(layout_generateur_dim2);
+    layout_generateur_dim2->addLayout(layout_select_generateur_dim2);
+    nb_cases_dim2 = new QSpinBox();
+    nb_cases_dim2->setRange(2, MAX_CASES);
+    nb_cases_dim2->setValue(30);
+    nb_cases_dim2->setMaximumWidth(100);
+    nb_cases_l_dim2 = new QLabel("Nombre de cases");
+    layout_cases_dim2 = new QHBoxLayout;
+    layout_cases_dim2->addWidget(nb_cases_l_dim2);
+    layout_cases_dim2->addWidget(nb_cases_dim2);
+    layout_generateur_dim2->addLayout(layout_cases_dim2);
+    nb_cases_dim2->setEnabled(true);
+
+    nb_transitions_dim2 = new QSpinBox();
+    nb_transitions_dim2->setRange(1, MAX_TRANSITIONS);
+    nb_transitions_dim2->setValue(10);
+    nb_transitions_dim2->setMaximumWidth(100);
+    nb_transitions_l_dim2 = new QLabel("Nombre de transitions");
+    layout_transitions_dim2 = new QHBoxLayout;
+    layout_transitions_dim2->addWidget(nb_transitions_l_dim2);
+    layout_transitions_dim2->addWidget(nb_transitions_dim2);
+    layout_generateur_dim2->addLayout(layout_transitions_dim2);
+    nb_transitions_dim2->setEnabled(true);
+
+    bouton_generateur_dim2 = new QPushButton;
+    bouton_generateur_dim2->setObjectName(QString::fromUtf8("bouton_generateur"));
+    bouton_generateur_dim2->setMinimumSize(QSize(0, 50));
+    bouton_generateur_dim2->setText(QApplication::translate("AutoCell LO21", "Générer", 0));
+    bouton_generateur_dim2->setMaximumSize(QSize(1500, 50));
+    layout_generateur_dim2->addWidget(bouton_generateur_dim2);
+    generateur_dim2->setLayout(layout_generateur_dim2);
+
+    //etat de départ dimension 2
+
+    layout_page_etat_0_dim2 = new QVBoxLayout;
+    aucun_etat_depart_dim2 = new QLabel("Générez/Importez un état de départ");
+    layout_page_etat_0_dim2->addWidget(aucun_etat_depart_dim2);
+    layout_page_etat_0_dim2->setAlignment(Qt::AlignHCenter);
+
+    layout_etat_depart_dim2 = new QVBoxLayout;
+    layout_etat_depart_dim2->setObjectName(QString::fromUtf8("layout_etat_depart_dim2"));
+
+    etat_depart_l_dim2 = new QLabel(configuration_dim2);
+    etat_depart_l_dim2->setObjectName(QString::fromUtf8("etat_depart_l_dim2"));
+    etat_depart_l_dim2->setMinimumSize(QSize(100, 20));
+    etat_depart_l_dim2->setMaximumSize(QSize(1500, 20));
+
+    layout_etat_depart_dim2->addWidget(etat_depart_l_dim2);
+
+    stacked_etat_depart_dim2 = new QStackedWidget;
+    stacked_etat_depart_dim2->setObjectName(QString::fromUtf8("stacked_etat_depart_dim2"));
+    stacked_etat_depart_dim2->setEnabled(true);
+    page_etat_0_dim2 = new QWidget();
+    page_etat_0_dim2->setObjectName(QString::fromUtf8("page_etat_0_dim2"));
+    page_etat_0_dim2->setLayout(layout_page_etat_0_dim2);
+    page_etat_1_dim2 = new QWidget();
+    page_etat_1_dim2->setObjectName(QString::fromUtf8("page_etat_1_dim2"));
+    layout_page_etat_1_dim2 = new QVBoxLayout;
+    page_etat_1_dim2->setLayout(layout_page_etat_1_dim2);
+    layout_page_etat_1_dim2->addWidget(etat_depart_l_dim2);
+    stacked_etat_depart_dim2->addWidget(page_etat_0_dim2);
+    stacked_etat_depart_dim2->addWidget(page_etat_1_dim2);
+    stacked_etat_depart_dim2->raise();
+    layout_page_dim2->addWidget(configuration_dim2);
+    layout_config_dim2->addWidget(stacked_etat_depart_dim2);
+
+    //bouton simulation dim2
+
+
+    Simulation_dim2 = new QPushButton(page_dim2);
+    Simulation_dim2->setObjectName(QString::fromUtf8("Simulation_dim2"));
+    Simulation_dim2->setMinimumSize(QSize(0, 50));    Simulation_dim2->setMaximumSize(QSize(1500, 50));
+
+    layout_page_dim2->addWidget(Simulation_dim2);
+    stacked_settings->setCurrentIndex(0);
+
+    Noms(MainWindow);
+
+    //connexions
+
+    connect(bouton_generateur_dim2, SIGNAL(clicked()), this, SLOT(onGenerateurButtonClicked()));
+    connect(Simulation_dim2, SIGNAL(clicked()), this, SLOT(onSimulationButtonClicked()));
+    for(unsigned int i=0; i<8; ++i)
+    {
+        connect(vie[i], SIGNAL(toggled(bool)), mort[i], SLOT(setDisabled(bool)));
+        connect(mort[i], SIGNAL(toggled(bool)), vie[i], SLOT(setDisabled(bool)));
+    }
+
+    QMetaObject::connectSlotsByName(MainWindow);
+
+}
+
+void Fenetre_AutoDim2::Noms(QMainWindow *MainWindow)
+{
+    MainWindow->setWindowTitle(QApplication::translate("AutoCell LO21", "AutoCell LO21", 0));
+    actionEnregistrer->setText(QApplication::translate("AutoCell LO21", "Enregistrer", 0));
+    actionImporter->setText(QApplication::translate("AutoCell LO21", "Importer", 0));
+    type_automate->setTitle(QApplication::translate("AutoCell LO21", "S\303\251lectionner le type d'automate : ", 0));
+
+    const bool __sortingEnabled = select_type_automate->isSortingEnabled();
+    select_type_automate->setSortingEnabled(false);
+    //QListWidgetItem *___qlistwidgetitem1 = select_type_automate->item(select_type_automate->count());
+    //___qlistwidgetitem1->setText(QApplication::translate("AutoCell LO21", "Jeu de la vie", 0));
+    select_type_automate->setSortingEnabled(__sortingEnabled);
+
+    Affichage->setTitle(QApplication::translate("AutoCell LO21", "Affichage", 0));
+    aff_manuel->setText(QApplication::translate("AutoCell LO21", "Manuel", 0));
+    aff_auto->setText(QApplication::translate("AutoCell LO21", "Automatique", 0));
+    unite_temps_aff->setText(QApplication::translate("AutoCell LO21", "sec", 0));
+    configuration_dim2->setTitle(QApplication::translate("AutoCell LO21", "Configuration", 0));
+    regles_transition_dim2->setTitle(QApplication::translate("AutoCell LO21", "R\303\250gles de transition", 0));
+
+    regles_creation_l->setText(QApplication::translate("AutoCell LO21", "R\303\250gle de cr\303\251ation", 0));
+    voisins_n_l->setText(QApplication::translate("AutoCell LO21", "Nombre de voisins : ", 0));
+    regles_mort_l->setText(QApplication::translate("AutoCell LO21", "R\303\250gle de mort", 0));
+    generateur_dim2->setTitle(QApplication::translate("AutoCell LO21", "G\303\251n\303\251rateur", 0));
+    Simulation_dim2->setText(QApplication::translate("AutoCell LO21", "Lancer !", 0));
+    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Enregistrement", 0));
+} // retranslateUi
+
+void Fenetre_AutoDim2::onDimensionItemClicked(QListWidgetItem* item)
+{
+    if (select_type_automate->item(0) == item) {
+            stacked_settings->setCurrentIndex(0);
+            actionEnregistrer->setEnabled(enregistrer_autodim1);
+
+        }
+    else if(select_type_automate->item(1) == item)
+    {
+        stacked_settings->setCurrentIndex(1);
+        actionEnregistrer->setEnabled(enregistrer_autodim2);
+    }
+}
+
+
+void Fenetre_AutoDim2::onSimulationButtonClicked()
+{
+    if(stacked_settings->currentIndex()==0)
+    {
+        new_Window_dim1 = new Window_Dim1(nullptr, dimension, nb_transitions->value(), num->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
+        new_Window_dim1->setEtatDepart(etat_depart_table);
+        new_Window_dim1->show();
+        if(!aff_manuel->isChecked())
+        {
+            new_Window_dim1->launchSimulationAuto();
+        }
+    }
+    else if(stacked_settings->currentIndex()==1)
+    {
+        new_Window_dim2 = new Window_Dim2(nullptr, dimension_dim2, nb_transitions_dim2->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
+        new_Window_dim2->setEtatDepart(etat_depart_table_dim2);
+        new_Window_dim2->show();
+        if(!aff_manuel->isChecked())
+        {
+            new_Window_dim2->launchSimulationAuto();
+        }
+    }
+}
+
+void Fenetre_AutoDim2::onGenerateurButtonClicked()
+{
+    if(page_dim2->findChild<QTableWidget*>("etat_depart_table_dim2"))//on teste si le tableau existe déjà
+    {
+        layout_page_etat_1_dim2->removeWidget(etat_depart_table_dim2);
+        delete etat_depart_table_dim2;
+    }
+    dimension_dim2=nb_cases_dim2->value();
+    etat_depart_table_dim2 = new QTableWidget(dimension_dim2, dimension_dim2); //
+    etat_depart_table_dim2->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
+    etat_depart_table_dim2->verticalHeader()->setVisible(true); // masque le header vertical
+    etat_depart_table_dim2->setMinimumHeight(std::min((int)300, (int)((int)dimension_dim2*(int)taille_dim2)));
+    etat_depart_table_dim2->setMaximumWidth(taille_dim2*dimension_dim2+2);
+    etat_depart_table_dim2->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
+    etat_depart_table_dim2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
+    // création des items du QTableWidget, initialisés à "" avec un fond blanc
+    //on initialise toutes les cases avec un symbole représentant une case à l'état 0, ici, c'est "", une chaîne vide.
+
+    for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
+        etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
+        for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
+            etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
+            etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
+            etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");//vide donc couleur = blanc
+            etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");//idem, on ne veut pas voir le texte à l'intérieur (même pas besoin car c'est une chaîne vide)
+        }
+    }
+
+
+    etat_depart_table_dim2->setParent(page_dim2);
+    layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
+    etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
+    connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+    if(select_generateur_dim2->currentText()==tr("Aléatoire"))
+    {
+        Gen_aleatoire();
+    }
+    else if(select_generateur_dim2->currentText()==tr("Manuelle"))
+    {
+        stacked_etat_depart_dim2->setCurrentIndex(1);
+        Simulation_dim2->setEnabled(true);
+        stacked_etat_depart_dim2->setCurrentIndex(1);
+        //enregistrer_auto_dim2=true;
+        //actionEnregistrer_dim2->setEnabled(enregistrer_autodim2);
+    }
+    else if(select_generateur_dim2->currentText()==tr("1 sur 2"))
+    {
+        Gen_Un_Sur_Deux();
+    }
+}
+
+void Fenetre_AutoDim2::cellActivation(QTableWidgetItem *index) {//méthode pour changer l'état
+    if (etat_depart_table_dim2->item(index->row(), index->column())->text() == "") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
+        etat_depart_table_dim2->item(index->row(), index->column())->setText("_");
+
+        etat_depart_table_dim2->item(index->row(), index->column())->setBackgroundColor("black");
+
+        etat_depart_table_dim2->item(index->row(), index->column())->setTextColor("black");
+    } else {//au contraire, on passe du noir au blanc si la cellule était vivante
+        etat_depart_table_dim2->item(index->row(), index->column())->setText("");
+
+        etat_depart_table_dim2->item(index->row(), index->column())->setBackgroundColor("white");
+
+        etat_depart_table_dim2->item(index->row(), index->column())->setTextColor("white");
+    }
+}
+
+void Fenetre_AutoDim2::Gen_aleatoire()
+{
+    srand(time(NULL));
+
+    for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
+        etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
+        for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
+            etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
+            if(rand()%2)
+            {
+                etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
+                etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");
+                etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");
+            }
+            else
+            {
+                etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem("_"));
+                etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("black");
+                etat_depart_table_dim2->item(counter, counter2)->setTextColor("black");
+            }
+        }
+    }
+    stacked_etat_depart_dim2->setCurrentIndex(1);
+    Simulation_dim2->setEnabled(true);
+    enregistrer_autodim2=true;
+    actionEnregistrer->setEnabled(enregistrer_autodim2);
+}
+
+void Fenetre_AutoDim2::Gen_Un_Sur_Deux()
+{
+    for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
+        etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
+        for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
+            etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
+            if((counter+counter2)%2)
+            {
+                etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
+                etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");
+                etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");
+            }
+            else
+            {
+                etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem("_"));
+                etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("black");
+                etat_depart_table_dim2->item(counter, counter2)->setTextColor("black");
+            }
+        }
+    }
+    stacked_etat_depart_dim2->setCurrentIndex(1);
+    Simulation_dim2->setEnabled(true);
+    enregistrer_autodim2=true;
+    actionEnregistrer->setEnabled(enregistrer_autodim2);
 }

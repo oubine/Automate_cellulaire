@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     QMainWindow *main = new QMainWindow;
-
+    /*
     Etat2D e(20,1);
     e.setCellule(IndexTab2D(0,2,20,20),1);
     e.setCellule(IndexTab2D(1,2,20,20),1);
@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
         e = e2;
         std::cout<<e<<"\n";
     }
-
+    */
 
     Fenetre_AutoDim1* fendim1 = new Fenetre_AutoDim1(main);
     Fenetre_AutoDim2* fendim2 = new Fenetre_AutoDim2(main);
