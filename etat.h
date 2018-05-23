@@ -38,7 +38,7 @@ public:
     virtual void setCellule(unsigned int index, unsigned int val);
     void setCellule(const Index& i, unsigned int val) {this->setCellule(i.getIndex(),val);}
     virtual unsigned int getCellule(unsigned int index) const;
-    unsigned int getCellule(const Index& i) { return this->getCellule(i.getIndex());}
+    unsigned int getCellule(const Index& i) const { return this->getCellule(i.getIndex());}
     unsigned int size() const {return (unsigned int) pow(taille,dimension);}
 };
 
@@ -47,22 +47,12 @@ class Etat1D : public Etat
 {
 public:
     Etat1D(unsigned int taille, unsigned int valMax): Etat(taille,1,valMax){}
-    /*void setCellule(unsigned int i, unsigned int val);
-    void setCellule(IndexTab1D &i, unsigned int val){this->setCellule(i.getIndex(),val);}
-    unsigned int getCellule(unsigned int i) const;
-    unsigned int getCellule(IndexTab1D &i) const {return this->getCellule(i.getIndex());}
-*/
 };
 
 class Etat2D : public Etat
 {
 public:
     Etat2D(unsigned int taille, unsigned int valMax): Etat(taille,2,valMax){}
-    /*void setCellule(unsigned int index, unsigned int val);
-    void setCellule(IndexTab2D i, unsigned int val){this->setCellule(i.getIndex(),val);}
-    unsigned int getCellule(unsigned int i) const;
-    unsigned int getCellule(Index1D i) const {return this->getCellule(i.getIndex());}
-*/
 };
 
 std::ostream& operator<<(std::ostream& f, const Etat& e);

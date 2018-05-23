@@ -9,7 +9,7 @@ void Automate1D::appliquerTransition(const Etat& dep, Etat& dest) {
     {//iExamine : index de la case de l'état de départ examinée
         for(unsigned int j = 0; j < this->getMotif().size(); j++)
         {//this->getMotif()[j] : index relatif des voisins par rapport à la case examinée
-            this->setVoisin(j,dep.getCellule((iExamine+this->getMotif()[j]).getIndex()));
+            this->setVoisin(j,dep.getCellule(iExamine+this->getMotif()[j]));
         }
         unsigned int etat = baseToInt(std::vector<unsigned int>(this->getVoisinage(),this->getVoisinage()+this->nbVoisins()),dep.getValMax()+1);
         dest.setCellule(i, this->getRegleTransition()[this->getRegleTransition().size()-1-etat]);

@@ -15,7 +15,7 @@ void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
         {//this->getMotif()[j] : index relatif des voisins par rapport à la case examinée
             /*iExamine = IndexTab2D(0,0,dep.getTaille(),dep.getTaille());
             iExamine += this->getMotif()[j];*/
-            this->setVoisin(j,dep.getCellule((iExamine+this->getMotif()[j]).getIndex()));
+            this->setVoisin(j,dep.getCellule(iExamine+this->getMotif()[j]));
         }
         unsigned int etat = baseToInt(std::vector<unsigned int>(this->getVoisinage(),this->getVoisinage()+this->nbVoisins()),dep.getValMax()+1);
         dest.setCellule(i, this->getRegleTransition()[this->getRegleTransition().size()-1-etat]);

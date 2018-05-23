@@ -47,12 +47,10 @@ public:
     IndexTab1D operator++(int){IndexTab1D temp = *this; ++*this; return temp;}//i++
     IndexTab1D& operator--(){this->setIndex(this->getIndex()-1); return *this;}//--i
     IndexTab1D operator--(int){IndexTab1D temp = *this; --*this; return temp;}//i--
-    IndexTab1D operator+(const IndexTab1D& j){IndexTab1D k = *this; return k += j;}
-    IndexTab1D operator+(const std::vector<int>& j){IndexTab1D k = *this; return k += j;}
-    IndexTab1D operator+(const int& j){IndexTab1D k = *this; return k += j;}
-    IndexTab1D operator-(const IndexTab1D& j){IndexTab1D k = *this; return k-=j;}
-    IndexTab1D operator-(const std::vector<int>& j){IndexTab1D k = *this; return k -= j;}
-    IndexTab1D operator-(const int& j){IndexTab1D k = *this; return k-=j;}
+    template<typename T>
+    IndexTab1D operator+(const T& j){IndexTab1D k = *this; return k += j;}
+    template<typename T>
+    IndexTab1D operator-(const T& j){IndexTab1D k = *this; return k-=j;}
 };
 
 
@@ -94,12 +92,10 @@ public:
     IndexTab2D& operator-=(const IndexTab2D& index){i -= index.getI(); j -= index.getJ(); return *this;}
     IndexTab2D& operator-=(const int& k){this->setIndex(this->getIndex()-k); return *this;}
     IndexTab2D& operator-=(const std::vector<int>& v);
-    IndexTab2D operator+(const IndexTab2D& j){IndexTab2D k = *this; return k += j;}
-    IndexTab2D operator+(const int j){IndexTab2D k = *this; return k += j;}
-    IndexTab2D operator-(const IndexTab2D& j){IndexTab2D k = *this; return k-=j;}
-    IndexTab2D operator-(const int& j){IndexTab2D k = *this; return k-=j;}
-    IndexTab2D operator+(const std::vector<int>& v){IndexTab2D a = *this; return a+=v;}
-    IndexTab2D operator-(const std::vector<int>& v){IndexTab2D a = *this; return a -= v;}
+    template<typename T>
+    IndexTab2D operator+(const T& j){IndexTab2D k = *this; return k += j;}
+    template<typename T>
+    IndexTab2D operator-(const T& j){IndexTab2D k = *this; return k-=j;}
 };
 
 
