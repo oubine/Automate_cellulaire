@@ -29,9 +29,9 @@ int main(int argc, char *argv[])
         std::cout<<e<<"\n";
     }
     */
-
     Fenetre_AutoDim1* fendim1 = new Fenetre_AutoDim1(main);
-    Fenetre_AutoDim2* fendim2 = new Fenetre_AutoDim2(main);
+     Fenetre_AutoDim2* fendim2 = new Fenetre_AutoDim2(main);
+
     std::cout << typeid(fendim1).name() << " , "<<typeid(fendim2).name()<<"\n";
     main->show();
     //AutoCell autoc;

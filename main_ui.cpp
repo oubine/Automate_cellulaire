@@ -991,7 +991,7 @@ void Fenetre_AutoDim2::onGenerateurButtonClicked()
     etat_depart_table_dim2->setParent(page_dim2);
     layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
     etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
-    connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+    connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation2(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
     if(select_generateur_dim2->currentText()==tr("Aléatoire"))
     {
         Gen_aleatoire();
@@ -1010,7 +1010,7 @@ void Fenetre_AutoDim2::onGenerateurButtonClicked()
     }
 }
 
-void Fenetre_AutoDim2::cellActivation(QTableWidgetItem *index) {//méthode pour changer l'état
+void Fenetre_AutoDim2::cellActivation2(QTableWidgetItem *index) {//méthode pour changer l'état
     if (etat_depart_table_dim2->item(index->row(), index->column())->text() == "") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
         etat_depart_table_dim2->item(index->row(), index->column())->setText("_");
 
