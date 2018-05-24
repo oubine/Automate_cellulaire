@@ -12,7 +12,7 @@ void Automate1D::appliquerTransition(const Etat& dep, Etat& dest) {
             this->setVoisin(j,dep.getCellule(iExamine+this->getMotif()[j]));
         }
         unsigned int etat = baseToInt(std::vector<unsigned int>(this->getVoisinage(),this->getVoisinage()+this->nbVoisins()),dep.getValMax()+1);
-        dest.setCellule(i, this->getRegleTransition()[this->getRegleTransition().size()-1-etat]);
+        dest.setCellule(i, this->getRegleTransition()->getValeur(etat));
         iExamine++;
     }
 }

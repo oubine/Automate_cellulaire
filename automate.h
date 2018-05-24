@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include "intervalleabr.h"
 #include "etat.h"
 #include "motif.h"
 
@@ -45,14 +46,14 @@ en utilisant - la méthode setMotif et le constructeur Automate(regle)
 class Automate //classe abstraite
 {
 protected:
-    std::vector<unsigned int> regleTransition;
+    IntervalleABR* regleTransition;
     std::vector<std::vector<int>> motif; //si automate1D la deuxième couche de vector ne contient qu'un seul élément
     unsigned int *valVoisinage;
     //constructeurs / destructeurs
-    virtual ~Automate(){delete[] valVoisinage;}
+    virtual ~Automate(){delete[] valVoisinage; delete regleTransition;}
     Automate();
-    Automate(std::vector<unsigned int> regle) : regleTransition(regle),valVoisinage(nullptr){}
-    Automate(std::vector<unsigned int> regle,std::vector<std::vector<int>> motif) : regleTransition(regle), motif(motif), valVoisinage(new unsigned int[motif.size()]){}
+    Automate(std::vector<unsigned int> regle) : regleTransition(compresserRegleTransition(regle)),valVoisinage(nullptr){}
+    Automate(std::vector<unsigned int> regle,std::vector<std::vector<int>> motif) : regleTransition(compresserRegleTransition(regle)), motif(motif), valVoisinage(new unsigned int[motif.size()]){}
     Automate(const Automate& a);
     Automate& operator=(const Automate& a);
     friend class AutomateManager;
@@ -65,12 +66,14 @@ public:
     unsigned int getVoisin(int i) const {return valVoisinage[i];}
     unsigned int* getVoisinage() {return valVoisinage;}
     unsigned int nbVoisins() {return motif.size();}
-    std::vector<unsigned int> getRegleTransition() const {return regleTransition;}
+    IntervalleABR* getRegleTransition() const {return regleTransition;}
+
 };
 
 
 std::vector<unsigned int> intToBase(unsigned int val, unsigned int base);
 unsigned int baseToInt(const std::vector<unsigned int>& nb, unsigned int base);
+
 
 
 

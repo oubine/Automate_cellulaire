@@ -716,7 +716,7 @@ Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(Mai
     layout_page_dim2->setObjectName(QString::fromUtf8("layout_page_dim2"));
     configuration_dim2 = new QGroupBox(page_dim2);
     configuration_dim2->setObjectName(QString::fromUtf8("configuration_dim2"));
-    configuration_dim2->setMaximumSize(QSize(900, 900));
+    configuration_dim2->setMaximumSize(QSize(900, 400));
     layout_config_dim2 = new QVBoxLayout(configuration_dim2);
     layout_config_dim2->setObjectName(QString::fromUtf8("layout_config_dim2"));
     regles_dim2 = new QHBoxLayout();

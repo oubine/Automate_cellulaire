@@ -1,7 +1,6 @@
 #include "automate.h"
 
 
-
 std::vector<unsigned int> intToBase(unsigned int val, unsigned int base)
 {
     if(val == 0) return std::vector<unsigned int> {0};
@@ -25,3 +24,5 @@ unsigned int baseToInt(const std::vector<unsigned int>& nb, unsigned int base)
     }
     return resultat/base;
 }
+
+

@@ -2,10 +2,13 @@
 #include "etat.h"
 #include <math.h>
 #include <algorithm>
+#include <ctime>
 
 
 void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
 {
+    clock_t startTime = clock();
+
     if (this->getMotif().size() == 0) throw AutomateException("Motif non défini");
     if (dep.getTaille() != dest.getTaille()) dest = dep;
     auto iExamine = IndexTab2D(0,0,dep.getTaille(),dep.getTaille());
@@ -16,9 +19,10 @@ void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
             this->setVoisin(j,dep.getCellule(iExamine+this->getMotif()[j]));
         }
         unsigned int etat = baseToInt(std::vector<unsigned int>(this->getVoisinage(),this->getVoisinage()+this->nbVoisins()),dep.getValMax()+1);
-        dest.setCellule(i, this->getRegleTransition()[this->getRegleTransition().size()-1-etat]);
+        dest.setCellule(i, this->getRegleTransition()->getValeur(etat));
         iExamine++;
     }
+    std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
 }
 
 std::vector<unsigned int> fromRegleNaissMortToRegleTransition(std::vector<short int> regleNaissMort)

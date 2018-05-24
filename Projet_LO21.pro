@@ -15,7 +15,8 @@ HEADERS += \
     index.h \
     automate1d.h \
     automate2d.h \
-    Window.h
+    Window.h \
+    intervalleabr.h
 
 SOURCES += \
     main.cpp \
@@ -28,4 +29,5 @@ SOURCES += \
     index.cpp \
     automate1d.cpp \
     automate2d.cpp \
-    Window.cpp
+    Window.cpp \
+    intervalleabr.cpp
