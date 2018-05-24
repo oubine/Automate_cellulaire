@@ -768,6 +768,7 @@ Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(Mai
 
     }
 
+
     voisins_n_l->raise();
     regles_creation_l->raise();
     regles_mort_l->raise();
@@ -888,7 +889,14 @@ Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(Mai
         connect(vie[i], SIGNAL(toggled(bool)), mort[i], SLOT(setDisabled(bool)));
         connect(mort[i], SIGNAL(toggled(bool)), vie[i], SLOT(setDisabled(bool)));
     }
-
+    mort[0]->setChecked(true);
+    mort[1]->setChecked(true);
+    vie[3]->setChecked(true);
+    mort[4]->setChecked(true);
+    mort[5]->setChecked(true);
+    mort[6]->setChecked(true);
+    mort[7]->setChecked(true);
+    Simulation_dim2->setEnabled(false);
     QMetaObject::connectSlotsByName(MainWindow);
 
 }
@@ -950,7 +958,14 @@ void Fenetre_AutoDim2::onSimulationButtonClicked()
     }
     else if(stacked_settings->currentIndex()==1)
     {
-        new_Window_dim2 = new Window_Dim2(nullptr, dimension_dim2, nb_transitions_dim2->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
+        int tab_regle[8];
+        for(unsigned int i=0; i<8;++i)
+        {
+            tab_regle[i]=1+vie[i]->isChecked();
+            tab_regle[i]-=mort[i]->isChecked();
+        }
+        new_Window_dim2 = new Window_Dim2(nullptr, dimension_dim2, nb_transitions_dim2->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000,
+                                          std::vector<short int>(tab_regle, tab_regle + sizeof(tab_regle) / sizeof tab_regle[0]));
         new_Window_dim2->setEtatDepart(etat_depart_table_dim2);
         new_Window_dim2->show();
         if(!aff_manuel->isChecked())
