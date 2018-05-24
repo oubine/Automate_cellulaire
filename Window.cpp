@@ -315,8 +315,8 @@ Window_Dim2::Window_Dim2(QWidget *parent) : QWidget(parent),taille(10) {
     setLayout(couche);//on définit l'environnement global
 }
 
-Window_Dim2::Window_Dim2(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff) :
-    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(10) {
+Window_Dim2::Window_Dim2(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff, std::vector<short int> regle) :
+    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(15),regle(regle) {
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
@@ -419,7 +419,7 @@ void Window_Dim2::launchSimulation() {//méthode pour lancer la simulation
     // on récupère l'automate correspondant au numéro de l'interface graphique, en utilisant l'AutomateManager
     // à noter, il n'est pas nécessaire d'instancier un objet AutomateManager, comme il s'agit d'un singleton,
     // on peut considérer que l'objet existe déjà dans le système
-    VarianteJeuDeLaVie a({0,0,1,2,0,0,0,0,0});
+    VarianteJeuDeLaVie a(regle);
     // on construit l'objet simulateur correspondant
     //Simulateur sim(a, e, dimension);
     // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique
@@ -447,7 +447,7 @@ void Window_Dim2::onSuivantButtonClicked()
     // à noter, il n'est pas nécessaire d'instancier un objet AutomateManager, comme il s'agit d'un singleton,
     // on peut considérer que l'objet existe déjà dans le système
     // on construit l'objet simulateur correspondant
-    VarianteJeuDeLaVie a({0,0,1,2,0,0,0,0,0});
+    VarianteJeuDeLaVie a(regle);
     if(transition_courante<nb_transitions)
     {
         transition_courante++;
@@ -497,7 +497,7 @@ void Window_Dim2::launchSimulationAuto() {//méthode pour lancer la simulation
     // on construit l'objet simulateur correspondant
     // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique
     QEventLoop loop2;
-    VarianteJeuDeLaVie a({0,0,1,2,0,0,0,0,0});
+    VarianteJeuDeLaVie a(regle);
     connect(this,SIGNAL(is_play()), &loop2, SLOT(quit()));
 
     for(unsigned int step = 0; step < nb_transitions; ++step) {

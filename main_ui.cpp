@@ -584,14 +584,6 @@ void Fenetre_AutoDim1::onActionImporter()
             //QMessageBox::information(NULL, "Transitions", e.tagName());
 
             select_generateur->setCurrentIndex(e.attribute("generation").toInt());
-            if(select_generateur->currentText()==tr("Aléatoire"))
-            {
-                nb_cases->setEnabled(false);
-            }
-            else
-            {
-                nb_cases->setEnabled(true);
-            }
 
             n=n.nextSibling();
             e=n.toElement();
@@ -768,6 +760,7 @@ Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(Mai
 
     }
 
+
     voisins_n_l->raise();
     regles_creation_l->raise();
     regles_mort_l->raise();
@@ -888,7 +881,14 @@ Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(Mai
         connect(vie[i], SIGNAL(toggled(bool)), mort[i], SLOT(setDisabled(bool)));
         connect(mort[i], SIGNAL(toggled(bool)), vie[i], SLOT(setDisabled(bool)));
     }
-
+    mort[0]->setChecked(true);
+    mort[1]->setChecked(true);
+    vie[3]->setChecked(true);
+    mort[4]->setChecked(true);
+    mort[5]->setChecked(true);
+    mort[6]->setChecked(true);
+    mort[7]->setChecked(true);
+    Simulation_dim2->setEnabled(false);
     QMetaObject::connectSlotsByName(MainWindow);
 
 }
@@ -950,7 +950,14 @@ void Fenetre_AutoDim2::onSimulationButtonClicked()
     }
     else if(stacked_settings->currentIndex()==1)
     {
-        new_Window_dim2 = new Window_Dim2(nullptr, dimension_dim2, nb_transitions_dim2->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
+        int tab_regle[8];
+        for(unsigned int i=0; i<8;++i)
+        {
+            tab_regle[i]=1+vie[i]->isChecked();
+            tab_regle[i]-=mort[i]->isChecked();
+        }
+        new_Window_dim2 = new Window_Dim2(nullptr, dimension_dim2, nb_transitions_dim2->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000,
+                                          std::vector<short int>(tab_regle, tab_regle + sizeof(tab_regle) / sizeof tab_regle[0]));
         new_Window_dim2->setEtatDepart(etat_depart_table_dim2);
         new_Window_dim2->show();
         if(!aff_manuel->isChecked())
@@ -1078,4 +1085,320 @@ void Fenetre_AutoDim2::Gen_Un_Sur_Deux()
     Simulation_dim2->setEnabled(true);
     enregistrer_autodim2=true;
     actionEnregistrer->setEnabled(enregistrer_autodim2);
+}
+
+void Fenetre_AutoDim2::onActionEnregistrer()
+{
+    if(stacked_settings->currentIndex()==0)//dans le cas des automates de dimension 1
+    {
+
+        QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_1/")));
+        QDir dir;
+        fichier = new QFileDialog;
+        //fichier->setDefaultSuffix(QString::fromUtf8("txt"));
+        if(!dir.exists(path))
+        {
+            dir.mkpath(path);
+        }
+
+        QString nom_fichier = fichier->getSaveFileName(centralwidget,
+                                 QString::fromUtf8("Enregistrement de configuration"),
+                                 path);
+
+        if((nom_fichier.split(".").count()==1))
+        {
+            nom_fichier.append(".xml");
+        }
+
+        QFile file(nom_fichier);
+        if ((file.open(QIODevice::ReadWrite)))
+        {
+            QDomDocument dom(nom_fichier.split("/").last());
+
+            QTextStream stream(&file);
+
+            //QDomElement base = dom.documentElement();
+            QDomElement root = dom.createElement("root");
+            dom.appendChild(root);
+
+            QDomElement regles = dom.createElement("Regles");
+            regles.setAttribute("numero", num->value());
+            root.appendChild(regles);//On associe write_elem à domElem.
+
+            QDomElement generator = dom.createElement("Generateur");
+            generator.setAttribute("nb_cases", nb_cases->value());
+            generator.setAttribute("nb_transitions", nb_transitions->value());
+            generator.setAttribute("generation", select_generateur->currentIndex());
+            root.appendChild(generator);
+
+            QDomElement etat_dep = dom.createElement("Etat_depart");
+            root.appendChild(etat_dep);
+
+            QDomElement etats_dep[nb_cases->value()];
+            for(int i=0; i<nb_cases->value(); i++)
+            {
+                etats_dep[i] = dom.createElement("Etat"+QString::number(i));
+                etats_dep[i].setAttribute("active", etat_depart_table->item(0,i)->text()=="_");
+                etat_dep.appendChild(etats_dep[i]);
+            }
+
+            QString write_doc = dom.toString();
+            stream << write_doc;
+
+            file.close();
+        }
+    }
+
+    else if(stacked_settings->currentIndex()==1)//dans le cas du jeu de la vie
+    {
+
+        QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_2/")));
+        QDir dir;
+        fichier = new QFileDialog;
+        //fichier->setDefaultSuffix(QString::fromUtf8("txt"));
+        if(!dir.exists(path))
+        {
+            dir.mkpath(path);
+        }
+
+        QString nom_fichier = fichier->getSaveFileName(centralwidget,
+                                 QString::fromUtf8("Enregistrement de configuration"),
+                                 path);
+
+        if((nom_fichier.split(".").count()==1))
+        {
+            nom_fichier.append(".xml");
+        }
+
+        QFile file(nom_fichier);
+        if ((file.open(QIODevice::ReadWrite)))
+        {
+            QDomDocument dom(nom_fichier.split("/").last());
+
+            QTextStream stream(&file);
+
+            //QDomElement base = dom.documentElement();
+            QDomElement root = dom.createElement("root");
+            dom.appendChild(root);
+
+            QDomElement regles_root = dom.createElement("Regles");
+            QDomElement regles[8];
+            for(unsigned int i=0; i<8; ++i)
+            {
+                regles[i] = dom.createElement("Voisin"+QString::number(i+1));
+                regles[i].setAttribute("vie", vie[i]->isChecked());
+                regles[i].setAttribute("mort", mort[i]->isChecked());
+                regles_root.appendChild(regles[i]);
+            }
+            root.appendChild(regles_root);
+
+            QDomElement generator = dom.createElement("Generateur");
+            generator.setAttribute("nb_cases", nb_cases_dim2->value());
+            generator.setAttribute("nb_transitions", nb_transitions_dim2->value());
+            generator.setAttribute("generation", select_generateur_dim2->currentIndex());
+            root.appendChild(generator);
+
+            QDomElement etat_dep = dom.createElement("Etat_depart");
+            root.appendChild(etat_dep);
+
+            QDomElement etats_dep[dimension_dim2][dimension_dim2];
+            for(unsigned int i=0; i<dimension_dim2; ++i)
+            {
+                for(unsigned int j=0; j<dimension_dim2; ++j)
+                {
+                    etats_dep[i][j] = dom.createElement("Case"+QString::number(i)+tr("-")+QString::number(j));
+                    etats_dep[i][j].setAttribute("ligne", i);
+                    etats_dep[i][j].setAttribute("colonne", j);
+                    etats_dep[i][j].setAttribute("active", etat_depart_table_dim2->item(i,j)->text()=="_");
+                    etat_dep.appendChild(etats_dep[i][j]);
+                }
+            }
+
+            QString write_doc = dom.toString();
+            stream << write_doc;
+
+            file.close();
+        }
+    }
+}
+
+void Fenetre_AutoDim2::onActionImporter()
+{
+    if(stacked_settings->currentIndex()==0)//dans le cas des automates de dimension 1
+    {
+        fichier = new QFileDialog;
+        QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_1/")));
+        QString nom_fichier = fichier->getOpenFileName(centralwidget,
+                                 QString::fromUtf8("Import de configuration"),
+                                 path);
+
+        QDomDocument dom;
+        QFile file(nom_fichier);
+
+        if ((file.open(QIODevice::ReadOnly)) && (dom.setContent(&file)))
+        {
+            QDomElement docElem = dom.documentElement();
+            QDomNode n = docElem.firstChild();
+            QDomElement e = n.toElement();
+
+            //QMessageBox::information(NULL, "Information", e.tagName());
+            num->setValue(e.attribute("numero").toInt());
+
+            n=n.nextSibling();
+            e=n.toElement();
+            nb_cases->setValue(e.attribute("nb_cases").toInt());
+            //QMessageBox::information(NULL, "Information", e.tagName());
+
+            nb_transitions->setValue(e.attribute("nb_transitions").toInt());
+            //QMessageBox::information(NULL, "Transitions", e.tagName());
+
+            select_generateur->setCurrentIndex(e.attribute("generation").toInt());
+
+            n=n.nextSibling();
+            e=n.toElement();
+
+            n=e.firstChild();
+            e=n.toElement();
+
+            //QMessageBox::information(NULL, "Etat", e.tagName());
+
+            if(page_dim1->findChild<QTableWidget*>("etat_depart_table"))//on teste si le tableau existe déjà
+            {
+                layout_page_etat_1->removeWidget(etat_depart_table);
+                delete etat_depart_table;
+            }
+
+            dimension=nb_cases->value();
+
+            etat_depart_table = new QTableWidget(1, dimension); //
+            etat_depart_table->setFixedHeight(taille+40); // largeur = nombre_cellules*taille_cellule, hauteur = taille_cellule
+            etat_depart_table->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
+            etat_depart_table->verticalHeader()->setVisible(false); // masque le header vertical
+            etat_depart_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // désactive la scroll barre vertical
+            etat_depart_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn); // désactive la scroll barre horizontal
+
+            for(unsigned int counter = 0; counter < dimension; ++counter) {
+                etat_depart_table->setColumnWidth(counter, taille);
+                if(e.attribute("active").toUInt())
+                {
+                    etat_depart_table->setItem(0, counter, new QTableWidgetItem("_"));
+                    etat_depart_table->item(0, counter)->setBackgroundColor("black");
+                    etat_depart_table->item(0, counter)->setTextColor("black");
+                }
+                else
+                {
+                    etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
+                    etat_depart_table->item(0, counter)->setBackgroundColor("white");
+                    etat_depart_table->item(0, counter)->setTextColor("white");
+                }
+                n=n.nextSibling();
+                e=n.toElement();
+            }
+
+            etat_depart_table->setParent(page_dim1);
+            layout_page_etat_1->addWidget(etat_depart_table);
+            etat_depart_table->setObjectName(QString::fromUtf8("etat_depart_table"));
+            connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+            stacked_etat_depart->setCurrentIndex(1);
+            Simulation->setEnabled(true);
+            enregistrer_autodim1=true;
+            actionEnregistrer->setEnabled(enregistrer_autodim1);
+
+            file.close();
+        }
+    }
+    else if(stacked_settings->currentIndex()==1)//dans le cas du jeu de la vie
+    {
+        fichier = new QFileDialog;
+        QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_2/")));
+        QString nom_fichier = fichier->getOpenFileName(centralwidget,
+                                 QString::fromUtf8("Import de configuration"),
+                                 path);
+
+        QDomDocument dom;
+        QFile file(nom_fichier);
+
+        if ((file.open(QIODevice::ReadOnly)) && (dom.setContent(&file)))
+        {
+            QDomElement docElem = dom.documentElement();
+            QDomNode n = docElem.firstChild();
+            QDomElement e = n.firstChild().toElement();
+
+            for(unsigned int i=0; i<8; ++i)
+            {
+                vie[i]->setChecked(e.attribute("vie").toUInt());
+                mort[i]->setChecked(e.attribute("mort").toUInt());
+                e=e.nextSiblingElement();
+            }
+
+            n=n.nextSibling();
+            e=n.toElement();
+
+            //QMessageBox::information(NULL, "Generateur", e.tagName());
+
+            nb_cases_dim2->setValue(e.attribute("nb_cases").toInt());
+
+            nb_transitions_dim2->setValue(e.attribute("nb_transitions").toInt());
+            //QMessageBox::information(NULL, "Transitions", e.tagName());
+
+            select_generateur_dim2->setCurrentIndex(e.attribute("generation").toInt());
+
+            n=e.nextSibling();
+            n=n.firstChild();
+            e=n.toElement();
+
+            //QMessageBox::information(NULL, "Etat_depart", e.tagName());
+
+            if(page_dim2->findChild<QTableWidget*>("etat_depart_table_dim2"))//on teste si le tableau existe déjà
+            {
+                layout_page_etat_1_dim2->removeWidget(etat_depart_table_dim2);
+                delete etat_depart_table_dim2;
+            }
+
+            dimension_dim2=nb_cases_dim2->value();
+            etat_depart_table_dim2 = new QTableWidget(dimension_dim2, dimension_dim2); //
+            etat_depart_table_dim2->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
+            etat_depart_table_dim2->verticalHeader()->setVisible(true); // masque le header vertical
+            etat_depart_table_dim2->setMinimumHeight(std::min((int)300, (int)((int)dimension_dim2*(int)taille_dim2)));
+            etat_depart_table_dim2->setMaximumWidth(taille_dim2*dimension_dim2+2);
+            etat_depart_table_dim2->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
+            etat_depart_table_dim2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
+
+
+            for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
+                etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
+                for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
+                    if(e.attribute("active").toUInt())
+                    {
+                        etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
+                        etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem("_"));
+                        etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("black");
+                        etat_depart_table_dim2->item(counter, counter2)->setTextColor("black");
+                    }
+                    else
+                    {
+                        etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
+                        etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
+                        etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");
+                        etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");
+                    }
+                    n=n.nextSibling();
+                    e=n.toElement();
+                }
+            }
+
+
+            etat_depart_table_dim2->setParent(page_dim2);
+            layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
+            etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
+            connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation2(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+            stacked_etat_depart_dim2->setCurrentIndex(1);
+            Simulation_dim2->setEnabled(true);
+            enregistrer_autodim2=true;
+            actionEnregistrer->setEnabled(enregistrer_autodim2);
+
+            file.close();
+        }
+    }
+
 }

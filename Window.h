@@ -22,7 +22,7 @@ Q_OBJECT
     QHBoxLayout* layout_boutons;
     QVBoxLayout* layout_numero;
     QGroupBox* boutons;
-    // Question 3
+
     QTableWidget* etats;
     unsigned int dimension;
     QLabel  *numero;
@@ -71,14 +71,13 @@ Q_OBJECT
     QHBoxLayout* layout_boutons;
     QVBoxLayout* layout_numero;
     QGroupBox* boutons;
-    // Question 3
+
     QTableWidget* etats;
     unsigned int dimension;
     QTableWidget* depart;
-    int num_automate;
+
     unsigned int nb_transitions;
     unsigned int transition_courante=0;
-
     //temps
     QPushButton* suivant;
     QPushButton* play;
@@ -88,9 +87,11 @@ Q_OBJECT
     unsigned int temps_affichage;
     bool is_play_v=1;
     unsigned int taille;
+
+    std::vector<short int> regle;
 public:
     explicit Window_Dim2(QWidget* parent = nullptr);
-    explicit Window_Dim2(QWidget* parent = nullptr, unsigned int taille=1, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500);
+    explicit Window_Dim2(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500, std::vector<short int> regle={0,0,1,2,0,0,0,0,0});
     int getDimension() const {return dimension;}
     QTableWidget* getDepart() const {return depart;}
     void setEtatDepart(QTableWidget* dep){depart=dep;}
