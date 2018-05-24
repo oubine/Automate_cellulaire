@@ -91,7 +91,7 @@ Q_OBJECT
     std::vector<short int> regle;
 public:
     explicit Window_Dim2(QWidget* parent = nullptr);
-    explicit Window_Dim2(QWidget* parent = nullptr, unsigned int taille=1, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500, std::vector<short int> regle={0,0,1,2,0,0,0,0,0});
+    explicit Window_Dim2(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500, std::vector<short int> regle={0,0,1,2,0,0,0,0,0});
     int getDimension() const {return dimension;}
     QTableWidget* getDepart() const {return depart;}
     void setEtatDepart(QTableWidget* dep){depart=dep;}

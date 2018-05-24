@@ -232,8 +232,8 @@ private slots :
     void onGenerateurButtonClicked();
     void onSimulationButtonClicked();
     void cellActivation2(QTableWidgetItem* index);
-    //void onActionEnregistrer();
-    //void onActionImporter();
+    void onActionEnregistrer();
+    void onActionImporter();
 };
 
 namespace Ui {

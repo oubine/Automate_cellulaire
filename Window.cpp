@@ -316,7 +316,7 @@ Window_Dim2::Window_Dim2(QWidget *parent) : QWidget(parent),taille(10) {
 }
 
 Window_Dim2::Window_Dim2(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff, std::vector<short int> regle) :
-    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(10),regle(regle) {
+    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(15),regle(regle) {
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
