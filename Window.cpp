@@ -5,6 +5,7 @@
 #include "simulateur.h"
 #include "main_UI.h"
 #include <iostream>
+#include <chrono>
 
 Window_Dim1::Window_Dim1(QWidget *parent) : QWidget(parent),taille(10) {
     // Question 3
@@ -457,7 +458,7 @@ void Window_Dim2::onSuivantButtonClicked()
         a.appliquerTransition(e,e2);
         e = e2;
         IndexTab2D index(0,0,dimension,dimension);
-        for(int k=0; k < index.getTailleTab(); ++k){
+        for(unsigned int k=0; k < index.getTailleTab(); ++k){
             if (e.getCellule(index)) {
                 etats->item(index.getI(), index.getJ())->setText("_");
                 etats->item(index.getI(), index.getJ())->setBackgroundColor("black");
@@ -501,6 +502,7 @@ void Window_Dim2::launchSimulationAuto() {//méthode pour lancer la simulation
     connect(this,SIGNAL(is_play()), &loop2, SLOT(quit()));
 
     for(unsigned int step = 0; step < nb_transitions; ++step) {
+        auto start = std::chrono::high_resolution_clock::now();
         if(!is_play_v)
         {
             loop2.exec();//si on est sur pause, on attend de réappuyer sur play pour continuer l'exécution
@@ -513,7 +515,7 @@ void Window_Dim2::launchSimulationAuto() {//méthode pour lancer la simulation
         e = e2;
 
         IndexTab2D index(0,0,dimension,dimension);
-        for(int k=0; k < index.getTailleTab(); ++k){
+        for(unsigned int k=0; k < index.getTailleTab(); ++k){
             if (e.getCellule(index)) {
                 etats->item(index.getI(), index.getJ())->setText("_");
                 etats->item(index.getI(), index.getJ())->setBackgroundColor("black");
@@ -523,10 +525,12 @@ void Window_Dim2::launchSimulationAuto() {//méthode pour lancer la simulation
                 etats->item(index.getI(), index.getJ())->setBackgroundColor("white");
                 etats->item(index.getI(), index.getJ())->setTextColor("white");
             }
-            QCoreApplication::processEvents();
             index++;
         }
-
+        QCoreApplication::processEvents();
+        auto finish = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> elapsed = finish - start;
+        std::cout << "Elapsed time: " << elapsed.count() << " s\n";
         for(unsigned int counter=0; counter<temps_affichage/4; counter++)//ça c'est de la bidouille pour actualiser pause/play plus souvent
         {
             QThread::msleep(4);

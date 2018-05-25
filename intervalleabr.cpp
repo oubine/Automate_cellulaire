@@ -1,7 +1,11 @@
 #include "intervalleabr.h"
-IntervalleABR* compresserRegleTransition(std::vector<unsigned int> regle)
+#include <iostream>
+#include "automate.h"
+IntervalleABR* compresserRegleTransition(std::vector<unsigned int>& regle)
 {
     IntervalleABR* resultat = nullptr;
+    for(int i = 0; i < regle.size();i++)std::cout << regle[i];
+    std::cout << "\n";
     unsigned int val_precedente = regle[0];
     unsigned int borne_inf = 0;
     unsigned int nb_cases_moins_un = regle.size()-1;
@@ -22,6 +26,7 @@ IntervalleABR* compresserRegleTransition(std::vector<unsigned int> regle)
         }
     }
     resultat = ajouterIntervalle(resultat,0, nb_cases_moins_un-borne_inf, val_precedente);
+    std::cout << *resultat << "\n";
     return resultat;
 }
 

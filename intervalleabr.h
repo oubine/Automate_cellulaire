@@ -42,6 +42,6 @@ template <typename T> const T& abs (const T& a) {return a<0?-a:a;}
 int hauteur2(IntervalleABR *arbre);
 
 
-IntervalleABR* compresserRegleTransition(std::vector<unsigned int> regle);
+IntervalleABR* compresserRegleTransition(std::vector<unsigned int> &regle);
 
 #endif // INTERVALLEABR_H

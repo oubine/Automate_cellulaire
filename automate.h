@@ -45,10 +45,12 @@ en utilisant - la méthode setMotif et le constructeur Automate(regle)
 
 class Automate //classe abstraite
 {
-protected:
+private:
     IntervalleABR* regleTransition;
     std::vector<std::vector<int>> motif; //si automate1D la deuxième couche de vector ne contient qu'un seul élément
     unsigned int *valVoisinage;
+
+public:
     //constructeurs / destructeurs
     virtual ~Automate(){delete[] valVoisinage; delete regleTransition;}
     Automate();
@@ -56,12 +58,11 @@ protected:
     Automate(std::vector<unsigned int> regle,std::vector<std::vector<int>> motif) : regleTransition(compresserRegleTransition(regle)), motif(motif), valVoisinage(new unsigned int[motif.size()]){}
     Automate(const Automate& a);
     Automate& operator=(const Automate& a);
-    friend class AutomateManager;
-public:
+
     virtual void appliquerTransition(const Etat& dep, Etat& dest) = 0;
     //getter / setter
     void setMotif(std::vector<std::vector<int>> m){motif = m; if(valVoisinage != nullptr) delete[]valVoisinage; valVoisinage = new unsigned int[m.size()];}
-    std::vector<std::vector<int>> getMotif() const {return motif;}
+    const std::vector<std::vector<int>>& getMotif() const {return motif;}
     void setVoisin(int i, unsigned int val) {valVoisinage[i] = val;}
     unsigned int getVoisin(int i) const {return valVoisinage[i];}
     unsigned int* getVoisinage() {return valVoisinage;}

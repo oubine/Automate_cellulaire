@@ -2,16 +2,16 @@
 #include "etat.h"
 #include <math.h>
 #include <algorithm>
-#include <ctime>
+#include <chrono>
 
 
 void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
 {
-    clock_t startTime = clock();
-
+    auto start = std::chrono::high_resolution_clock::now();
     if (this->getMotif().size() == 0) throw AutomateException("Motif non défini");
     if (dep.getTaille() != dest.getTaille()) dest = dep;
     auto iExamine = IndexTab2D(0,0,dep.getTaille(),dep.getTaille());
+
     for (unsigned int i = 0; i < dep.size(); i++)
     {//iExamine : index de la case de l'état de départ examinée
         for(unsigned int j = 0; j < this->getMotif().size(); j++)
@@ -22,7 +22,9 @@ void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
         dest.setCellule(i, this->getRegleTransition()->getValeur(etat));
         iExamine++;
     }
-    std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
+    auto finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = finish - start;
+    std::cout << "Elapsed time: " << elapsed.count() << " s\n";
 }
 
 std::vector<unsigned int> fromRegleNaissMortToRegleTransition(std::vector<short int> regleNaissMort)

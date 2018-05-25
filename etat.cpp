@@ -15,7 +15,7 @@ std::ostream& operator<<(std::ostream& f, const Etat1D& e)
     auto i = IndexTab1D(0,e.getTaille());
     for (unsigned int k = 0; k < e.size(); k++)
     {
-        for(int j = 0; j < 2; j++)
+        for(int j = 0; j < 1; j++)
         {
             if (e.getCellule(i)) f << char(178); else f << "_";
         }
@@ -30,7 +30,7 @@ std::ostream& operator<<(std::ostream& f, const Etat2D& e)
     auto i = IndexTab2D(0,0,e.getTaille(),e.getTaille());
     for (unsigned int k = 0; k < e.size(); k++)
     {
-        for(int j = 0; j < 2; j++)
+        for(int j = 0; j < 1; j++)
         {
              f << char(e.getCellule(i)+48);
         }
