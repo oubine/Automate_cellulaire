@@ -14,6 +14,7 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include <QThread>
+#include <iostream>
 
 class Window_Dim1 : public QWidget{
 Q_OBJECT

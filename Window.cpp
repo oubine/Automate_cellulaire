@@ -317,7 +317,7 @@ Window_Dim2::Window_Dim2(QWidget *parent) : QWidget(parent),taille(10) {
 }
 
 Window_Dim2::Window_Dim2(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff, std::vector<short int> regle) :
-    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(15),regle(regle) {
+    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(6),regle(regle) {
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
@@ -439,7 +439,7 @@ void Window_Dim2::onSuivantButtonClicked()
 
     for(unsigned int counter = 0; counter < dimension; ++counter) {
         for(unsigned int counter2=0; counter2<dimension; ++counter2){
-            if(depart->item(counter, counter2)->text() != "") {
+            if(depart->item(counter, counter2)->backgroundColor() != "white") {
                     e.setCellule(IndexTab2D(counter,counter2,dimension,dimension),true);
             }
         }
@@ -460,13 +460,9 @@ void Window_Dim2::onSuivantButtonClicked()
         IndexTab2D index(0,0,dimension,dimension);
         for(unsigned int k=0; k < index.getTailleTab(); ++k){
             if (e.getCellule(index)) {
-                etats->item(index.getI(), index.getJ())->setText("_");
                 etats->item(index.getI(), index.getJ())->setBackgroundColor("black");
-                etats->item(index.getI(), index.getJ())->setTextColor("black");
             } else {
-                etats->item(index.getI(), index.getJ())->setText("");
                 etats->item(index.getI(), index.getJ())->setBackgroundColor("white");
-                etats->item(index.getI(), index.getJ())->setTextColor("white");
             }
             QCoreApplication::processEvents();
             index++;
@@ -503,39 +499,43 @@ void Window_Dim2::launchSimulationAuto() {//méthode pour lancer la simulation
 
     for(unsigned int step = 0; step < nb_transitions; ++step) {
         auto start = std::chrono::high_resolution_clock::now();
+
         if(!is_play_v)
         {
             loop2.exec();//si on est sur pause, on attend de réappuyer sur play pour continuer l'exécution
         }
-        transition_courante++;
-        transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
-        // on récupère le dernier état
-        Etat2D e2(dimension,1);
-        a.appliquerTransition(e,e2);
-        e = e2;
-
-        IndexTab2D index(0,0,dimension,dimension);
-        for(unsigned int k=0; k < index.getTailleTab(); ++k){
-            if (e.getCellule(index)) {
-                etats->item(index.getI(), index.getJ())->setText("_");
-                etats->item(index.getI(), index.getJ())->setBackgroundColor("black");
-                etats->item(index.getI(), index.getJ())->setTextColor("black");
-            } else {
-                etats->item(index.getI(), index.getJ())->setText("");
-                etats->item(index.getI(), index.getJ())->setBackgroundColor("white");
-                etats->item(index.getI(), index.getJ())->setTextColor("white");
-            }
-            index++;
-        }
-        QCoreApplication::processEvents();
-        auto finish = std::chrono::high_resolution_clock::now();
-        std::chrono::duration<double> elapsed = finish - start;
-        std::cout << "Elapsed time: " << elapsed.count() << " s\n";
-        for(unsigned int counter=0; counter<temps_affichage/4; counter++)//ça c'est de la bidouille pour actualiser pause/play plus souvent
+        if(isVisible())
         {
-            QThread::msleep(4);
+            transition_courante++;
+            transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
+            // on récupère le dernier état
+            Etat2D e2(dimension,1);
+            a.appliquerTransition(e,e2);
+            e = e2;
+
+            IndexTab2D index(0,0,dimension,dimension);
+            for(unsigned int k=0; k < index.getTailleTab(); ++k){
+                if (e.getCellule(index)) {
+                    etats->item(index.getI(), index.getJ())->setBackgroundColor("black");
+                } else {
+                    etats->item(index.getI(), index.getJ())->setBackgroundColor("white");
+                }
+                index++;
+            }
+
             QCoreApplication::processEvents();
+            //QThread::msleep(temps_affichage);
+            auto finish = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> elapsed = finish - start;
+            std::cout << "Elapsed time affichage: " << elapsed.count() << " s\n";
+
+            for(unsigned int counter=0; counter<temps_affichage/50; counter++)//ça c'est de la bidouille pour actualiser pause/play plus souvent
+            {
+                QThread::msleep(50);
+                QCoreApplication::processEvents();
+            }
         }
+
     }
 }
 

@@ -4,6 +4,9 @@
 #define MAX_CASES 500
 #define MAX_TRANSITIONS 300
 
+#define MAX_CASES_DIM2 200
+#define MAX_TRANSITIONS_DIM2 1000
+
 #include <QWidget>
 #include <QtCore/QVariant>
 #include <QAction>
