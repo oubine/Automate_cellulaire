@@ -17,7 +17,7 @@ void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
             this->setVoisin(j,dep.getCellule(iExamine+this->getMotif()[j]));
         }
         unsigned int etat = baseToInt(std::vector<unsigned int>(this->getVoisinage(),this->getVoisinage()+this->nbVoisins()),dep.getValMax()+1);
-        dest.setCellule(i, this->getRegleTransition()->getValeur(etat));
+        dest.setCellule(i, this->getRegleTransition()[this->getRegleTransition().size()-1-etat]);
         iExamine++;
     }
 }
@@ -67,10 +67,10 @@ std::vector<std::vector<int>> FourmiLangton::getMotif()
 {
     std::vector<std::vector<int>> resultat;
     resultat.push_back({0,0});
-    resultat.push_back({-1,0});
     resultat.push_back({0,-1});
-    resultat.push_back({1,0});
+    resultat.push_back({-1,0});
     resultat.push_back({0,1});
+    resultat.push_back({1,0});
     return resultat;
 }
 
@@ -87,8 +87,12 @@ std::vector<unsigned int> FourmiLangton::getRegle()
     {
         nbFourmiArriveSurLaCaseCentrale = 0;
         etatBinaire = intToBase(i,10);
+        while (etatBinaire.size() < 5) etatBinaire.insert(etatBinaire.begin(),0);
         //la case centrale contient une fourmi
-        if(etatBinaire[0] > 1) resultat[nbEtat-1-i] = (etatBinaire[0]+1)%2; // elle la quitte
+        if(etatBinaire[0] > 1)
+        { // elle la quitte
+            etatBinaire[0] = (etatBinaire[0]+1)%2;
+        }
         //une fourmi arrive sur la case centrale
         if(etatBinaire[1] == 4 || etatBinaire[1] == 9) //une fourmi arrive depuis l'ouest
         {
