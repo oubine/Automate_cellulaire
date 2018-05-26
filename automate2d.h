@@ -6,7 +6,6 @@
 
 class Automate2D : public Automate
 {
-    friend class AutomateManager;
 public:
     Automate2D():Automate(){}
     Automate2D(std::vector<unsigned int> regle):Automate(regle){}
@@ -19,7 +18,6 @@ std::vector<unsigned int> fromRegleNaissMortToRegleTransition(std::vector<short 
 
 class VarianteJeuDeLaVie : public Automate2D
 {
-    friend class AutomateManager;
 public:
     /* Le motif du voisinage de cet automate est le suivant :
      * [(0,0),(-1,-1),(-1,0),(-1,1),(0,-1),(0,1),(1,-1),(1,0),(1,1)]
@@ -47,6 +45,14 @@ public:
         motif[8] = {1,-1};
         this->setMotif(motif);
     }
+};
+
+class FourmiLangton : public Automate2D
+{
+public:
+    FourmiLangton():Automate2D(FourmiLangton::getRegle(),FourmiLangton::getMotif()){}
+    static std::vector<std::vector<int>> getMotif();
+    static std::vector<unsigned int> getRegle();
 };
 
 #endif // AUTOMATE2D_H

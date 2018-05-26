@@ -26,6 +26,18 @@ int main(int argc, char *argv[])
         e = e2;
     }
 */
+    Etat2D e(50,9);
+    Etat2D e2(50,9);
+    FourmiLangton a;
+    //35075 elems : bytes ->841800 hauteur : 17536
+    e.setCellule(IndexTab2D(25,25,50,50),4);
+    for(unsigned int i = 0; i < 50; i++)
+    {
+        a.appliquerTransition(e,e2);
+        e = e2;
+        std::cout << e << "\n";
+    }
+
     std::cout << typeid(fendim1).name() << " , "<<typeid(fendim2).name()<<"\n";
     main->show();
     //AutoCell autoc;

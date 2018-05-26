@@ -2,12 +2,10 @@
 #include "etat.h"
 #include <math.h>
 #include <algorithm>
-#include <chrono>
 
 
 void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
 {
-    auto start = std::chrono::high_resolution_clock::now();
     if (this->getMotif().size() == 0) throw AutomateException("Motif non défini");
     if (dep.getTaille() != dest.getTaille()) dest = dep;
     auto iExamine = IndexTab2D(0,0,dep.getTaille(),dep.getTaille());
@@ -22,9 +20,6 @@ void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
         dest.setCellule(i, this->getRegleTransition()->getValeur(etat));
         iExamine++;
     }
-    auto finish = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = finish - start;
-    std::cout << "Elapsed time: " << elapsed.count() << " s\n";
 }
 
 std::vector<unsigned int> fromRegleNaissMortToRegleTransition(std::vector<short int> regleNaissMort)
@@ -64,6 +59,60 @@ std::vector<unsigned int> fromRegleNaissMortToRegleTransition(std::vector<short 
         {
             resultat[nbEtats-1-i] = 1;
         }
+    }
+    return resultat;
+}
+
+std::vector<std::vector<int>> FourmiLangton::getMotif()
+{
+    std::vector<std::vector<int>> resultat;
+    resultat.push_back({0,0});
+    resultat.push_back({-1,0});
+    resultat.push_back({0,-1});
+    resultat.push_back({1,0});
+    resultat.push_back({0,1});
+    return resultat;
+}
+
+std::vector<unsigned int> FourmiLangton::getRegle()
+{
+    //numero pair -> case non marquée    impair -> marquée
+    //0,1:vide 2,3:ouest 4,5:nord 6,7:est 8,9:sud
+    //collision de deux fourmi -> destruction mutuelle
+    unsigned int nbEtat = pow(10,5);
+    auto resultat = std::vector<unsigned int>(nbEtat,0);
+    std::vector<unsigned int> etatBinaire;
+    int nbFourmiArriveSurLaCaseCentrale;
+    for(unsigned int i = 0; i < nbEtat; i++)
+    {
+        nbFourmiArriveSurLaCaseCentrale = 0;
+        etatBinaire = intToBase(i,10);
+        //la case centrale contient une fourmi
+        if(etatBinaire[0] > 1) resultat[nbEtat-1-i] = (etatBinaire[0]+1)%2; // elle la quitte
+        //une fourmi arrive sur la case centrale
+        if(etatBinaire[1] == 4 || etatBinaire[1] == 9) //une fourmi arrive depuis l'ouest
+        {
+            resultat[nbEtat-1-i] = etatBinaire[0]%2+6;
+            nbFourmiArriveSurLaCaseCentrale++;
+        }
+        if(etatBinaire[2] == 6 || etatBinaire[2] == 3) //une fourmi arrive depuis le nord
+        {
+            resultat[nbEtat-1-i] = etatBinaire[0]%2+8;
+            nbFourmiArriveSurLaCaseCentrale++;
+        }
+        if(etatBinaire[3] == 8 || etatBinaire[3] == 5) //une fourmi arrive depuis l'est
+        {
+            resultat[nbEtat-1-i] = etatBinaire[0]%2+2;
+            nbFourmiArriveSurLaCaseCentrale++;
+        }
+        if(etatBinaire[4] == 2 || etatBinaire[4] == 7) //une fourmi arrive depuis le sud
+        {
+            resultat[nbEtat-1-i] = etatBinaire[0]%2+4;
+            nbFourmiArriveSurLaCaseCentrale++;
+        }
+        if(nbFourmiArriveSurLaCaseCentrale == 0) resultat[nbEtat-1-i] = etatBinaire[0];
+        if(nbFourmiArriveSurLaCaseCentrale > 1)//plusieurs fourmis sont arrivées sur la même case centrale
+            resultat[nbEtat-1-i] %= 2; // elles s'annihilent
     }
     return resultat;
 }

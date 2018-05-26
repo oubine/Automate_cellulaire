@@ -4,11 +4,10 @@
 IntervalleABR* compresserRegleTransition(std::vector<unsigned int>& regle)
 {
     IntervalleABR* resultat = nullptr;
-    for(int i = 0; i < regle.size();i++)std::cout << regle[i];
-    std::cout << "\n";
     unsigned int val_precedente = regle[0];
     unsigned int borne_inf = 0;
     unsigned int nb_cases_moins_un = regle.size()-1;
+    std::cout << "debut construction arbre\n";
     for(unsigned int i = 1; i < regle.size(); i++)
     {
         if(regle[i] != val_precedente)
@@ -26,7 +25,9 @@ IntervalleABR* compresserRegleTransition(std::vector<unsigned int>& regle)
         }
     }
     resultat = ajouterIntervalle(resultat,0, nb_cases_moins_un-borne_inf, val_precedente);
-    std::cout << *resultat << "\n";
+    std::cout << "debut de l'equilibrage de l'arbre\n";
+    resultat = equilibrer(resultat);
+    std::cout <<nbElem(resultat)<<" elems : bytes ->"<< sizeof(resultat[0])*nbElem(resultat)<<" hauteur : "<<hauteur2(resultat) << "\n";
     return resultat;
 }
 
@@ -50,6 +51,7 @@ unsigned int IntervalleABR::hauteur()
 
 IntervalleABR* ajouterIntervalle(IntervalleABR* racine, unsigned int borneInf, unsigned int borneSup, int valeur)
 {
+    // appelez à la suite de cette fonction equilibrer(racine,racine) pour équilibrer l'arbre
     if (racine == nullptr) return new IntervalleABR(borneInf,borneSup,valeur);
     if(borneInf > borneSup) return racine;
     IntervalleABR* nouveau = new IntervalleABR(borneInf,borneSup,valeur);
@@ -81,8 +83,7 @@ IntervalleABR* ajouterIntervalle(IntervalleABR* racine, unsigned int borneInf, u
         }
     }
     // nouvelle intervalle ajoutée
-    // on doit maintenant équilibrer l'arbre
-    return equilibrer(racine,racine);
+    return racine;
 }
 int IntervalleABR::getValeur(unsigned int index) const
 {
@@ -100,35 +101,32 @@ int IntervalleABR::getValeur(unsigned int index) const
 }
 
 
-IntervalleABR* equilibrer(IntervalleABR* racine, IntervalleABR* noeud, IntervalleABR* pere)
+IntervalleABR* equilibrer(IntervalleABR* racine, IntervalleABR* pere)
 {
     //renvoie la nouvelle racine
-    if (noeud == nullptr) return racine;
-    int hSAG = hauteur2(noeud->getFilsGauche());
-    int hSAD = hauteur2(noeud->getFilsDroit());
+    if (racine == nullptr) return pere;
+    racine = equilibrer(racine->getFilsDroit(),racine);
+    // SAD équilibré
+    racine = equilibrer(racine->getFilsGauche(),racine);
+    // SAG équilibré
+    int hSAG = hauteur2(racine->getFilsGauche());
+    int hSAD = hauteur2(racine->getFilsDroit());
     int delta = hSAD - hSAG;
-    IntervalleABR* temp = racine;
-    if(abs(delta) > 1)//while(abs(delta) > 1)
+    if(abs(delta) > 1)
     {
         if(hSAG > hSAD)
         {
-            racine = rotationD(racine,noeud,pere);
+            racine = rotationD(racine,pere);
+            racine = equilibrer(racine,pere);
         }
         else
         {
-            racine = rotationG(racine,noeud,pere);
+            racine = rotationG(racine,pere);
+            racine = equilibrer(racine,pere);
         }
-        if(temp != racine)
-        return racine;
-        /*hSAG = hauteur2(noeud->getFilsGauche());
-        hSAD = hauteur2(noeud->getFilsDroit());
-        delta = hSAD - hSAG;*/
     }
-
-    racine = equilibrer(racine,noeud->getFilsGauche(),noeud);
-    if(temp != racine)
-    return racine;
-    racine = equilibrer(racine,noeud->getFilsDroit(),noeud);
+    if(pere != nullptr)
+    return pere;
     return racine;
 }
 
@@ -147,35 +145,43 @@ void IntervalleABR::afficher(std::ostream& f) const
     }
 }
 
-IntervalleABR* rotationD(IntervalleABR* racine, IntervalleABR* pivot, IntervalleABR* pere)
+IntervalleABR* rotationD(IntervalleABR* pivot, IntervalleABR* pere)
 {
     if (pivot->getFilsGauche() != nullptr)
     {
-        IntervalleABR* y = pivot->getFilsGauche();
-        IntervalleABR* C = y->getFilsDroit();
-        if(racine == pivot) racine = y;
-        else if(pivot == pere->getFilsGauche()) pere->setFilsGauche(y);
-        else pere->setFilsDroit(y);
-        y->setFilsDroit(pivot);
-        pivot->setFilsGauche(C);
+        IntervalleABR* Q = pivot;
+        IntervalleABR* P = pivot->getFilsGauche();
+        IntervalleABR* B = P->getFilsDroit();
+        if(pere != nullptr)
+        {
+            if(Q == pere->getFilsGauche()) pere->setFilsGauche(P);
+            else pere->setFilsDroit(P);
+         }
+        P->setFilsDroit(Q);
+        Q->setFilsGauche(B);
+        return P;
     }
-    return racine;
+    return pivot;
 }
 
 
-IntervalleABR* rotationG(IntervalleABR* racine, IntervalleABR* pivot, IntervalleABR* pere)
+IntervalleABR* rotationG(IntervalleABR* pivot, IntervalleABR* pere)
 {
     if (pivot->getFilsDroit() != nullptr)
     {
-        IntervalleABR* y = pivot->getFilsDroit();
-        IntervalleABR* C = y->getFilsGauche();
-        if(racine == pivot) racine = y;
-        else if(pivot == pere->getFilsDroit()) pere->setFilsDroit(y);
-        else pere->setFilsGauche(y);
-        y->setFilsGauche(pivot);
-        pivot->setFilsDroit(C);
+        IntervalleABR* P = pivot;
+        IntervalleABR* Q = pivot->getFilsDroit();
+        IntervalleABR* B = Q->getFilsGauche();
+        if(pere != nullptr)
+        {
+            if(P == pere->getFilsGauche()) pere->setFilsGauche(Q);
+            else pere->setFilsDroit(Q);
+         }
+        Q->setFilsGauche(P);
+        P->setFilsDroit(B);
+        return Q;
     }
-    return racine;
+    return pivot;
 }
 
 std::ostream& operator<<(std::ostream& f, const IntervalleABR& arbre)

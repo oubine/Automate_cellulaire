@@ -30,9 +30,9 @@ public:
     void afficher(std::ostream& f) const;
  };
 IntervalleABR* ajouterIntervalle(IntervalleABR* racine, unsigned int borneInf, unsigned int borneSup, int valeur);
-IntervalleABR* equilibrer(IntervalleABR* racine, IntervalleABR* noeud, IntervalleABR* pere = nullptr);
-IntervalleABR* rotationD(IntervalleABR* racine, IntervalleABR* pivot, IntervalleABR* pere);
-IntervalleABR* rotationG(IntervalleABR* racine, IntervalleABR* pivot, IntervalleABR* pere);
+IntervalleABR* equilibrer(IntervalleABR* racine, IntervalleABR* pere = nullptr);
+IntervalleABR* rotationD(IntervalleABR* pivot, IntervalleABR* pere);
+IntervalleABR* rotationG(IntervalleABR* pivot, IntervalleABR* pere);
 unsigned int nbElem(IntervalleABR* racine);
 std::ostream& operator<<(std::ostream& f, const IntervalleABR& arbre);
 
