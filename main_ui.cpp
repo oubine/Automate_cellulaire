@@ -797,8 +797,8 @@ Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(Mai
     generateur_dim2->setLayout(layout_generateur_dim2);
     layout_generateur_dim2->addLayout(layout_select_generateur_dim2);
     nb_cases_dim2 = new QSpinBox();
-    nb_cases_dim2->setRange(2, MAX_CASES);
-    nb_cases_dim2->setValue(30);
+    nb_cases_dim2->setRange(2, MAX_CASES_DIM2);
+    nb_cases_dim2->setValue(50);
     nb_cases_dim2->setMaximumWidth(100);
     nb_cases_l_dim2 = new QLabel("Nombre de cases");
     layout_cases_dim2 = new QHBoxLayout;
@@ -808,8 +808,8 @@ Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(Mai
     nb_cases_dim2->setEnabled(true);
 
     nb_transitions_dim2 = new QSpinBox();
-    nb_transitions_dim2->setRange(1, MAX_TRANSITIONS);
-    nb_transitions_dim2->setValue(10);
+    nb_transitions_dim2->setRange(1, MAX_TRANSITIONS_DIM2);
+    nb_transitions_dim2->setValue(20);
     nb_transitions_dim2->setMaximumWidth(100);
     nb_transitions_l_dim2 = new QLabel("Nombre de transitions");
     layout_transitions_dim2 = new QHBoxLayout;
@@ -942,6 +942,7 @@ void Fenetre_AutoDim2::onSimulationButtonClicked()
     {
         new_Window_dim1 = new Window_Dim1(nullptr, dimension, nb_transitions->value(), num->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
         new_Window_dim1->setEtatDepart(etat_depart_table);
+        new_Window_dim1->setAttribute( Qt::WA_DeleteOnClose );
         new_Window_dim1->show();
         if(!aff_manuel->isChecked())
         {
@@ -959,6 +960,7 @@ void Fenetre_AutoDim2::onSimulationButtonClicked()
         new_Window_dim2 = new Window_Dim2(nullptr, dimension_dim2, nb_transitions_dim2->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000,
                                           std::vector<short int>(tab_regle, tab_regle + sizeof(tab_regle) / sizeof tab_regle[0]));
         new_Window_dim2->setEtatDepart(etat_depart_table_dim2);
+        new_Window_dim2->setAttribute(Qt::WA_DeleteOnClose);
         new_Window_dim2->show();
         if(!aff_manuel->isChecked())
         {
@@ -1041,7 +1043,7 @@ void Fenetre_AutoDim2::Gen_aleatoire()
         etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
         for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
             etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
-            if(rand()%2)
+            if(rand()%6)
             {
                 etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
                 etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");
