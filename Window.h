@@ -111,4 +111,50 @@ private slots :
     void onPauseButtonClicked();
 };
 
+class Window_Dim2_Langton : public QWidget{
+Q_OBJECT
+    QWidget *centralwidget;
+    QVBoxLayout* couche;
+    QHBoxLayout* layout_boutons;
+    QVBoxLayout* layout_numero;
+    QGroupBox* boutons;
+
+    QTableWidget* etats;
+    unsigned int dimension;
+    QTableWidget* depart;
+
+    unsigned int nb_transitions;
+    unsigned int transition_courante=0;
+    //temps
+    QPushButton* suivant;
+    QPushButton* play;
+    QPushButton* pause;
+    QLabel* transition;
+    bool affichage_manuel;
+    unsigned int temps_affichage;
+    bool is_play_v=1;
+    unsigned int taille;
+
+    std::vector<short int> regle;
+public:
+    explicit Window_Dim2_Langton(QWidget* parent = nullptr);
+    explicit Window_Dim2_Langton(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500, std::vector<short int> regle={0,0,1,2,0,0,0,0,0});
+    int getDimension() const {return dimension;}
+    QTableWidget* getDepart() const {return depart;}
+    void setEtatDepart(QTableWidget* dep){depart=dep;}
+    void setDimension(unsigned int i){dimension=i;}
+    void setNbTransitions(unsigned int i){dimension=i;}
+    void setAffichage(bool b){affichage_manuel=b;}
+
+signals:
+    void is_play();
+public slots:
+    //void launchSimulation();
+    //void launchSimulationAuto();
+private slots :
+    //void onSuivantButtonClicked();
+    //void onPlayButtonClicked();
+    //void onPauseButtonClicked();
+};
+
 #endif // WINDOW_DIM1_H

@@ -239,6 +239,64 @@ private slots :
     void onActionImporter();
 };
 
+class Fenetre_AutoDim2_Langton : public Fenetre_AutoDim2
+{
+    Q_OBJECT
+
+protected:
+    //automate fourmi de Langton
+    QWidget *page_langton;
+    QVBoxLayout *layout_page_langton;
+    QGroupBox *configuration_langton;
+    QVBoxLayout *layout_config_langton;
+    QVBoxLayout *layout_etat_depart_langton;
+
+
+    QHBoxLayout *regles_langton;
+
+    QGroupBox *generateur_langton;
+    QComboBox* select_generateur_langton;
+    QLabel* select_generateur_langton_l;
+    QHBoxLayout* layout_select_generateur_langton;
+    QVBoxLayout* layout_generateur_langton;
+    QHBoxLayout* layout_cases_langton;
+    QSpinBox* nb_cases_langton;
+    QLabel* nb_cases_l_langton;
+    QHBoxLayout* layout_transitions_langton;
+    QSpinBox* nb_transitions_langton;
+    QLabel* nb_transitions_l_langton;
+    QPushButton* bouton_generateur_langton;
+    unsigned int dimension_langton;
+
+    QStackedWidget* stacked_etat_depart_langton;
+    unsigned int taille_langton=25;//taille des cases du tableau en pixels
+    QWidget* page_etat_0_langton;
+    QWidget* page_etat_1_langton;
+    QLabel *etat_depart_l_langton;
+    QVBoxLayout* layout_page_etat_0_langton;
+    QVBoxLayout* layout_page_etat_1_langton;
+    QTableWidget *etat_depart_table_langton;
+    QLabel* aucun_etat_depart_langton;
+
+    QPushButton *Simulation_langton;
+    //enregistrement
+    bool enregistrer_autolangton=0;
+
+    Window_Dim2_Langton* new_Window_langton;
+
+public:
+    void Noms(QMainWindow *MainWindow);
+    Fenetre_AutoDim2_Langton(QMainWindow *MainWindow);
+    void Gen_aleatoire();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
+private slots :
+    void onDimensionItemClicked(QListWidgetItem*);
+    void onGenerateurButtonClicked();
+    void onSimulationButtonClicked();
+    void cellActivation2(QTableWidgetItem* index);
+    void onActionEnregistrer();
+    void onActionImporter();
+};
+
 namespace Ui {
     //class MainWindow: public Fenetre_Principale {};
 }

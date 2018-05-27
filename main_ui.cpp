@@ -19,13 +19,13 @@ Fenetre_Principale::Fenetre_Principale(QMainWindow *MainWindow)
        layout_main->setObjectName(QString::fromUtf8("layout_main"));
        reglages_generaux = new QGroupBox(centralwidget);
        reglages_generaux->setObjectName(QString::fromUtf8("reglages_generaux"));
-       reglages_generaux->setMaximumSize(QSize(1000, 150));
+       reglages_generaux->setMaximumSize(QSize(1000, 200));
        layout_reglages_generaux = new QHBoxLayout(reglages_generaux);
        layout_reglages_generaux->setObjectName(QString::fromUtf8("layout_reglages_generaux"));
        type_automate = new QGroupBox(reglages_generaux);
        type_automate->setObjectName(QString::fromUtf8("type_automate"));
-       type_automate->setMinimumSize(QSize(260, 90));
-       type_automate->setMaximumSize(QSize(300, 100));
+       type_automate->setMinimumSize(QSize(260, 115));
+       type_automate->setMaximumSize(QSize(300, 200));
        layout_type_automate = new QVBoxLayout(type_automate);
        layout_type_automate->setObjectName(QString::fromUtf8("layout_type_automate"));
         select_type_automate = new QListWidget(type_automate);
@@ -44,7 +44,7 @@ Fenetre_Principale::Fenetre_Principale(QMainWindow *MainWindow)
        layout_reglages_generaux->addWidget(type_automate);
        Affichage = new QGroupBox(reglages_generaux);
        Affichage->setObjectName(QString::fromUtf8("Affichage"));
-       Affichage->setMaximumSize(QSize(1500, 100));
+       Affichage->setMaximumSize(QSize(1500, 200));
        layout_affichage = new QFormLayout(Affichage);
        layout_affichage->setObjectName(QString::fromUtf8("layout_affichage"));
        layout_affichage->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
@@ -942,7 +942,7 @@ void Fenetre_AutoDim2::onSimulationButtonClicked()
     {
         new_Window_dim1 = new Window_Dim1(nullptr, dimension, nb_transitions->value(), num->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
         new_Window_dim1->setEtatDepart(etat_depart_table);
-        new_Window_dim1->setAttribute( Qt::WA_DeleteOnClose );
+        //new_Window_dim1->setAttribute( Qt::WA_DeleteOnClose );
         new_Window_dim1->show();
         if(!aff_manuel->isChecked())
         {
@@ -960,7 +960,7 @@ void Fenetre_AutoDim2::onSimulationButtonClicked()
         new_Window_dim2 = new Window_Dim2(nullptr, dimension_dim2, nb_transitions_dim2->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000,
                                           std::vector<short int>(tab_regle, tab_regle + sizeof(tab_regle) / sizeof tab_regle[0]));
         new_Window_dim2->setEtatDepart(etat_depart_table_dim2);
-        new_Window_dim2->setAttribute(Qt::WA_DeleteOnClose);
+        //new_Window_dim2->setAttribute(Qt::WA_DeleteOnClose);
         new_Window_dim2->show();
         if(!aff_manuel->isChecked())
         {
@@ -1404,3 +1404,645 @@ void Fenetre_AutoDim2::onActionImporter()
     }
 
 }
+
+Fenetre_AutoDim2_Langton::Fenetre_AutoDim2_Langton(QMainWindow *MainWindow):Fenetre_AutoDim2(MainWindow)
+{
+    /************************
+     *
+     * automate fourmi de langton
+     *
+     *
+     ************************/
+
+    select_type_automate->insertItem(select_type_automate->count(), "Fourmi de Langton");
+
+    page_langton = new QWidget();
+    page_langton->setObjectName(QString::fromUtf8("page_langton"));
+    stacked_settings->addWidget(page_langton);
+
+    layout_page_langton = new QVBoxLayout(page_langton);
+    layout_page_langton->setObjectName(QString::fromUtf8("layout_page_langton"));
+    configuration_langton = new QGroupBox(page_langton);
+    configuration_langton->setObjectName(QString::fromUtf8("configuration_langton"));
+    configuration_langton->setMaximumSize(QSize(900, 400));
+    layout_config_langton = new QVBoxLayout(configuration_langton);
+    layout_config_langton->setObjectName(QString::fromUtf8("layout_config_langton"));
+    regles_langton = new QHBoxLayout();
+    regles_langton->setObjectName(QString::fromUtf8("regles_langton"));
+
+
+    //générateur langton
+
+    generateur_langton = new QGroupBox(configuration_langton);
+    generateur_langton->setObjectName(QString::fromUtf8("generateur_langton"));
+    generateur_langton->setMaximumSize(QSize(1500, 300));
+
+    regles_langton->addWidget(generateur_langton);
+
+
+    layout_config_langton->addLayout(regles_langton);
+
+    select_generateur_langton = new QComboBox(generateur_langton);
+    select_generateur_langton->setMaximumSize(QSize(120, 20));
+    select_generateur_langton_l=new QLabel("Génération");
+    layout_select_generateur_langton = new QHBoxLayout;
+    layout_select_generateur_langton->addWidget(select_generateur_langton_l);
+    layout_select_generateur_langton->addWidget(select_generateur_langton);
+
+    select_generateur_langton->addItem(tr("Aléatoire"));
+    select_generateur_langton->addItem(tr("Manuelle"));
+
+
+    layout_page_langton->addWidget(configuration_langton);
+
+    layout_generateur_langton = new QVBoxLayout;
+    generateur_langton->setLayout(layout_generateur_langton);
+    layout_generateur_langton->addLayout(layout_select_generateur_langton);
+    nb_cases_langton = new QSpinBox();
+    nb_cases_langton->setRange(2, MAX_CASES_DIM2);
+    nb_cases_langton->setValue(50);
+    nb_cases_langton->setMaximumWidth(100);
+    nb_cases_l_langton = new QLabel("Nombre de cases");
+    layout_cases_langton = new QHBoxLayout;
+    layout_cases_langton->addWidget(nb_cases_l_langton);
+    layout_cases_langton->addWidget(nb_cases_langton);
+    layout_generateur_langton->addLayout(layout_cases_langton);
+    nb_cases_langton->setEnabled(true);
+
+    nb_transitions_langton = new QSpinBox();
+    nb_transitions_langton->setRange(1, MAX_TRANSITIONS_DIM2);
+    nb_transitions_langton->setValue(20);
+    nb_transitions_langton->setMaximumWidth(100);
+    nb_transitions_l_langton = new QLabel("Nombre de transitions");
+    layout_transitions_langton = new QHBoxLayout;
+    layout_transitions_langton->addWidget(nb_transitions_l_langton);
+    layout_transitions_langton->addWidget(nb_transitions_langton);
+    layout_generateur_langton->addLayout(layout_transitions_langton);
+    nb_transitions_langton->setEnabled(true);
+
+    bouton_generateur_langton = new QPushButton;
+    bouton_generateur_langton->setObjectName(QString::fromUtf8("bouton_generateur"));
+    bouton_generateur_langton->setMinimumSize(QSize(0, 50));
+    bouton_generateur_langton->setText(QApplication::translate("AutoCell LO21", "Générer", 0));
+    bouton_generateur_langton->setMaximumSize(QSize(1500, 50));
+    layout_generateur_langton->addWidget(bouton_generateur_langton);
+    generateur_langton->setLayout(layout_generateur_langton);
+
+    //etat de départ dimension 2
+
+    layout_page_etat_0_langton = new QVBoxLayout;
+    aucun_etat_depart_langton = new QLabel("Générez/Importez un état de départ");
+    layout_page_etat_0_langton->addWidget(aucun_etat_depart_langton);
+    layout_page_etat_0_langton->setAlignment(Qt::AlignHCenter);
+
+    layout_etat_depart_langton = new QVBoxLayout;
+    layout_etat_depart_langton->setObjectName(QString::fromUtf8("layout_etat_depart_langton"));
+
+    etat_depart_l_langton = new QLabel(configuration_langton);
+    etat_depart_l_langton->setObjectName(QString::fromUtf8("etat_depart_l_langton"));
+    etat_depart_l_langton->setMinimumSize(QSize(100, 20));
+    etat_depart_l_langton->setMaximumSize(QSize(1500, 20));
+
+    layout_etat_depart_langton->addWidget(etat_depart_l_langton);
+
+    stacked_etat_depart_langton = new QStackedWidget;
+    stacked_etat_depart_langton->setObjectName(QString::fromUtf8("stacked_etat_depart_langton"));
+    stacked_etat_depart_langton->setEnabled(true);
+    page_etat_0_langton = new QWidget();
+    page_etat_0_langton->setObjectName(QString::fromUtf8("page_etat_0_langton"));
+    page_etat_0_langton->setLayout(layout_page_etat_0_langton);
+    page_etat_1_langton = new QWidget();
+    page_etat_1_langton->setObjectName(QString::fromUtf8("page_etat_1_langton"));
+    layout_page_etat_1_langton = new QVBoxLayout;
+    page_etat_1_langton->setLayout(layout_page_etat_1_langton);
+    layout_page_etat_1_langton->addWidget(etat_depart_l_langton);
+    stacked_etat_depart_langton->addWidget(page_etat_0_langton);
+    stacked_etat_depart_langton->addWidget(page_etat_1_langton);
+    stacked_etat_depart_langton->raise();
+    layout_page_langton->addWidget(configuration_langton);
+    layout_config_langton->addWidget(stacked_etat_depart_langton);
+
+    //bouton simulation langton
+
+
+    Simulation_langton = new QPushButton(page_langton);
+    Simulation_langton->setObjectName(QString::fromUtf8("Simulation_langton"));
+    Simulation_langton->setMinimumSize(QSize(0, 50));    Simulation_langton->setMaximumSize(QSize(1500, 50));
+
+    layout_page_langton->addWidget(Simulation_langton);
+    stacked_settings->setCurrentIndex(0);
+
+    Noms(MainWindow);
+
+    //connexions
+
+    connect(bouton_generateur_langton, SIGNAL(clicked()), this, SLOT(onGenerateurButtonClicked()));
+    connect(Simulation_langton, SIGNAL(clicked()), this, SLOT(onSimulationButtonClicked()));
+    for(unsigned int i=0; i<8; ++i)
+    {
+        connect(vie[i], SIGNAL(toggled(bool)), mort[i], SLOT(setDisabled(bool)));
+        connect(mort[i], SIGNAL(toggled(bool)), vie[i], SLOT(setDisabled(bool)));
+    }
+    mort[0]->setChecked(true);
+    mort[1]->setChecked(true);
+    vie[3]->setChecked(true);
+    mort[4]->setChecked(true);
+    mort[5]->setChecked(true);
+    mort[6]->setChecked(true);
+    mort[7]->setChecked(true);
+    Simulation_langton->setEnabled(false);
+    QMetaObject::connectSlotsByName(MainWindow);
+
+}
+
+void Fenetre_AutoDim2_Langton::Noms(QMainWindow *MainWindow)
+{
+    MainWindow->setWindowTitle(QApplication::translate("AutoCell LO21", "AutoCell LO21", 0));
+    actionEnregistrer->setText(QApplication::translate("AutoCell LO21", "Enregistrer", 0));
+    actionImporter->setText(QApplication::translate("AutoCell LO21", "Importer", 0));
+    type_automate->setTitle(QApplication::translate("AutoCell LO21", "S\303\251lectionner le type d'automate : ", 0));
+
+    const bool __sortingEnabled = select_type_automate->isSortingEnabled();
+    select_type_automate->setSortingEnabled(false);
+    //QListWidgetItem *___qlistwidgetitem1 = select_type_automate->item(select_type_automate->count());
+    //___qlistwidgetitem1->setText(QApplication::translate("AutoCell LO21", "Jeu de la vie", 0));
+    select_type_automate->setSortingEnabled(__sortingEnabled);
+
+    Affichage->setTitle(QApplication::translate("AutoCell LO21", "Affichage", 0));
+    aff_manuel->setText(QApplication::translate("AutoCell LO21", "Manuel", 0));
+    aff_auto->setText(QApplication::translate("AutoCell LO21", "Automatique", 0));
+    unite_temps_aff->setText(QApplication::translate("AutoCell LO21", "sec", 0));
+    configuration_langton->setTitle(QApplication::translate("AutoCell LO21", "Configuration", 0));
+
+    regles_creation_l->setText(QApplication::translate("AutoCell LO21", "R\303\250gle de cr\303\251ation", 0));
+    voisins_n_l->setText(QApplication::translate("AutoCell LO21", "Nombre de voisins : ", 0));
+    regles_mort_l->setText(QApplication::translate("AutoCell LO21", "R\303\250gle de mort", 0));
+    generateur_langton->setTitle(QApplication::translate("AutoCell LO21", "G\303\251n\303\251rateur", 0));
+    Simulation_langton->setText(QApplication::translate("AutoCell LO21", "Lancer !", 0));
+    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Enregistrement", 0));
+} // retranslateUi
+
+void Fenetre_AutoDim2_Langton::onDimensionItemClicked(QListWidgetItem* item)
+{
+    if (select_type_automate->item(0) == item) {
+            stacked_settings->setCurrentIndex(0);
+            actionEnregistrer->setEnabled(enregistrer_autodim1);
+
+        }
+    else if(select_type_automate->item(1) == item)
+    {
+        stacked_settings->setCurrentIndex(1);
+        actionEnregistrer->setEnabled(enregistrer_autodim2);
+    }
+    else if(select_type_automate->item(2) == item)
+    {
+        stacked_settings->setCurrentIndex(2);
+        actionEnregistrer->setEnabled(enregistrer_autolangton);
+    }
+
+}
+
+
+void Fenetre_AutoDim2_Langton::onSimulationButtonClicked()
+{
+    if(stacked_settings->currentIndex()==0)
+    {
+        new_Window_dim1 = new Window_Dim1(nullptr, dimension, nb_transitions->value(), num->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
+        new_Window_dim1->setEtatDepart(etat_depart_table);
+        //new_Window_dim1->setAttribute( Qt::WA_DeleteOnClose );
+        new_Window_dim1->show();
+        if(!aff_manuel->isChecked())
+        {
+            new_Window_dim1->launchSimulationAuto();
+        }
+    }
+    else if(stacked_settings->currentIndex()==1)
+    {
+        int tab_regle[8];
+        for(unsigned int i=0; i<8;++i)
+        {
+            tab_regle[i]=1+vie[i]->isChecked();
+            tab_regle[i]-=mort[i]->isChecked();
+        }
+        new_Window_dim2 = new Window_Dim2(nullptr, dimension_dim2, nb_transitions_dim2->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000,
+                                          std::vector<short int>(tab_regle, tab_regle + sizeof(tab_regle) / sizeof tab_regle[0]));
+        new_Window_dim2->setEtatDepart(etat_depart_table_dim2);
+        //new_Window_dim2->setAttribute(Qt::WA_DeleteOnClose);
+        new_Window_dim2->show();
+        if(!aff_manuel->isChecked())
+        {
+            new_Window_dim2->launchSimulationAuto();
+        }
+    }
+}
+
+void Fenetre_AutoDim2_Langton::onGenerateurButtonClicked()
+{
+    if(page_dim2->findChild<QTableWidget*>("etat_depart_table_dim2"))//on teste si le tableau existe déjà
+    {
+        layout_page_etat_1_dim2->removeWidget(etat_depart_table_dim2);
+        delete etat_depart_table_dim2;
+    }
+    dimension_dim2=nb_cases_dim2->value();
+    etat_depart_table_dim2 = new QTableWidget(dimension_dim2, dimension_dim2); //
+    etat_depart_table_dim2->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
+    etat_depart_table_dim2->verticalHeader()->setVisible(true); // masque le header vertical
+    etat_depart_table_dim2->setMinimumHeight(std::min((int)300, (int)((int)dimension_dim2*(int)taille_dim2)));
+    etat_depart_table_dim2->setMaximumWidth(taille_dim2*dimension_dim2+2);
+    etat_depart_table_dim2->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
+    etat_depart_table_dim2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
+    // création des items du QTableWidget, initialisés à "" avec un fond blanc
+    //on initialise toutes les cases avec un symbole représentant une case à l'état 0, ici, c'est "", une chaîne vide.
+
+    for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
+        etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
+        for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
+            etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
+            etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
+            etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");//vide donc couleur = blanc
+            etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");//idem, on ne veut pas voir le texte à l'intérieur (même pas besoin car c'est une chaîne vide)
+        }
+    }
+
+    etat_depart_table_dim2->setParent(page_dim2);
+    layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
+    etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
+    connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation2(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+    if(select_generateur_dim2->currentText()==tr("Aléatoire"))
+    {
+        Gen_aleatoire();
+    }
+    else if(select_generateur_dim2->currentText()==tr("Manuelle"))
+    {
+        stacked_etat_depart_dim2->setCurrentIndex(1);
+        Simulation_dim2->setEnabled(true);
+        stacked_etat_depart_dim2->setCurrentIndex(1);
+        //enregistrer_auto_dim2=true;
+        //actionEnregistrer_dim2->setEnabled(enregistrer_autodim2);
+    }
+    else if(select_generateur_dim2->currentText()==tr("1 sur 2"))
+    {
+        Gen_Un_Sur_Deux();
+    }
+}
+
+void Fenetre_AutoDim2_Langton::cellActivation2(QTableWidgetItem *index) {//méthode pour changer l'état
+    if (etat_depart_table_dim2->item(index->row(), index->column())->text() == "") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
+        etat_depart_table_dim2->item(index->row(), index->column())->setText("_");
+
+        etat_depart_table_dim2->item(index->row(), index->column())->setBackgroundColor("black");
+
+        etat_depart_table_dim2->item(index->row(), index->column())->setTextColor("black");
+    } else {//au contraire, on passe du noir au blanc si la cellule était vivante
+        etat_depart_table_dim2->item(index->row(), index->column())->setText("");
+
+        etat_depart_table_dim2->item(index->row(), index->column())->setBackgroundColor("white");
+
+        etat_depart_table_dim2->item(index->row(), index->column())->setTextColor("white");
+    }
+}
+
+void Fenetre_AutoDim2_Langton::Gen_aleatoire()
+{
+    srand(time(NULL));
+
+    for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
+        etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
+        for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
+            etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
+            if(rand()%6)
+            {
+                etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
+                etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");
+                etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");
+            }
+            else
+            {
+                etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem("_"));
+                etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("black");
+                etat_depart_table_dim2->item(counter, counter2)->setTextColor("black");
+            }
+        }
+    }
+    stacked_etat_depart_dim2->setCurrentIndex(1);
+    Simulation_dim2->setEnabled(true);
+    enregistrer_autodim2=true;
+    actionEnregistrer->setEnabled(enregistrer_autodim2);
+}
+
+void Fenetre_AutoDim2_Langton::onActionEnregistrer()
+{
+    if(stacked_settings->currentIndex()==0)//dans le cas des automates de dimension 1
+    {
+
+        QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_1/")));
+        QDir dir;
+        fichier = new QFileDialog;
+        //fichier->setDefaultSuffix(QString::fromUtf8("txt"));
+        if(!dir.exists(path))
+        {
+            dir.mkpath(path);
+        }
+
+        QString nom_fichier = fichier->getSaveFileName(centralwidget,
+                                 QString::fromUtf8("Enregistrement de configuration"),
+                                 path);
+
+        if((nom_fichier.split(".").count()==1))
+        {
+            nom_fichier.append(".xml");
+        }
+
+        QFile file(nom_fichier);
+        if ((file.open(QIODevice::ReadWrite)))
+        {
+            QDomDocument dom(nom_fichier.split("/").last());
+
+            QTextStream stream(&file);
+
+            //QDomElement base = dom.documentElement();
+            QDomElement root = dom.createElement("root");
+            dom.appendChild(root);
+
+            QDomElement regles = dom.createElement("Regles");
+            regles.setAttribute("numero", num->value());
+            root.appendChild(regles);//On associe write_elem à domElem.
+
+            QDomElement generator = dom.createElement("Generateur");
+            generator.setAttribute("nb_cases", nb_cases->value());
+            generator.setAttribute("nb_transitions", nb_transitions->value());
+            generator.setAttribute("generation", select_generateur->currentIndex());
+            root.appendChild(generator);
+
+            QDomElement etat_dep = dom.createElement("Etat_depart");
+            root.appendChild(etat_dep);
+
+            QDomElement etats_dep[nb_cases->value()];
+            for(int i=0; i<nb_cases->value(); i++)
+            {
+                etats_dep[i] = dom.createElement("Etat"+QString::number(i));
+                etats_dep[i].setAttribute("active", etat_depart_table->item(0,i)->text()=="_");
+                etat_dep.appendChild(etats_dep[i]);
+            }
+
+            QString write_doc = dom.toString();
+            stream << write_doc;
+
+            file.close();
+        }
+    }
+
+    else if(stacked_settings->currentIndex()==1)//dans le cas du jeu de la vie
+    {
+
+        QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_2/")));
+        QDir dir;
+        fichier = new QFileDialog;
+        //fichier->setDefaultSuffix(QString::fromUtf8("txt"));
+        if(!dir.exists(path))
+        {
+            dir.mkpath(path);
+        }
+
+        QString nom_fichier = fichier->getSaveFileName(centralwidget,
+                                 QString::fromUtf8("Enregistrement de configuration"),
+                                 path);
+
+        if((nom_fichier.split(".").count()==1))
+        {
+            nom_fichier.append(".xml");
+        }
+
+        QFile file(nom_fichier);
+        if ((file.open(QIODevice::ReadWrite)))
+        {
+            QDomDocument dom(nom_fichier.split("/").last());
+
+            QTextStream stream(&file);
+
+            //QDomElement base = dom.documentElement();
+            QDomElement root = dom.createElement("root");
+            dom.appendChild(root);
+
+            QDomElement regles_root = dom.createElement("Regles");
+            QDomElement regles[8];
+            for(unsigned int i=0; i<8; ++i)
+            {
+                regles[i] = dom.createElement("Voisin"+QString::number(i+1));
+                regles[i].setAttribute("vie", vie[i]->isChecked());
+                regles[i].setAttribute("mort", mort[i]->isChecked());
+                regles_root.appendChild(regles[i]);
+            }
+            root.appendChild(regles_root);
+
+            QDomElement generator = dom.createElement("Generateur");
+            generator.setAttribute("nb_cases", nb_cases_dim2->value());
+            generator.setAttribute("nb_transitions", nb_transitions_dim2->value());
+            generator.setAttribute("generation", select_generateur_dim2->currentIndex());
+            root.appendChild(generator);
+
+            QDomElement etat_dep = dom.createElement("Etat_depart");
+            root.appendChild(etat_dep);
+
+            QDomElement etats_dep[dimension_dim2][dimension_dim2];
+            for(unsigned int i=0; i<dimension_dim2; ++i)
+            {
+                for(unsigned int j=0; j<dimension_dim2; ++j)
+                {
+                    etats_dep[i][j] = dom.createElement("Case"+QString::number(i)+tr("-")+QString::number(j));
+                    etats_dep[i][j].setAttribute("ligne", i);
+                    etats_dep[i][j].setAttribute("colonne", j);
+                    etats_dep[i][j].setAttribute("active", etat_depart_table_dim2->item(i,j)->text()=="_");
+                    etat_dep.appendChild(etats_dep[i][j]);
+                }
+            }
+
+            QString write_doc = dom.toString();
+            stream << write_doc;
+
+            file.close();
+        }
+    }
+}
+
+void Fenetre_AutoDim2_Langton::onActionImporter()
+{
+    if(stacked_settings->currentIndex()==0)//dans le cas des automates de dimension 1
+    {
+        fichier = new QFileDialog;
+        QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_1/")));
+        QString nom_fichier = fichier->getOpenFileName(centralwidget,
+                                 QString::fromUtf8("Import de configuration"),
+                                 path);
+
+        QDomDocument dom;
+        QFile file(nom_fichier);
+
+        if ((file.open(QIODevice::ReadOnly)) && (dom.setContent(&file)))
+        {
+            QDomElement docElem = dom.documentElement();
+            QDomNode n = docElem.firstChild();
+            QDomElement e = n.toElement();
+
+            //QMessageBox::information(NULL, "Information", e.tagName());
+            num->setValue(e.attribute("numero").toInt());
+
+            n=n.nextSibling();
+            e=n.toElement();
+            nb_cases->setValue(e.attribute("nb_cases").toInt());
+            //QMessageBox::information(NULL, "Information", e.tagName());
+
+            nb_transitions->setValue(e.attribute("nb_transitions").toInt());
+            //QMessageBox::information(NULL, "Transitions", e.tagName());
+
+            select_generateur->setCurrentIndex(e.attribute("generation").toInt());
+
+            n=n.nextSibling();
+            e=n.toElement();
+
+            n=e.firstChild();
+            e=n.toElement();
+
+            //QMessageBox::information(NULL, "Etat", e.tagName());
+
+            if(page_dim1->findChild<QTableWidget*>("etat_depart_table"))//on teste si le tableau existe déjà
+            {
+                layout_page_etat_1->removeWidget(etat_depart_table);
+                delete etat_depart_table;
+            }
+
+            dimension=nb_cases->value();
+
+            etat_depart_table = new QTableWidget(1, dimension); //
+            etat_depart_table->setFixedHeight(taille+40); // largeur = nombre_cellules*taille_cellule, hauteur = taille_cellule
+            etat_depart_table->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
+            etat_depart_table->verticalHeader()->setVisible(false); // masque le header vertical
+            etat_depart_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // désactive la scroll barre vertical
+            etat_depart_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOn); // désactive la scroll barre horizontal
+
+            for(unsigned int counter = 0; counter < dimension; ++counter) {
+                etat_depart_table->setColumnWidth(counter, taille);
+                if(e.attribute("active").toUInt())
+                {
+                    etat_depart_table->setItem(0, counter, new QTableWidgetItem("_"));
+                    etat_depart_table->item(0, counter)->setBackgroundColor("black");
+                    etat_depart_table->item(0, counter)->setTextColor("black");
+                }
+                else
+                {
+                    etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
+                    etat_depart_table->item(0, counter)->setBackgroundColor("white");
+                    etat_depart_table->item(0, counter)->setTextColor("white");
+                }
+                n=n.nextSibling();
+                e=n.toElement();
+            }
+
+            etat_depart_table->setParent(page_dim1);
+            layout_page_etat_1->addWidget(etat_depart_table);
+            etat_depart_table->setObjectName(QString::fromUtf8("etat_depart_table"));
+            connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+            stacked_etat_depart->setCurrentIndex(1);
+            Simulation->setEnabled(true);
+            enregistrer_autodim1=true;
+            actionEnregistrer->setEnabled(enregistrer_autodim1);
+
+            file.close();
+        }
+    }
+    else if(stacked_settings->currentIndex()==1)//dans le cas du jeu de la vie
+    {
+        fichier = new QFileDialog;
+        QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_2/")));
+        QString nom_fichier = fichier->getOpenFileName(centralwidget,
+                                 QString::fromUtf8("Import de configuration"),
+                                 path);
+
+        QDomDocument dom;
+        QFile file(nom_fichier);
+
+        if ((file.open(QIODevice::ReadOnly)) && (dom.setContent(&file)))
+        {
+            QDomElement docElem = dom.documentElement();
+            QDomNode n = docElem.firstChild();
+            QDomElement e = n.firstChild().toElement();
+
+            for(unsigned int i=0; i<8; ++i)
+            {
+                vie[i]->setChecked(e.attribute("vie").toUInt());
+                mort[i]->setChecked(e.attribute("mort").toUInt());
+                e=e.nextSiblingElement();
+            }
+
+            n=n.nextSibling();
+            e=n.toElement();
+
+            //QMessageBox::information(NULL, "Generateur", e.tagName());
+
+            nb_cases_dim2->setValue(e.attribute("nb_cases").toInt());
+
+            nb_transitions_dim2->setValue(e.attribute("nb_transitions").toInt());
+            //QMessageBox::information(NULL, "Transitions", e.tagName());
+
+            select_generateur_dim2->setCurrentIndex(e.attribute("generation").toInt());
+
+            n=e.nextSibling();
+            n=n.firstChild();
+            e=n.toElement();
+
+            //QMessageBox::information(NULL, "Etat_depart", e.tagName());
+
+            if(page_dim2->findChild<QTableWidget*>("etat_depart_table_dim2"))//on teste si le tableau existe déjà
+            {
+                layout_page_etat_1_dim2->removeWidget(etat_depart_table_dim2);
+                delete etat_depart_table_dim2;
+            }
+
+            dimension_dim2=nb_cases_dim2->value();
+            etat_depart_table_dim2 = new QTableWidget(dimension_dim2, dimension_dim2); //
+            etat_depart_table_dim2->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
+            etat_depart_table_dim2->verticalHeader()->setVisible(true); // masque le header vertical
+            etat_depart_table_dim2->setMinimumHeight(std::min((int)300, (int)((int)dimension_dim2*(int)taille_dim2)));
+            etat_depart_table_dim2->setMaximumWidth(taille_dim2*dimension_dim2+2);
+            etat_depart_table_dim2->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
+            etat_depart_table_dim2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
+
+
+            for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
+                etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
+                for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
+                    if(e.attribute("active").toUInt())
+                    {
+                        etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
+                        etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem("_"));
+                        etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("black");
+                        etat_depart_table_dim2->item(counter, counter2)->setTextColor("black");
+                    }
+                    else
+                    {
+                        etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
+                        etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
+                        etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");
+                        etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");
+                    }
+                    n=n.nextSibling();
+                    e=n.toElement();
+                }
+            }
+
+
+            etat_depart_table_dim2->setParent(page_dim2);
+            layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
+            etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
+            connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation2(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+            stacked_etat_depart_dim2->setCurrentIndex(1);
+            Simulation_dim2->setEnabled(true);
+            enregistrer_autodim2=true;
+            actionEnregistrer->setEnabled(enregistrer_autodim2);
+
+            file.close();
+        }
+    }
+
+}
+
