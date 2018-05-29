@@ -1,5 +1,6 @@
 #include "main_UI.h"
 #include "automate1d.h"
+#include "Window.h"
 
 Fenetre_Principale::Fenetre_Principale(QMainWindow *MainWindow)
 {
@@ -457,18 +458,10 @@ void Fenetre_AutoDim1::onSimulationButtonClicked()
 }
 
 void Fenetre_AutoDim1::cellActivation(QTableWidgetItem *index) {//méthode pour changer l'état
-    if (etat_depart_table->item(0, index->column())->text() == "") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
-        etat_depart_table->item(0, index->column())->setText("_");
-
+    if (etat_depart_table->item(0, index->column())->backgroundColor() == "white") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
         etat_depart_table->item(0, index->column())->setBackgroundColor("black");
-
-        etat_depart_table->item(0, index->column())->setTextColor("black");
     } else {//au contraire, on passe du noir au blanc si la cellule était vivante
-        etat_depart_table->item(0, index->column())->setText("");
-
         etat_depart_table->item(0, index->column())->setBackgroundColor("white");
-
-        etat_depart_table->item(0, index->column())->setTextColor("white");
     }
 }
 
@@ -541,7 +534,7 @@ void Fenetre_AutoDim1::onActionEnregistrer()
             for(int i=0; i<nb_cases->value(); i++)
             {
                 etats_dep[i] = dom.createElement("Etat"+QString::number(i));
-                etats_dep[i].setAttribute("active", etat_depart_table->item(0,i)->text()=="_");
+                etats_dep[i].setAttribute("active", etat_depart_table->item(0,i)->backgroundColor()=="black");
                 etat_dep.appendChild(etats_dep[i]);
             }
 
@@ -614,13 +607,11 @@ void Fenetre_AutoDim1::onActionImporter()
                 {
                     etat_depart_table->setItem(0, counter, new QTableWidgetItem("_"));
                     etat_depart_table->item(0, counter)->setBackgroundColor("black");
-                    etat_depart_table->item(0, counter)->setTextColor("black");
                 }
                 else
                 {
                     etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
                     etat_depart_table->item(0, counter)->setBackgroundColor("white");
-                    etat_depart_table->item(0, counter)->setTextColor("white");
                 }
                 n=n.nextSibling();
                 e=n.toElement();
@@ -708,7 +699,7 @@ Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(Mai
     layout_page_dim2->setObjectName(QString::fromUtf8("layout_page_dim2"));
     configuration_dim2 = new QGroupBox(page_dim2);
     configuration_dim2->setObjectName(QString::fromUtf8("configuration_dim2"));
-    configuration_dim2->setMaximumSize(QSize(900, 400));
+    configuration_dim2->setMaximumSize(QSize(900, 600));
     layout_config_dim2 = new QVBoxLayout(configuration_dim2);
     layout_config_dim2->setObjectName(QString::fromUtf8("layout_config_dim2"));
     regles_dim2 = new QHBoxLayout();
@@ -971,71 +962,117 @@ void Fenetre_AutoDim2::onSimulationButtonClicked()
 
 void Fenetre_AutoDim2::onGenerateurButtonClicked()
 {
-    if(page_dim2->findChild<QTableWidget*>("etat_depart_table_dim2"))//on teste si le tableau existe déjà
+    if(stacked_settings->currentIndex()==0)
     {
-        layout_page_etat_1_dim2->removeWidget(etat_depart_table_dim2);
-        delete etat_depart_table_dim2;
-    }
-    dimension_dim2=nb_cases_dim2->value();
-    etat_depart_table_dim2 = new QTableWidget(dimension_dim2, dimension_dim2); //
-    etat_depart_table_dim2->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
-    etat_depart_table_dim2->verticalHeader()->setVisible(true); // masque le header vertical
-    etat_depart_table_dim2->setMinimumHeight(std::min((int)300, (int)((int)dimension_dim2*(int)taille_dim2)));
-    etat_depart_table_dim2->setMaximumWidth(taille_dim2*dimension_dim2+2);
-    etat_depart_table_dim2->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
-    etat_depart_table_dim2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
-    // création des items du QTableWidget, initialisés à "" avec un fond blanc
-    //on initialise toutes les cases avec un symbole représentant une case à l'état 0, ici, c'est "", une chaîne vide.
+        if(page_dim1->findChild<QTableWidget*>("etat_depart_table"))//on teste si le tableau existe déjà
+        {
+            layout_page_etat_1->removeWidget(etat_depart_table);
+            delete etat_depart_table;
+        }
+        dimension=nb_cases->value();
+        //stacked_etat_depart->setFixedSize(dimension*taille + 50, taille+50);
+        etat_depart_table = new QTableWidget(1, dimension); //
+        etat_depart_table->setFixedHeight(taille+40); // largeur = nombre_cellules*taille_cellule, hauteur = taille_cellule
+        etat_depart_table->setMaximumWidth(taille*dimension+2);
+        etat_depart_table->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
+        etat_depart_table->verticalHeader()->setVisible(false); // masque le header vertical
+        etat_depart_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // désactive la scroll barre vertical
+        etat_depart_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
+        // création des items du QTableWidget, initialisés à "" avec un fond blanc
+        //on initialise toutes les cases avec un symbole représentant une case à l'état 0, ici, c'est "", une chaîne vide.
 
-    for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
-        etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
-        for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
-            etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
-            etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
-            etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");//vide donc couleur = blanc
-            etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");//idem, on ne veut pas voir le texte à l'intérieur (même pas besoin car c'est une chaîne vide)
+        for(unsigned int counter = 0; counter < dimension; ++counter) {
+            etat_depart_table->setColumnWidth(counter, taille);
+            etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
+            etat_depart_table->item(0, counter)->setBackgroundColor("white");
+            etat_depart_table->item(0, counter)->setTextColor("white");
+            }
+        etat_depart_table->setParent(page_dim1);
+        layout_page_etat_1->addWidget(etat_depart_table);
+        etat_depart_table->setObjectName(QString::fromUtf8("etat_depart_table"));
+        connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+        if(select_generateur->currentText()==tr("Aléatoire"))
+        {
+            Gen_aleatoire();
+        }
+        else if(select_generateur->currentText()==tr("Manuelle"))
+        {
+            stacked_etat_depart->setCurrentIndex(1);
+            Simulation->setEnabled(true);
+            enregistrer_autodim1=true;
+            actionEnregistrer->setEnabled(enregistrer_autodim1);
+        }
+        else if(select_generateur->currentText()==tr("1 sur 2"))
+        {
+            Gen_Un_Sur_Deux();
         }
     }
 
-    etat_depart_table_dim2->setParent(page_dim2);
-    layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
-    etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
-    connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation2(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
-    if(select_generateur_dim2->currentText()==tr("Aléatoire"))
+    else if(stacked_settings->currentIndex()==1)
     {
-        Gen_aleatoire();
+        if(page_dim2->findChild<QTableWidget*>("etat_depart_table_dim2"))//on teste si le tableau existe déjà
+        {
+            layout_page_etat_1_dim2->removeWidget(etat_depart_table_dim2);
+            delete etat_depart_table_dim2;
+        }
+        dimension_dim2=nb_cases_dim2->value();
+        etat_depart_table_dim2 = new QTableWidget(dimension_dim2, dimension_dim2); //
+        etat_depart_table_dim2->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
+        etat_depart_table_dim2->verticalHeader()->setVisible(true); // masque le header vertical
+        etat_depart_table_dim2->setMaximumHeight(std::min((int)300, (int)((int)dimension_dim2*(int)taille_dim2)));
+        etat_depart_table_dim2->setMaximumWidth(taille_dim2*dimension_dim2+2);
+        etat_depart_table_dim2->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
+        etat_depart_table_dim2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
+        // création des items du QTableWidget, initialisés à "" avec un fond blanc
+        //on initialise toutes les cases avec un symbole représentant une case à l'état 0, ici, c'est "", une chaîne vide.
+
+        for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
+            etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
+            for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
+                etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
+                etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
+                etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");//vide donc couleur = blanc
+                etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");//idem, on ne veut pas voir le texte à l'intérieur (même pas besoin car c'est une chaîne vide)
+            }
+        }
+
+        etat_depart_table_dim2->setParent(page_dim2);
+        layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
+        etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
+        connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+        if(select_generateur_dim2->currentText()==tr("Aléatoire"))
+        {
+            Gen_aleatoire_dim2();
+        }
+        else if(select_generateur_dim2->currentText()==tr("Manuelle"))
+        {
+            stacked_etat_depart_dim2->setCurrentIndex(1);
+            Simulation_dim2->setEnabled(true);
+            stacked_etat_depart_dim2->setCurrentIndex(1);
+            //enregistrer_auto_dim2=true;
+            //actionEnregistrer_dim2->setEnabled(enregistrer_autodim2);
+        }
+        else if(select_generateur_dim2->currentText()==tr("1 sur 2"))
+        {
+            Gen_Un_Sur_Deux_dim2();
+        }
     }
-    else if(select_generateur_dim2->currentText()==tr("Manuelle"))
-    {
-        stacked_etat_depart_dim2->setCurrentIndex(1);
-        Simulation_dim2->setEnabled(true);
-        stacked_etat_depart_dim2->setCurrentIndex(1);
-        //enregistrer_auto_dim2=true;
-        //actionEnregistrer_dim2->setEnabled(enregistrer_autodim2);
-    }
-    else if(select_generateur_dim2->currentText()==tr("1 sur 2"))
-    {
-        Gen_Un_Sur_Deux();
-    }
+
 }
 
-void Fenetre_AutoDim2::cellActivation2(QTableWidgetItem *index) {//méthode pour changer l'état
-    if (etat_depart_table_dim2->item(index->row(), index->column())->text() == "") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
-        etat_depart_table_dim2->item(index->row(), index->column())->setText("_");
+void Fenetre_AutoDim2::cellActivation(QTableWidgetItem *index) {//méthode pour changer l'état
+    if (etat_depart_table_dim2->item(index->row(), index->column())->backgroundColor() == "white") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
 
         etat_depart_table_dim2->item(index->row(), index->column())->setBackgroundColor("black");
 
-        etat_depart_table_dim2->item(index->row(), index->column())->setTextColor("black");
     } else {//au contraire, on passe du noir au blanc si la cellule était vivante
-        etat_depart_table_dim2->item(index->row(), index->column())->setText("");
 
         etat_depart_table_dim2->item(index->row(), index->column())->setBackgroundColor("white");
 
-        etat_depart_table_dim2->item(index->row(), index->column())->setTextColor("white");
     }
 }
 
-void Fenetre_AutoDim2::Gen_aleatoire()
+void Fenetre_AutoDim2::Gen_aleatoire_dim2()
 {
     srand(time(NULL));
 
@@ -1045,15 +1082,11 @@ void Fenetre_AutoDim2::Gen_aleatoire()
             etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
             if(rand()%6)
             {
-                etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
                 etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");
-                etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");
             }
             else
             {
-                etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem("_"));
                 etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("black");
-                etat_depart_table_dim2->item(counter, counter2)->setTextColor("black");
             }
         }
     }
@@ -1063,7 +1096,7 @@ void Fenetre_AutoDim2::Gen_aleatoire()
     actionEnregistrer->setEnabled(enregistrer_autodim2);
 }
 
-void Fenetre_AutoDim2::Gen_Un_Sur_Deux()
+void Fenetre_AutoDim2::Gen_Un_Sur_Deux_dim2()
 {
     for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
         etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
@@ -1140,7 +1173,7 @@ void Fenetre_AutoDim2::onActionEnregistrer()
             for(int i=0; i<nb_cases->value(); i++)
             {
                 etats_dep[i] = dom.createElement("Etat"+QString::number(i));
-                etats_dep[i].setAttribute("active", etat_depart_table->item(0,i)->text()=="_");
+                etats_dep[i].setAttribute("active", etat_depart_table->item(0,i)->backgroundColor()=="black");
                 etat_dep.appendChild(etats_dep[i]);
             }
 
@@ -1211,7 +1244,7 @@ void Fenetre_AutoDim2::onActionEnregistrer()
                     etats_dep[i][j] = dom.createElement("Case"+QString::number(i)+tr("-")+QString::number(j));
                     etats_dep[i][j].setAttribute("ligne", i);
                     etats_dep[i][j].setAttribute("colonne", j);
-                    etats_dep[i][j].setAttribute("active", etat_depart_table_dim2->item(i,j)->text()=="_");
+                    etats_dep[i][j].setAttribute("active", etat_depart_table_dim2->item(i,j)->backgroundColor()=="black");
                     etat_dep.appendChild(etats_dep[i][j]);
                 }
             }
@@ -1393,7 +1426,7 @@ void Fenetre_AutoDim2::onActionImporter()
             etat_depart_table_dim2->setParent(page_dim2);
             layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
             etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
-            connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation2(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+            connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
             stacked_etat_depart_dim2->setCurrentIndex(1);
             Simulation_dim2->setEnabled(true);
             enregistrer_autodim2=true;
@@ -1424,7 +1457,7 @@ Fenetre_AutoDim2_Langton::Fenetre_AutoDim2_Langton(QMainWindow *MainWindow):Fene
     layout_page_langton->setObjectName(QString::fromUtf8("layout_page_langton"));
     configuration_langton = new QGroupBox(page_langton);
     configuration_langton->setObjectName(QString::fromUtf8("configuration_langton"));
-    configuration_langton->setMaximumSize(QSize(900, 400));
+    configuration_langton->setMaximumSize(QSize(900, 600));
     layout_config_langton = new QVBoxLayout(configuration_langton);
     layout_config_langton->setObjectName(QString::fromUtf8("layout_config_langton"));
     regles_langton = new QHBoxLayout();
@@ -1634,100 +1667,194 @@ void Fenetre_AutoDim2_Langton::onSimulationButtonClicked()
             new_Window_dim2->launchSimulationAuto();
         }
     }
+    else if(stacked_settings->currentIndex()==2)
+    {
+        new_Window_langton = new Window_Dim2_Langton(nullptr, dimension_langton, nb_transitions_langton->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
+        new_Window_langton->setEtatDepart(etat_depart_table_langton);
+        new_Window_langton->show();
+        if(!aff_manuel->isChecked())
+        {
+            new_Window_langton->launchSimulationAuto();
+        }
+    }
+
 }
 
 void Fenetre_AutoDim2_Langton::onGenerateurButtonClicked()
 {
-    if(page_dim2->findChild<QTableWidget*>("etat_depart_table_dim2"))//on teste si le tableau existe déjà
+    if(stacked_settings->currentIndex()==0)
     {
-        layout_page_etat_1_dim2->removeWidget(etat_depart_table_dim2);
-        delete etat_depart_table_dim2;
-    }
-    dimension_dim2=nb_cases_dim2->value();
-    etat_depart_table_dim2 = new QTableWidget(dimension_dim2, dimension_dim2); //
-    etat_depart_table_dim2->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
-    etat_depart_table_dim2->verticalHeader()->setVisible(true); // masque le header vertical
-    etat_depart_table_dim2->setMinimumHeight(std::min((int)300, (int)((int)dimension_dim2*(int)taille_dim2)));
-    etat_depart_table_dim2->setMaximumWidth(taille_dim2*dimension_dim2+2);
-    etat_depart_table_dim2->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
-    etat_depart_table_dim2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
-    // création des items du QTableWidget, initialisés à "" avec un fond blanc
-    //on initialise toutes les cases avec un symbole représentant une case à l'état 0, ici, c'est "", une chaîne vide.
+        if(page_dim1->findChild<QTableWidget*>("etat_depart_table"))//on teste si le tableau existe déjà
+        {
+            layout_page_etat_1->removeWidget(etat_depart_table);
+            delete etat_depart_table;
+        }
+        dimension=nb_cases->value();
+        //stacked_etat_depart->setFixedSize(dimension*taille + 50, taille+50);
+        etat_depart_table = new QTableWidget(1, dimension); //
+        etat_depart_table->setFixedHeight(taille+40); // largeur = nombre_cellules*taille_cellule, hauteur = taille_cellule
+        etat_depart_table->setMaximumWidth(taille*dimension+2);
+        etat_depart_table->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
+        etat_depart_table->verticalHeader()->setVisible(false); // masque le header vertical
+        etat_depart_table->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff); // désactive la scroll barre vertical
+        etat_depart_table->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
+        // création des items du QTableWidget, initialisés à "" avec un fond blanc
+        //on initialise toutes les cases avec un symbole représentant une case à l'état 0, ici, c'est "", une chaîne vide.
 
-    for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
-        etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
-        for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
-            etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
-            etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
-            etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");//vide donc couleur = blanc
-            etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");//idem, on ne veut pas voir le texte à l'intérieur (même pas besoin car c'est une chaîne vide)
+        for(unsigned int counter = 0; counter < dimension; ++counter) {
+            etat_depart_table->setColumnWidth(counter, taille);
+            etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
+            etat_depart_table->item(0, counter)->setBackgroundColor("white");
+            etat_depart_table->item(0, counter)->setTextColor("white");
+            }
+        etat_depart_table->setParent(page_dim1);
+        layout_page_etat_1->addWidget(etat_depart_table);
+        etat_depart_table->setObjectName(QString::fromUtf8("etat_depart_table"));
+        connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+        if(select_generateur->currentText()==tr("Aléatoire"))
+        {
+            Fenetre_AutoDim1::Gen_aleatoire();
+        }
+        else if(select_generateur->currentText()==tr("Manuelle"))
+        {
+            stacked_etat_depart->setCurrentIndex(1);
+            Simulation->setEnabled(true);
+            enregistrer_autodim1=true;
+            actionEnregistrer->setEnabled(enregistrer_autodim1);
+        }
+        else if(select_generateur->currentText()==tr("1 sur 2"))
+        {
+            Fenetre_AutoDim1::Gen_Un_Sur_Deux();
         }
     }
 
-    etat_depart_table_dim2->setParent(page_dim2);
-    layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
-    etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
-    connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation2(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
-    if(select_generateur_dim2->currentText()==tr("Aléatoire"))
+    else if(stacked_settings->currentIndex()==1)
     {
-        Gen_aleatoire();
-    }
-    else if(select_generateur_dim2->currentText()==tr("Manuelle"))
-    {
-        stacked_etat_depart_dim2->setCurrentIndex(1);
-        Simulation_dim2->setEnabled(true);
-        stacked_etat_depart_dim2->setCurrentIndex(1);
-        //enregistrer_auto_dim2=true;
-        //actionEnregistrer_dim2->setEnabled(enregistrer_autodim2);
-    }
-    else if(select_generateur_dim2->currentText()==tr("1 sur 2"))
-    {
-        Gen_Un_Sur_Deux();
-    }
-}
+        if(page_dim2->findChild<QTableWidget*>("etat_depart_table_dim2"))//on teste si le tableau existe déjà
+        {
+            layout_page_etat_1_dim2->removeWidget(etat_depart_table_dim2);
+            delete etat_depart_table_dim2;
+        }
+        dimension_dim2=nb_cases_dim2->value();
+        etat_depart_table_dim2 = new QTableWidget(dimension_dim2, dimension_dim2); //
+        etat_depart_table_dim2->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
+        etat_depart_table_dim2->verticalHeader()->setVisible(true); // masque le header vertical
+        etat_depart_table_dim2->setMinimumHeight(std::min((int)300, (int)((int)dimension_dim2*(int)taille_dim2)));
+        etat_depart_table_dim2->setMaximumWidth(taille_dim2*dimension_dim2+2);
+        etat_depart_table_dim2->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
+        etat_depart_table_dim2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
+        // création des items du QTableWidget, initialisés à "" avec un fond blanc
+        //on initialise toutes les cases avec un symbole représentant une case à l'état 0, ici, c'est "", une chaîne vide.
 
-void Fenetre_AutoDim2_Langton::cellActivation2(QTableWidgetItem *index) {//méthode pour changer l'état
-    if (etat_depart_table_dim2->item(index->row(), index->column())->text() == "") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
-        etat_depart_table_dim2->item(index->row(), index->column())->setText("_");
-
-        etat_depart_table_dim2->item(index->row(), index->column())->setBackgroundColor("black");
-
-        etat_depart_table_dim2->item(index->row(), index->column())->setTextColor("black");
-    } else {//au contraire, on passe du noir au blanc si la cellule était vivante
-        etat_depart_table_dim2->item(index->row(), index->column())->setText("");
-
-        etat_depart_table_dim2->item(index->row(), index->column())->setBackgroundColor("white");
-
-        etat_depart_table_dim2->item(index->row(), index->column())->setTextColor("white");
-    }
-}
-
-void Fenetre_AutoDim2_Langton::Gen_aleatoire()
-{
-    srand(time(NULL));
-
-    for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
-        etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
-        for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
-            etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
-            if(rand()%6)
-            {
+        for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
+            etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
+            for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
+                etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
                 etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
-                etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");
-                etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");
-            }
-            else
-            {
-                etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem("_"));
-                etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("black");
-                etat_depart_table_dim2->item(counter, counter2)->setTextColor("black");
+                etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");//vide donc couleur = blanc
+                etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");//idem, on ne veut pas voir le texte à l'intérieur (même pas besoin car c'est une chaîne vide)
             }
         }
+
+        etat_depart_table_dim2->setParent(page_dim2);
+        layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
+        etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
+        connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+        if(select_generateur_dim2->currentText()==tr("Aléatoire"))
+        {
+            Gen_aleatoire_dim2();
+        }
+        else if(select_generateur_dim2->currentText()==tr("Manuelle"))
+        {
+            stacked_etat_depart_dim2->setCurrentIndex(1);
+            Simulation_dim2->setEnabled(true);
+            stacked_etat_depart_dim2->setCurrentIndex(1);
+            //enregistrer_auto_dim2=true;
+            //actionEnregistrer_dim2->setEnabled(enregistrer_autodim2);
+        }
     }
-    stacked_etat_depart_dim2->setCurrentIndex(1);
-    Simulation_dim2->setEnabled(true);
-    enregistrer_autodim2=true;
-    actionEnregistrer->setEnabled(enregistrer_autodim2);
+
+    else if(stacked_settings->currentIndex()==2)
+    {
+        if(page_langton->findChild<QTableWidget*>("etat_depart_table_langton"))//on teste si le tableau existe déjà
+        {
+            layout_page_etat_1_langton->removeWidget(etat_depart_table_langton);
+            delete etat_depart_table_langton;
+        }
+        dimension_langton=nb_cases_langton->value();
+        etat_depart_table_langton = new QTableWidget(dimension_langton, dimension_langton); //
+        etat_depart_table_langton->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
+        etat_depart_table_langton->verticalHeader()->setVisible(true); // masque le header vertical
+        etat_depart_table_langton->setMinimumHeight(std::min((int)300, (int)((int)dimension_langton*(int)taille_langton)));
+        etat_depart_table_langton->setMaximumWidth(taille_langton*dimension_langton+2);
+        etat_depart_table_langton->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
+        etat_depart_table_langton->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
+        // création des items du QTableWidget, initialisés à "" avec un fond blanc
+        //on initialise toutes les cases avec un symbole représentant une case à l'état 0, ici, c'est "", une chaîne vide.
+
+        for(unsigned int counter = 0; counter < dimension_langton; ++counter) {
+            etat_depart_table_langton->setRowHeight(counter, taille_langton);
+            for(unsigned int counter2=0; counter2<dimension_langton; ++counter2){
+                etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
+                etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem(""));
+                etat_depart_table_langton->item(counter, counter2)->setFlags(etat_depart_table_langton->item(counter, counter2)->flags() ^ Qt::ItemIsEditable);
+            }
+        }
+
+        etat_depart_table_langton->setParent(page_langton);
+        layout_page_etat_1_langton->addWidget(etat_depart_table_langton);
+        etat_depart_table_langton->setObjectName(QString::fromUtf8("etat_depart_table_langton"));
+        connect(etat_depart_table_langton, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation_Langton(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+        if(select_generateur_langton->currentText()==tr("Aléatoire"))
+        {
+            Gen_aleatoire_langton();
+        }
+        else if(select_generateur_langton->currentText()==tr("Manuelle"))
+        {
+            stacked_etat_depart_langton->setCurrentIndex(1);
+            Simulation_langton->setEnabled(true);
+            stacked_etat_depart_langton->setCurrentIndex(1);
+        }
+    }
+
+}
+
+void Fenetre_AutoDim2_Langton::cellActivation_Langton(QTableWidgetItem *index) {//méthode pour changer l'état
+    if (etat_depart_table_langton->item(index->row(), index->column())->text() == "") {
+        QPixmap pixmap("arrow-right.png");
+        QIcon ButtonIcon(pixmap);
+        etat_depart_table_langton->item(index->row(), index->column())->setIcon(ButtonIcon);
+        etat_depart_table_langton->item(index->row(), index->column())->setText("right");
+
+    } else if(etat_depart_table_langton->item(index->row(), index->column())->text() == "right") {
+
+        QPixmap pixmap("arrow-down.png");
+        QIcon ButtonIcon(pixmap);
+        etat_depart_table_langton->item(index->row(), index->column())->setIcon(ButtonIcon);
+        etat_depart_table_langton->item(index->row(), index->column())->setText("down");
+    }
+    else if(etat_depart_table_langton->item(index->row(), index->column())->text() == "down") {
+
+            QPixmap pixmap("arrow-left.png");
+            QIcon ButtonIcon(pixmap);
+            etat_depart_table_langton->item(index->row(), index->column())->setIcon(ButtonIcon);
+            etat_depart_table_langton->item(index->row(), index->column())->setText("left");
+        }
+    else if(etat_depart_table_langton->item(index->row(), index->column())->text() == "left") {
+
+            QPixmap pixmap("arrow-up.png");
+            QIcon ButtonIcon(pixmap);
+            etat_depart_table_langton->item(index->row(), index->column())->setIcon(ButtonIcon);
+            etat_depart_table_langton->item(index->row(), index->column())->setText("up");
+        }
+    else
+    {
+        QPixmap pixmap("");
+        QIcon ButtonIcon(pixmap);
+        etat_depart_table_langton->item(index->row(), index->column())->setIcon(ButtonIcon);
+        etat_depart_table_langton->item(index->row(), index->column())->setText("");
+    }
+
 }
 
 void Fenetre_AutoDim2_Langton::onActionEnregistrer()
@@ -1781,7 +1908,7 @@ void Fenetre_AutoDim2_Langton::onActionEnregistrer()
             for(int i=0; i<nb_cases->value(); i++)
             {
                 etats_dep[i] = dom.createElement("Etat"+QString::number(i));
-                etats_dep[i].setAttribute("active", etat_depart_table->item(0,i)->text()=="_");
+                etats_dep[i].setAttribute("active", etat_depart_table->item(0,i)->backgroundColor()=="black");
                 etat_dep.appendChild(etats_dep[i]);
             }
 
@@ -1852,7 +1979,7 @@ void Fenetre_AutoDim2_Langton::onActionEnregistrer()
                     etats_dep[i][j] = dom.createElement("Case"+QString::number(i)+tr("-")+QString::number(j));
                     etats_dep[i][j].setAttribute("ligne", i);
                     etats_dep[i][j].setAttribute("colonne", j);
-                    etats_dep[i][j].setAttribute("active", etat_depart_table_dim2->item(i,j)->text()=="_");
+                    etats_dep[i][j].setAttribute("active", etat_depart_table_dim2->item(i,j)->backgroundColor()=="black");
                     etat_dep.appendChild(etats_dep[i][j]);
                 }
             }
@@ -2014,16 +2141,12 @@ void Fenetre_AutoDim2_Langton::onActionImporter()
                     if(e.attribute("active").toUInt())
                     {
                         etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
-                        etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem("_"));
                         etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("black");
-                        etat_depart_table_dim2->item(counter, counter2)->setTextColor("black");
                     }
                     else
                     {
                         etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
-                        etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
                         etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");
-                        etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");
                     }
                     n=n.nextSibling();
                     e=n.toElement();
@@ -2034,7 +2157,7 @@ void Fenetre_AutoDim2_Langton::onActionImporter()
             etat_depart_table_dim2->setParent(page_dim2);
             layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
             etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
-            connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation2(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+            connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
             stacked_etat_depart_dim2->setCurrentIndex(1);
             Simulation_dim2->setEnabled(true);
             enregistrer_autodim2=true;
@@ -2044,5 +2167,31 @@ void Fenetre_AutoDim2_Langton::onActionImporter()
         }
     }
 
+}
+
+void Fenetre_AutoDim2_Langton::Gen_aleatoire_langton()
+{
+    srand(time(NULL));
+    unsigned int fourmi = rand()%(dimension_langton*dimension_langton);
+    int direction = rand()%4;
+    QString directions[4]={tr("right"), tr("down"), tr("left"), tr("top")};
+    QString logo[4]={tr("arrow-right.png"), tr("arrow-down.png"), tr("arrow-left.png"), tr("arrow-top.png")};
+    for(unsigned int counter = 0; counter < dimension_langton; ++counter) {
+        etat_depart_table_langton->setRowHeight(counter, taille_langton);
+        for(unsigned int counter2=0; counter2<dimension_langton; ++counter2){
+            etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
+            if(counter*dimension_langton+counter2==fourmi)
+            {
+                QPixmap pixmap(logo[direction]);
+                QIcon ButtonIcon(pixmap);
+                etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
+                etat_depart_table_langton->item(counter, counter2)->setText(directions[direction]);
+            }
+        }
+    }
+    stacked_etat_depart_langton->setCurrentIndex(1);
+    Simulation_langton->setEnabled(true);
+    enregistrer_autolangton=true;
+    actionEnregistrer->setEnabled(enregistrer_autolangton);
 }
 

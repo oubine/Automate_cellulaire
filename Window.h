@@ -15,6 +15,7 @@
 #include <QGroupBox>
 #include <QThread>
 #include <iostream>
+#include "automate2d.h"
 
 class Window_Dim1 : public QWidget{
 Q_OBJECT
@@ -57,7 +58,6 @@ public:
 signals:
     void is_play();
 public slots:
-    void launchSimulation();
     void launchSimulationAuto();
 private slots :
     void onSuivantButtonClicked();
@@ -103,7 +103,6 @@ public:
 signals:
     void is_play();
 public slots:
-    void launchSimulation();
     void launchSimulationAuto();
 private slots :
     void onSuivantButtonClicked();
@@ -135,10 +134,12 @@ Q_OBJECT
     bool is_play_v=1;
     unsigned int taille;
 
+
+    Etat2D e;
     std::vector<short int> regle;
 public:
     explicit Window_Dim2_Langton(QWidget* parent = nullptr);
-    explicit Window_Dim2_Langton(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500, std::vector<short int> regle={0,0,1,2,0,0,0,0,0});
+    explicit Window_Dim2_Langton(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500);
     int getDimension() const {return dimension;}
     QTableWidget* getDepart() const {return depart;}
     void setEtatDepart(QTableWidget* dep){depart=dep;}
@@ -149,12 +150,11 @@ public:
 signals:
     void is_play();
 public slots:
-    //void launchSimulation();
-    //void launchSimulationAuto();
+    void launchSimulationAuto();
 private slots :
-    //void onSuivantButtonClicked();
-    //void onPlayButtonClicked();
-    //void onPauseButtonClicked();
+    void onSuivantButtonClicked();
+    void onPlayButtonClicked();
+    void onPauseButtonClicked();
 };
 
 #endif // WINDOW_DIM1_H

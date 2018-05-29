@@ -5,7 +5,7 @@
 #define MAX_TRANSITIONS 300
 
 #define MAX_CASES_DIM2 200
-#define MAX_TRANSITIONS_DIM2 1000
+#define MAX_TRANSITIONS_DIM2 100000
 
 #include <QWidget>
 #include <QtCore/QVariant>
@@ -164,16 +164,16 @@ public :
 
 private slots :
     void onDimensionItemClicked(QListWidgetItem*);
-    void onGenerateurButtonClicked();
-    void onSimulationButtonClicked();
-    void synchronizeNumToNumBit(int i);
-    void synchronizeNumBitToNum(const QString& s);
-    void cellActivation(QTableWidgetItem* index);
+    virtual void onGenerateurButtonClicked();
+    virtual void onSimulationButtonClicked();
+    virtual void synchronizeNumToNumBit(int i);
+    virtual void synchronizeNumBitToNum(const QString& s);
+    virtual void cellActivation(QTableWidgetItem* index);
     void onActionEnregistrer();
     void onActionImporter();
 };
 
-class Fenetre_AutoDim2 : public Fenetre_AutoDim1
+class Fenetre_AutoDim2 : protected Fenetre_AutoDim1
 {
     Q_OBJECT
 protected:
@@ -228,18 +228,18 @@ protected:
 public:
     void Noms(QMainWindow *MainWindow);
     Fenetre_AutoDim2(QMainWindow *MainWindow);
-    void Gen_aleatoire();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
-    void Gen_Un_Sur_Deux();
+    void Gen_aleatoire_dim2();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
+    void Gen_Un_Sur_Deux_dim2();
 private slots :
-    void onDimensionItemClicked(QListWidgetItem*);
-    void onGenerateurButtonClicked();
-    void onSimulationButtonClicked();
-    void cellActivation2(QTableWidgetItem* index);
-    void onActionEnregistrer();
-    void onActionImporter();
+    void onDimensionItemClicked(QListWidgetItem*) override;
+    void onGenerateurButtonClicked() override;
+    void onSimulationButtonClicked() override;
+    void cellActivation(QTableWidgetItem* index) override;
+    void onActionEnregistrer() override;
+    void onActionImporter() override;
 };
 
-class Fenetre_AutoDim2_Langton : public Fenetre_AutoDim2
+class Fenetre_AutoDim2_Langton : protected Fenetre_AutoDim2
 {
     Q_OBJECT
 
@@ -287,14 +287,14 @@ protected:
 public:
     void Noms(QMainWindow *MainWindow);
     Fenetre_AutoDim2_Langton(QMainWindow *MainWindow);
-    void Gen_aleatoire();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
+    void Gen_aleatoire_langton();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
 private slots :
-    void onDimensionItemClicked(QListWidgetItem*);
-    void onGenerateurButtonClicked();
-    void onSimulationButtonClicked();
-    void cellActivation2(QTableWidgetItem* index);
-    void onActionEnregistrer();
-    void onActionImporter();
+    void onDimensionItemClicked(QListWidgetItem*) override;
+    void onGenerateurButtonClicked() override;
+    void onSimulationButtonClicked() override;
+    void cellActivation_Langton(QTableWidgetItem* index);
+    void onActionEnregistrer() override;
+    void onActionImporter() override;
 };
 
 namespace Ui {
