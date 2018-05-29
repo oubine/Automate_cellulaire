@@ -699,7 +699,7 @@ Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(Mai
     layout_page_dim2->setObjectName(QString::fromUtf8("layout_page_dim2"));
     configuration_dim2 = new QGroupBox(page_dim2);
     configuration_dim2->setObjectName(QString::fromUtf8("configuration_dim2"));
-    configuration_dim2->setMaximumSize(QSize(900, 600));
+    configuration_dim2->setMaximumSize(QSize(900, 400));
     layout_config_dim2 = new QVBoxLayout(configuration_dim2);
     layout_config_dim2->setObjectName(QString::fromUtf8("layout_config_dim2"));
     regles_dim2 = new QHBoxLayout();
@@ -1457,7 +1457,7 @@ Fenetre_AutoDim2_Langton::Fenetre_AutoDim2_Langton(QMainWindow *MainWindow):Fene
     layout_page_langton->setObjectName(QString::fromUtf8("layout_page_langton"));
     configuration_langton = new QGroupBox(page_langton);
     configuration_langton->setObjectName(QString::fromUtf8("configuration_langton"));
-    configuration_langton->setMaximumSize(QSize(900, 600));
+    configuration_langton->setMaximumSize(QSize(900, 400));
     layout_config_langton = new QVBoxLayout(configuration_langton);
     layout_config_langton->setObjectName(QString::fromUtf8("layout_config_langton"));
     regles_langton = new QHBoxLayout();
@@ -1740,6 +1740,7 @@ void Fenetre_AutoDim2_Langton::onGenerateurButtonClicked()
         etat_depart_table_dim2->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
         etat_depart_table_dim2->verticalHeader()->setVisible(true); // masque le header vertical
         etat_depart_table_dim2->setMinimumHeight(std::min((int)300, (int)((int)dimension_dim2*(int)taille_dim2)));
+        etat_depart_table_dim2->setFixedHeight(std::min((int)100, (int)((int)dimension_dim2*(int)taille_dim2)));
         etat_depart_table_dim2->setMaximumWidth(taille_dim2*dimension_dim2+2);
         etat_depart_table_dim2->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
         etat_depart_table_dim2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
@@ -1756,7 +1757,7 @@ void Fenetre_AutoDim2_Langton::onGenerateurButtonClicked()
             }
         }
 
-        etat_depart_table_dim2->setParent(page_dim2);
+        etat_depart_table_dim2->setParent(configuration_dim2);
         layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
         etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
         connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
@@ -1786,6 +1787,7 @@ void Fenetre_AutoDim2_Langton::onGenerateurButtonClicked()
         etat_depart_table_langton->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
         etat_depart_table_langton->verticalHeader()->setVisible(true); // masque le header vertical
         etat_depart_table_langton->setMinimumHeight(std::min((int)300, (int)((int)dimension_langton*(int)taille_langton)));
+        etat_depart_table_langton->setFixedHeight(std::min((int)100, (int)((int)dimension_dim2*(int)taille_dim2)));
         etat_depart_table_langton->setMaximumWidth(taille_langton*dimension_langton+2);
         etat_depart_table_langton->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
         etat_depart_table_langton->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
@@ -2154,7 +2156,7 @@ void Fenetre_AutoDim2_Langton::onActionImporter()
             }
 
 
-            etat_depart_table_dim2->setParent(page_dim2);
+            etat_depart_table_dim2->setParent(configuration_dim2);
             layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
             etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
             connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
