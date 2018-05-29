@@ -31,10 +31,10 @@ private:
  * Par soucis de généralité, les motifs des automates1D sont aussi des vector de vector à 1 case.*/
 
 /* Les règles de transition sont des généralisations des règles des automates élémentaires.
- * Ce sont des vector représentant les images des états de départs ordonnés dans l'ordre décroissant.
+ * Ce sont des vector représentant les images des états de départs ordonnés dans l'ordre croissant.
  * Par exemple, pour un automate à 3 états et ayant 2 cellules dans son motif, une règle possible serait:
  * vector( 0, 2, 1, 1, 0, 0, 0, 1, 0)
- *        22,21,20,12,11,10,02,01,00
+ *        00,01,02,10,11,12,20,21,22
  */
 
 
@@ -45,7 +45,7 @@ en utilisant - la méthode setMotif et le constructeur Automate(regle)
 
 class Automate //classe abstraite
 {
-private:
+protected:
     std::vector<unsigned int> regleTransition;
     std::vector<std::vector<int>> motif; //si automate1D la deuxième couche de vector ne contient qu'un seul élément
     unsigned int *valVoisinage;

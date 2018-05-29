@@ -670,6 +670,10 @@ void Window_Dim2_Langton::launchSimulationAuto() {//méthode pour lancer la simu
             // on récupère le dernier état
             Etat2D e2(dimension,9);
             a.appliquerTransition(e,e2);
+            auto finish = std::chrono::high_resolution_clock::now();
+            std::chrono::duration<double> elapsed = finish - start;
+            std::cout << "Elapsed time appliquer transition: " << elapsed.count() << " s\n";
+            start = std::chrono::high_resolution_clock::now();
             e = e2;
 
             IndexTab2D index(0,0,dimension,dimension);
@@ -684,10 +688,9 @@ void Window_Dim2_Langton::launchSimulationAuto() {//méthode pour lancer la simu
 
             QCoreApplication::processEvents();
             //QThread::msleep(temps_affichage);
-            auto finish = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> elapsed = finish - start;
+            finish = std::chrono::high_resolution_clock::now();
+            elapsed = finish - start;
             std::cout << "Elapsed time affichage: " << elapsed.count() << " s\n";
-            std::cout<<e<<std::endl;
             for(unsigned int counter=0; counter<temps_affichage/50; counter++)//ça c'est de la bidouille pour actualiser pause/play plus souvent
             {
                 QThread::msleep(50);

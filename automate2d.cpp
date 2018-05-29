@@ -2,11 +2,13 @@
 #include "etat.h"
 #include <math.h>
 #include <algorithm>
+#include <chrono>
 
 
 void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
 {
-    if (this->getMotif().size() == 0) throw AutomateException("Motif non défini");
+    unsigned int etat;
+    if (motif.size() == 0) throw AutomateException("Motif non défini");
     if (dep.getTaille() != dest.getTaille()) dest = dep;
     auto iExamine = IndexTab2D(0,0,dep.getTaille(),dep.getTaille());
 
@@ -14,10 +16,10 @@ void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
     {//iExamine : index de la case de l'état de départ examinée
         for(unsigned int j = 0; j < this->getMotif().size(); j++)
         {//this->getMotif()[j] : index relatif des voisins par rapport à la case examinée
-            this->setVoisin(j,dep.getCellule(iExamine+this->getMotif()[j]));
+            valVoisinage[j] = dep.getCellule(iExamine+motif[j]);
         }
-        unsigned int etat = baseToInt(std::vector<unsigned int>(this->getVoisinage(),this->getVoisinage()+this->nbVoisins()),dep.getValMax()+1);
-        dest.setCellule(i, this->getRegleTransition()[this->getRegleTransition().size()-1-etat]);
+        etat = baseToInt(std::vector<unsigned int>(valVoisinage,valVoisinage+nbVoisins()),dep.getValMax()+1);
+        dest.setCellule(i, regleTransition[etat]);
         iExamine++;
     }
 }
@@ -49,15 +51,15 @@ std::vector<unsigned int> fromRegleNaissMortToRegleTransition(std::vector<short 
         nbVoisinsVivants = std::count(etatBinaire.begin()+1,etatBinaire.end(),1);
         if(regleNaissMort[nbVoisinsVivants] == 1)//la case examinée ne doit pas changer d'état
         {
-            resultat[nbEtats-1-i] = etatBinaire[0]; // rappelons que la première case du motif porte l'information de la case examinée
+            resultat[i] = etatBinaire[0]; // rappelons que la première case du motif porte l'information de la case examinée
         }
         else if(regleNaissMort[nbVoisinsVivants] == 0) //la case examinée doit mourir
         {
-            resultat[nbEtats-1-i] = 0;
+            resultat[i] = 0;
         }
         else //la case examinée doit naître
         {
-            resultat[nbEtats-1-i] = 1;
+            resultat[i] = 1;
         }
     }
     return resultat;
@@ -96,27 +98,27 @@ std::vector<unsigned int> FourmiLangton::getRegle()
         //une fourmi arrive sur la case centrale
         if(etatBinaire[1] == 4 || etatBinaire[1] == 9) //une fourmi arrive depuis l'ouest
         {
-            resultat[nbEtat-1-i] = etatBinaire[0]%2+6;
+            resultat[i] = etatBinaire[0]%2+6;
             nbFourmiArriveSurLaCaseCentrale++;
         }
         if(etatBinaire[2] == 6 || etatBinaire[2] == 3) //une fourmi arrive depuis le nord
         {
-            resultat[nbEtat-1-i] = etatBinaire[0]%2+8;
+            resultat[i] = etatBinaire[0]%2+8;
             nbFourmiArriveSurLaCaseCentrale++;
         }
         if(etatBinaire[3] == 8 || etatBinaire[3] == 5) //une fourmi arrive depuis l'est
         {
-            resultat[nbEtat-1-i] = etatBinaire[0]%2+2;
+            resultat[i] = etatBinaire[0]%2+2;
             nbFourmiArriveSurLaCaseCentrale++;
         }
         if(etatBinaire[4] == 2 || etatBinaire[4] == 7) //une fourmi arrive depuis le sud
         {
-            resultat[nbEtat-1-i] = etatBinaire[0]%2+4;
+            resultat[i] = etatBinaire[0]%2+4;
             nbFourmiArriveSurLaCaseCentrale++;
         }
-        if(nbFourmiArriveSurLaCaseCentrale == 0) resultat[nbEtat-1-i] = etatBinaire[0];
+        if(nbFourmiArriveSurLaCaseCentrale == 0) resultat[i] = etatBinaire[0];
         if(nbFourmiArriveSurLaCaseCentrale > 1)//plusieurs fourmis sont arrivées sur la même case centrale
-            resultat[nbEtat-1-i] %= 2; // elles s'annihilent
+            resultat[i] %= 2; // elles s'annihilent
     }
     return resultat;
 }
