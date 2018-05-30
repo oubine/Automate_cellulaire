@@ -166,9 +166,9 @@ private slots :
     void onDimensionItemClicked(QListWidgetItem*);
     virtual void onGenerateurButtonClicked();
     virtual void onSimulationButtonClicked();
-    virtual void synchronizeNumToNumBit(int i);
-    virtual void synchronizeNumBitToNum(const QString& s);
-    virtual void cellActivation(QTableWidgetItem* index);
+    void synchronizeNumToNumBit(int i);
+    void synchronizeNumBitToNum(const QString& s);
+    void cellActivation_dim1(QTableWidgetItem* index);
     void onActionEnregistrer();
     void onActionImporter();
 };
@@ -234,7 +234,7 @@ private slots :
     void onDimensionItemClicked(QListWidgetItem*) override;
     void onGenerateurButtonClicked() override;
     void onSimulationButtonClicked() override;
-    void cellActivation(QTableWidgetItem* index) override;
+    void cellActivation_dim2(QTableWidgetItem* index);
     void onActionEnregistrer() override;
     void onActionImporter() override;
 };

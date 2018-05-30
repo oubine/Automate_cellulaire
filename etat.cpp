@@ -17,7 +17,7 @@ std::ostream& operator<<(std::ostream& f, const Etat1D& e)
     {
         for(int j = 0; j < 1; j++)
         {
-            if (e.getCellule(i)) f << char(178); else f << "_";
+            if (e.getCellule(i)) f << "1"; else f << "0";
         }
         i++;
     }

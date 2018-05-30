@@ -138,7 +138,7 @@ void Window_Dim1::onSuivantButtonClicked()
     Etat1D e(dimension,1);
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
     for(unsigned int counter = 0; counter < dimension; ++counter) {
-        if(depart->item(0, counter)->text() != "") {
+        if(depart->item(0, counter)->backgroundColor() == "black") {
                 e.setCellule(counter, 1);
         }
         else e.setCellule(counter, 0);
@@ -162,13 +162,9 @@ void Window_Dim1::onSuivantButtonClicked()
             // on l'affiche
             for(unsigned int colonne = 0; colonne < dimension; ++colonne) {
                 if (etat.getCellule(colonne) == true) {
-                    etats->item(step, colonne)->setText("_");
                     etats->item(step, colonne)->setBackgroundColor("black");
-                    etats->item(step, colonne)->setTextColor("black");
                 } else {
-                    etats->item(step, colonne)->setText("");
                     etats->item(step, colonne)->setBackgroundColor("white");
-                    etats->item(step, colonne)->setTextColor("white");
                 }
             }
         }
@@ -186,8 +182,8 @@ void Window_Dim1::launchSimulationAuto() {//méthode pour lancer la simulation
     Etat1D e(dimension,1);
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
     for(unsigned int counter = 0; counter < dimension; ++counter) {
-        if(depart->item(0, counter)->text() != "") {
-                e.setCellule(counter, true);
+        if(depart->item(0, counter)->backgroundColor() == "black") {
+                e.setCellule(counter, 1);
         }
     }
     // on récupère l'automate correspondant au numéro de l'interface graphique, en utilisant l'AutomateManager
@@ -210,16 +206,12 @@ void Window_Dim1::launchSimulationAuto() {//méthode pour lancer la simulation
         // on récupère le dernier état
         sim.next();
         const Etat1D& etat = sim.dernier();
-        // on l'affiche
+        std::cout<<etat<<std::endl;
         for(unsigned int colonne = 0; colonne < dimension; ++colonne) {
             if (etat.getCellule(colonne) == true) {
-                etats->item(step, colonne)->setText("_");
                 etats->item(step, colonne)->setBackgroundColor("black");
-                etats->item(step, colonne)->setTextColor("black");
             } else {
-                etats->item(step, colonne)->setText("");
                 etats->item(step, colonne)->setBackgroundColor("white");
-                etats->item(step, colonne)->setTextColor("white");
             }
         }
         for(unsigned int counter=0; counter<temps_affichage/4; counter++)//ça c'est de la bidouille pour actualiser pause/play plus souvent

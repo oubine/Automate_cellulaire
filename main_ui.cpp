@@ -457,7 +457,7 @@ void Fenetre_AutoDim1::onSimulationButtonClicked()
     }
 }
 
-void Fenetre_AutoDim1::cellActivation(QTableWidgetItem *index) {//méthode pour changer l'état
+void Fenetre_AutoDim1::cellActivation_dim1(QTableWidgetItem *index) {//méthode pour changer l'état
     if (etat_depart_table->item(0, index->column())->backgroundColor() == "white") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
         etat_depart_table->item(0, index->column())->setBackgroundColor("black");
     } else {//au contraire, on passe du noir au blanc si la cellule était vivante
@@ -605,7 +605,7 @@ void Fenetre_AutoDim1::onActionImporter()
                 etat_depart_table->setColumnWidth(counter, taille);
                 if(e.attribute("active").toUInt())
                 {
-                    etat_depart_table->setItem(0, counter, new QTableWidgetItem("_"));
+                    etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
                     etat_depart_table->item(0, counter)->setBackgroundColor("black");
                 }
                 else
@@ -640,15 +640,13 @@ void Fenetre_AutoDim1::Gen_aleatoire()
         etat_depart_table->setColumnWidth(counter, taille);
         if(rand()%2)
         {
-            etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
+            etat_depart_table->setItem(0, counter, new QTableWidgetItem());
             etat_depart_table->item(0, counter)->setBackgroundColor("white");
-            etat_depart_table->item(0, counter)->setTextColor("white");
         }
         else
         {
-            etat_depart_table->setItem(0, counter, new QTableWidgetItem("_"));
+            etat_depart_table->setItem(0, counter, new QTableWidgetItem());
             etat_depart_table->item(0, counter)->setBackgroundColor("black");
-            etat_depart_table->item(0, counter)->setTextColor("black");
         }
     }
     stacked_etat_depart->setCurrentIndex(1);
@@ -669,7 +667,7 @@ void Fenetre_AutoDim1::Gen_Un_Sur_Deux()
         }
         else
         {
-            etat_depart_table->setItem(0, counter, new QTableWidgetItem("_"));
+            etat_depart_table->setItem(0, counter, new QTableWidgetItem());
             etat_depart_table->item(0, counter)->setBackgroundColor("black");
             etat_depart_table->item(0, counter)->setTextColor("black");
         }
@@ -1060,7 +1058,7 @@ void Fenetre_AutoDim2::onGenerateurButtonClicked()
 
 }
 
-void Fenetre_AutoDim2::cellActivation(QTableWidgetItem *index) {//méthode pour changer l'état
+void Fenetre_AutoDim2::cellActivation_dim2(QTableWidgetItem *index) {
     if (etat_depart_table_dim2->item(index->row(), index->column())->backgroundColor() == "white") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
 
         etat_depart_table_dim2->item(index->row(), index->column())->setBackgroundColor("black");
@@ -1110,7 +1108,7 @@ void Fenetre_AutoDim2::Gen_Un_Sur_Deux_dim2()
             }
             else
             {
-                etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem("_"));
+                etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem());
                 etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("black");
                 etat_depart_table_dim2->item(counter, counter2)->setTextColor("black");
             }
@@ -1316,7 +1314,7 @@ void Fenetre_AutoDim2::onActionImporter()
                 etat_depart_table->setColumnWidth(counter, taille);
                 if(e.attribute("active").toUInt())
                 {
-                    etat_depart_table->setItem(0, counter, new QTableWidgetItem("_"));
+                    etat_depart_table->setItem(0, counter, new QTableWidgetItem());
                     etat_depart_table->item(0, counter)->setBackgroundColor("black");
                     etat_depart_table->item(0, counter)->setTextColor("black");
                 }
@@ -1333,7 +1331,7 @@ void Fenetre_AutoDim2::onActionImporter()
             etat_depart_table->setParent(page_dim1);
             layout_page_etat_1->addWidget(etat_depart_table);
             etat_depart_table->setObjectName(QString::fromUtf8("etat_depart_table"));
-            connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+            connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation_dim1(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
             stacked_etat_depart->setCurrentIndex(1);
             Simulation->setEnabled(true);
             enregistrer_autodim1=true;
@@ -1406,7 +1404,7 @@ void Fenetre_AutoDim2::onActionImporter()
                     if(e.attribute("active").toUInt())
                     {
                         etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
-                        etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem("_"));
+                        etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem());
                         etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("black");
                         etat_depart_table_dim2->item(counter, counter2)->setTextColor("black");
                     }
@@ -1426,7 +1424,7 @@ void Fenetre_AutoDim2::onActionImporter()
             etat_depart_table_dim2->setParent(page_dim2);
             layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
             etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
-            connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+            connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation_dim2(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
             stacked_etat_depart_dim2->setCurrentIndex(1);
             Simulation_dim2->setEnabled(true);
             enregistrer_autodim2=true;
@@ -1710,7 +1708,7 @@ void Fenetre_AutoDim2_Langton::onGenerateurButtonClicked()
         etat_depart_table->setParent(page_dim1);
         layout_page_etat_1->addWidget(etat_depart_table);
         etat_depart_table->setObjectName(QString::fromUtf8("etat_depart_table"));
-        connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+        connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation_dim1(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
         if(select_generateur->currentText()==tr("Aléatoire"))
         {
             Fenetre_AutoDim1::Gen_aleatoire();
@@ -1760,7 +1758,7 @@ void Fenetre_AutoDim2_Langton::onGenerateurButtonClicked()
         etat_depart_table_dim2->setParent(configuration_dim2);
         layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
         etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
-        connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+        connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation_dim2(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
         if(select_generateur_dim2->currentText()==tr("Aléatoire"))
         {
             Gen_aleatoire_dim2();
@@ -2053,7 +2051,7 @@ void Fenetre_AutoDim2_Langton::onActionImporter()
                 etat_depart_table->setColumnWidth(counter, taille);
                 if(e.attribute("active").toUInt())
                 {
-                    etat_depart_table->setItem(0, counter, new QTableWidgetItem("_"));
+                    etat_depart_table->setItem(0, counter, new QTableWidgetItem());
                     etat_depart_table->item(0, counter)->setBackgroundColor("black");
                     etat_depart_table->item(0, counter)->setTextColor("black");
                 }
@@ -2070,7 +2068,7 @@ void Fenetre_AutoDim2_Langton::onActionImporter()
             etat_depart_table->setParent(page_dim1);
             layout_page_etat_1->addWidget(etat_depart_table);
             etat_depart_table->setObjectName(QString::fromUtf8("etat_depart_table"));
-            connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+            connect(etat_depart_table, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation_dim1(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
             stacked_etat_depart->setCurrentIndex(1);
             Simulation->setEnabled(true);
             enregistrer_autodim1=true;
@@ -2159,7 +2157,7 @@ void Fenetre_AutoDim2_Langton::onActionImporter()
             etat_depart_table_dim2->setParent(configuration_dim2);
             layout_page_etat_1_dim2->addWidget(etat_depart_table_dim2);
             etat_depart_table_dim2->setObjectName(QString::fromUtf8("etat_depart_table_dim2"));
-            connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+            connect(etat_depart_table_dim2, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation_dim2(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
             stacked_etat_depart_dim2->setCurrentIndex(1);
             Simulation_dim2->setEnabled(true);
             enregistrer_autodim2=true;
