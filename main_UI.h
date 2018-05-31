@@ -230,6 +230,7 @@ public:
     Fenetre_AutoDim2(QMainWindow *MainWindow);
     void Gen_aleatoire_dim2();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
     void Gen_Un_Sur_Deux_dim2();
+    void Gen_Glider();
 private slots :
     void onDimensionItemClicked(QListWidgetItem*) override;
     void onGenerateurButtonClicked() override;

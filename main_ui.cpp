@@ -778,6 +778,7 @@ Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(Mai
     select_generateur_dim2->addItem(tr("Aléatoire"));
     select_generateur_dim2->addItem(tr("Manuelle"));
     select_generateur_dim2->addItem(tr("1 sur 2"));
+    select_generateur_dim2->addItem(tr("Glider"));
 
 
     layout_page_dim2->addWidget(configuration_dim2);
@@ -1004,6 +1005,11 @@ void Fenetre_AutoDim2::onGenerateurButtonClicked()
         {
             Gen_Un_Sur_Deux();
         }
+        else if(select_generateur->currentText() == tr("Glider"))
+        {
+            Gen_Glider();
+
+        }
     }
 
     else if(stacked_settings->currentIndex()==1)
@@ -1054,8 +1060,11 @@ void Fenetre_AutoDim2::onGenerateurButtonClicked()
         {
             Gen_Un_Sur_Deux_dim2();
         }
+        else if(select_generateur_dim2->currentText() == tr("Glider"))
+        {
+            Gen_Glider();
+        }
     }
-
 }
 
 void Fenetre_AutoDim2::cellActivation_dim2(QTableWidgetItem *index) {
@@ -1111,6 +1120,32 @@ void Fenetre_AutoDim2::Gen_Un_Sur_Deux_dim2()
                 etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem());
                 etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("black");
                 etat_depart_table_dim2->item(counter, counter2)->setTextColor("black");
+            }
+        }
+    }
+    stacked_etat_depart_dim2->setCurrentIndex(1);
+    Simulation_dim2->setEnabled(true);
+    enregistrer_autodim2=true;
+    actionEnregistrer->setEnabled(enregistrer_autodim2);
+}
+
+void Fenetre_AutoDim2::Gen_Glider()
+{
+    for(unsigned int i = 0; i < dimension_dim2; ++i) {
+        etat_depart_table_dim2->setRowHeight(i, taille_dim2);
+        for(unsigned int j=0; j<dimension_dim2; ++j){
+            etat_depart_table_dim2->setColumnWidth(j, taille_dim2);
+            if((i==0&&j==2)||(i==1&&j==2)||(i==2&&j==2)||(i==2&&j==1)||(i==1&&j==0))
+            {
+                etat_depart_table_dim2->setItem(i, j, new QTableWidgetItem(""));
+                etat_depart_table_dim2->item(i, j)->setBackgroundColor("black");
+                etat_depart_table_dim2->item(i, j)->setTextColor("black");
+            }
+            else
+            {
+                etat_depart_table_dim2->setItem(i, j, new QTableWidgetItem());
+                etat_depart_table_dim2->item(i, j)->setBackgroundColor("white");
+                etat_depart_table_dim2->item(i, j)->setTextColor("white");
             }
         }
     }
@@ -1680,6 +1715,7 @@ void Fenetre_AutoDim2_Langton::onSimulationButtonClicked()
 
 void Fenetre_AutoDim2_Langton::onGenerateurButtonClicked()
 {
+    std::cout << "test \n";
     if(stacked_settings->currentIndex()==0)
     {
         if(page_dim1->findChild<QTableWidget*>("etat_depart_table"))//on teste si le tableau existe déjà
