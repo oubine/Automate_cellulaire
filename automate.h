@@ -31,8 +31,7 @@ private:
  * Par soucis de généralité, les motifs des automates1D sont aussi des vector de vector à 1 case.*/
 
 /* Les règles de transition sont des généralisations des règles des automates élémentaires.
- * Ce sont des vector représentant les images des états de départs ordonnés dans l'ordre croissant pour les
- * règles 2D et en ordre décroissant pour les règles 1D.
+ * Ce sont des vector représentant les images des états de départs ordonnés dans l'ordre croissant.
  * Par exemple, pour un automate à 3 états et ayant 2 cellules dans son motif, une règle possible serait:
  * vector( 0, 2, 1, 1, 0, 0, 0, 1, 0)
  *        00,01,02,10,11,12,20,21,22
