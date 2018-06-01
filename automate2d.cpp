@@ -67,12 +67,12 @@ std::vector<unsigned int> fromRegleNaissMortToRegleTransition(std::vector<short 
 
 std::vector<std::vector<int>> FourmiLangton::getMotif()
 {
-    std::vector<std::vector<int>> resultat;
-    resultat.push_back({0,0});
-    resultat.push_back({0,-1});
-    resultat.push_back({-1,0});
-    resultat.push_back({0,1});
-    resultat.push_back({1,0});
+    std::vector<std::vector<int>> resultat(5, std::vector<int>(2));
+    resultat[0][0] = 0; resultat[0][1] = 0;
+    resultat[1][0] = 0; resultat[1][1] = -1;
+    resultat[2][0] = -1; resultat[2][1] = 0;
+    resultat[3][0] = 0; resultat[3][1] = 1;
+    resultat[4][0] = 1; resultat[4][1] = 0;
     return resultat;
 }
 

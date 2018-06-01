@@ -31,7 +31,7 @@ Q_OBJECT
     QTableWidget* depart;
     int num_automate;
     unsigned int nb_transitions;
-    unsigned int transition_courante=0;
+
 
     //temps
     QPushButton* suivant;
@@ -40,8 +40,11 @@ Q_OBJECT
     QLabel* transition;
     bool affichage_manuel;
     unsigned int temps_affichage;
-    bool is_play_v=1;
     unsigned int taille;
+    bool is_play_v;
+    unsigned int transition_courante;
+
+
 public:
     explicit Window_Dim1(QWidget* parent = nullptr);
     explicit Window_Dim1(QWidget* parent = nullptr, unsigned int taille=1, unsigned int transitions=1, int num=0, bool aff=1, unsigned int tps_aff=500);
@@ -78,7 +81,6 @@ Q_OBJECT
     QTableWidget* depart;
 
     unsigned int nb_transitions;
-    unsigned int transition_courante=0;
     //temps
     QPushButton* suivant;
     QPushButton* play;
@@ -86,10 +88,14 @@ Q_OBJECT
     QLabel* transition;
     bool affichage_manuel;
     unsigned int temps_affichage;
-    bool is_play_v=1;
     unsigned int taille;
-
     std::vector<short int> regle;
+
+    bool is_play_v;
+    unsigned int transition_courante;
+
+
+
 public:
     explicit Window_Dim2(QWidget* parent = nullptr);
     explicit Window_Dim2(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500, std::vector<short int> regle={0,0,1,2,0,0,0,0,0});
@@ -123,7 +129,6 @@ Q_OBJECT
     QTableWidget* depart;
 
     unsigned int nb_transitions;
-    unsigned int transition_courante=0;
     //temps
     QPushButton* suivant;
     QPushButton* play;
@@ -131,12 +136,18 @@ Q_OBJECT
     QLabel* transition;
     bool affichage_manuel;
     unsigned int temps_affichage;
-    bool is_play_v=1;
-    unsigned int taille;
 
-
-    Etat2D e;
     std::vector<short int> regle;
+    unsigned int taille;
+    Etat2D e;
+    bool is_play_v;
+
+
+    unsigned int transition_courante;
+
+
+
+
 public:
     explicit Window_Dim2_Langton(QWidget* parent = nullptr);
     explicit Window_Dim2_Langton(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500);

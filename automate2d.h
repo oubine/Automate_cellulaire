@@ -34,15 +34,15 @@ public:
         //les règles pour les variantes du jeu de la vie sont symétriques par rapport à la cellule centrale
         //la cellule du centre étant plus importante, on la place en première dans le motif
         //cela simplifiera la création de la règle de l'automate
-        motif[0] = {0,0};
-        motif[1] = {-1,1};
-        motif[2] = {-1,0};
-        motif[3] = {-1,-1};
-        motif[4] = {0,1};
-        motif[5] = {0,-1};
-        motif[6] = {1,1};
-        motif[7] = {1,0};
-        motif[8] = {1,-1};
+        motif[0][0] = 0; motif[0][1] = 0;
+        motif[1][0] = -1; motif[1][1] = 1;
+        motif[2][0] = -1; motif[2][1] = 0;
+        motif[3][0] = -1; motif[3][1] = -1;
+        motif[4][0] = 0; motif[4][1] = 1;
+        motif[5][0] = 0; motif[5][1] = -1;
+        motif[6][0] = 1; motif[6][1] = 1;
+        motif[7][0] = 1; motif[7][1] = 0;
+        motif[8][0] = 1; motif[8][1] = -1;
         this->setMotif(motif);
     }
 };

@@ -43,7 +43,7 @@ Window_Dim1::Window_Dim1(QWidget *parent) : QWidget(parent),taille(10) {
 }
 
 Window_Dim1::Window_Dim1(QWidget *parent, unsigned int dim, unsigned int transitions, int num, bool aff, unsigned int tps_aff) :
-    QWidget(parent), dimension(dim), num_automate(num), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(10) {
+    QWidget(parent), dimension(dim), num_automate(num), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(10), is_play_v(1), transition_courante(0) {
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
@@ -272,7 +272,7 @@ Window_Dim2::Window_Dim2(QWidget *parent) : QWidget(parent),taille(10) {
 }
 
 Window_Dim2::Window_Dim2(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff, std::vector<short int> regle) :
-    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(6),regle(regle) {
+    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(6),regle(regle),is_play_v(1), transition_courante(0) {
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
@@ -478,7 +478,7 @@ void Window_Dim2::onPauseButtonClicked()
 }
 
 Window_Dim2_Langton::Window_Dim2_Langton(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff) :
-    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(6),e(Etat2D(dimension,9)){
+    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(6),e(Etat2D(dimension,9)), is_play_v(1), transition_courante(0){
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;

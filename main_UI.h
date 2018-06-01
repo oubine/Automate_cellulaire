@@ -140,7 +140,7 @@ protected:
     QPushButton* bouton_generateur;
 
     QStackedWidget* stacked_etat_depart;
-    unsigned int taille=25;//taille des cases du tableau en pixels
+    unsigned int taille;
     QWidget* page_etat_0;
     QWidget* page_etat_1;
     QLabel *etat_depart_l;
@@ -152,7 +152,7 @@ protected:
     QPushButton *Simulation;
 
     //enregistrement
-    bool enregistrer_autodim1=0;
+    bool enregistrer_autodim1;
 
     Window_Dim1 *new_Window_dim1;
 public :
@@ -210,7 +210,7 @@ protected:
     unsigned int dimension_dim2;
 
     QStackedWidget* stacked_etat_depart_dim2;
-    unsigned int taille_dim2=25;//taille des cases du tableau en pixels
+    unsigned int taille_dim2;//taille des cases du tableau en pixels
     QWidget* page_etat_0_dim2;
     QWidget* page_etat_1_dim2;
     QLabel *etat_depart_l_dim2;
@@ -221,7 +221,7 @@ protected:
 
     QPushButton *Simulation_dim2;
     //enregistrement
-    bool enregistrer_autodim2=0;
+    bool enregistrer_autodim2;
 
     Window_Dim2* new_Window_dim2;
 
@@ -270,7 +270,7 @@ protected:
     unsigned int dimension_langton;
 
     QStackedWidget* stacked_etat_depart_langton;
-    unsigned int taille_langton=25;//taille des cases du tableau en pixels
+    unsigned int taille_langton;//taille des cases du tableau en pixels
     QWidget* page_etat_0_langton;
     QWidget* page_etat_1_langton;
     QLabel *etat_depart_l_langton;
@@ -281,7 +281,7 @@ protected:
 
     QPushButton *Simulation_langton;
     //enregistrement
-    bool enregistrer_autolangton=0;
+    bool enregistrer_autolangton;
 
     Window_Dim2_Langton* new_Window_langton;
 

@@ -164,7 +164,7 @@ void Fenetre_Principale::Noms(QMainWindow *MainWindow)
     menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Enregistrement", 0));
 } // retranslateUi
 
-Fenetre_AutoDim1::Fenetre_AutoDim1(QMainWindow *MainWindow):Fenetre_Principale(MainWindow)
+Fenetre_AutoDim1::Fenetre_AutoDim1(QMainWindow *MainWindow):Fenetre_Principale(MainWindow),enregistrer_autodim1(false)
 {
     /***********************
      *
@@ -678,7 +678,7 @@ void Fenetre_AutoDim1::Gen_Un_Sur_Deux()
     actionEnregistrer->setEnabled(enregistrer_autodim1);
 }
 
-Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(MainWindow)
+Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(MainWindow), enregistrer_autodim2(false)
 {
     /************************
      *
@@ -1471,7 +1471,7 @@ void Fenetre_AutoDim2::onActionImporter()
 
 }
 
-Fenetre_AutoDim2_Langton::Fenetre_AutoDim2_Langton(QMainWindow *MainWindow):Fenetre_AutoDim2(MainWindow)
+Fenetre_AutoDim2_Langton::Fenetre_AutoDim2_Langton(QMainWindow *MainWindow):Fenetre_AutoDim2(MainWindow), enregistrer_autolangton(false)
 {
     /************************
      *
