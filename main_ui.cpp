@@ -1005,11 +1005,6 @@ void Fenetre_AutoDim2::onGenerateurButtonClicked()
         {
             Gen_Un_Sur_Deux();
         }
-        else if(select_generateur->currentText() == tr("Glider"))
-        {
-            Gen_Glider();
-
-        }
     }
 
     else if(stacked_settings->currentIndex()==1)

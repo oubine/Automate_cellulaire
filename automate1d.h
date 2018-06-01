@@ -28,8 +28,8 @@ private :
     unsigned short int numeroRegleTransition;
 public:
     //constructeurs
-    AutomateElementaire(unsigned short int num) : Automate1D(regleStrToVector(NumToNumBit(num))),numeroRegleTransition(num){this->setMotifElementaire();}
-    AutomateElementaire(const std::string& num) : Automate1D(regleStrToVector(NumToNumBit(NumBitToNum(num)))), numeroRegleTransition(NumBitToNum(num)){this->setMotifElementaire();}
+    AutomateElementaire(unsigned short int num);
+    AutomateElementaire(const std::string& num);
     //AutomateElementaire(const Automate1D& a) : Automate(a){this->setMotifElementaire();}
     //autres
     void setMotifElementaire()
