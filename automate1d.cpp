@@ -12,7 +12,7 @@ void Automate1D::appliquerTransition(const Etat& dep, Etat& dest) {
             this->setVoisin(j,dep.getCellule(iExamine+this->getMotif()[j]));
         }
         unsigned int etat = baseToInt(std::vector<unsigned int>(this->getVoisinage(),this->getVoisinage()+this->nbVoisins()),dep.getValMax()+1);
-        dest.setCellule(i, this->getRegleTransition()[this->getRegleTransition().size()-1-etat]);
+        dest.setCellule(i, this->getRegleTransition()[etat]);
         iExamine++;
     }
 }
@@ -68,3 +68,23 @@ std::string vectorToRegleStr(const std::vector<unsigned int> &regle)
     return result;
 }
 
+AutomateElementaire::AutomateElementaire(unsigned short int num) : Automate1D(regleStrToVector(NumToNumBit(num))),numeroRegleTransition(num)
+{
+    this->setMotifElementaire();
+    std::vector<unsigned int> temp = this->regleTransition;
+    for(unsigned int i = 0; i < temp.size(); ++i)
+    {
+        temp[i] = regleTransition[temp.size()-1-i];
+    }
+    regleTransition = temp;
+}
+AutomateElementaire::AutomateElementaire(const std::string& num) : Automate1D(regleStrToVector(NumToNumBit(NumBitToNum(num)))), numeroRegleTransition(NumBitToNum(num))
+{
+    this->setMotifElementaire();
+    std::vector<unsigned int> temp = this->regleTransition;
+    for(unsigned int i = 0; i < temp.size(); ++i)
+    {
+        temp[i] = regleTransition[temp.size()-1-i];
+    }
+    regleTransition = temp;
+}
