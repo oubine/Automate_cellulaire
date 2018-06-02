@@ -159,18 +159,20 @@ public :
     Fenetre_AutoDim1(QMainWindow *MainWindow);
     void Gen_aleatoire();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
     void Gen_Un_Sur_Deux();
-    void Noms(QMainWindow *MainWindow);
+    void Noms_dim1(QMainWindow *MainWindow);
 
 
-private slots :
+protected slots :
     void onDimensionItemClicked(QListWidgetItem*);
-    virtual void onGenerateurButtonClicked();
-    virtual void onSimulationButtonClicked();
+    void onGenerateurButtonClicked_dim1();
+    void onSimulationButtonClicked_dim1();
     void synchronizeNumToNumBit(int i);
     void synchronizeNumBitToNum(const QString& s);
     void cellActivation_dim1(QTableWidgetItem* index);
-    void onActionEnregistrer();
-    void onActionImporter();
+    void onActionEnregistrer() override;
+    void onActionImporter() override;
+    void onActionEnregistrer_dim1();
+    void onActionImporter_dim1();
 };
 
 class Fenetre_AutoDim2 : protected Fenetre_AutoDim1
@@ -226,18 +228,20 @@ protected:
     Window_Dim2* new_Window_dim2;
 
 public:
-    void Noms(QMainWindow *MainWindow);
+    void Noms_dim2(QMainWindow *MainWindow);
     Fenetre_AutoDim2(QMainWindow *MainWindow);
     void Gen_aleatoire_dim2();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
     void Gen_Un_Sur_Deux_dim2();
     void Gen_Glider();
-private slots :
-    void onDimensionItemClicked(QListWidgetItem*) override;
-    void onGenerateurButtonClicked() override;
-    void onSimulationButtonClicked() override;
+protected slots :
+    void onDimensionItemClicked(QListWidgetItem*);
+    void onGenerateurButtonClicked_dim2();
+    void onSimulationButtonClicked_dim2();
     void cellActivation_dim2(QTableWidgetItem* index);
     void onActionEnregistrer() override;
     void onActionImporter() override;
+    void onActionEnregistrer_dim2();
+    void onActionImporter_dim2();
 };
 
 class Fenetre_AutoDim2_Langton : protected Fenetre_AutoDim2
@@ -286,16 +290,18 @@ protected:
     Window_Dim2_Langton* new_Window_langton;
 
 public:
-    void Noms(QMainWindow *MainWindow);
+    void Noms_Langton(QMainWindow *MainWindow);
     Fenetre_AutoDim2_Langton(QMainWindow *MainWindow);
     void Gen_aleatoire_langton();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
-private slots :
-    void onDimensionItemClicked(QListWidgetItem*) override;
-    void onGenerateurButtonClicked() override;
-    void onSimulationButtonClicked() override;
+protected slots :
+    void onDimensionItemClicked(QListWidgetItem*);
+    void onGenerateurButtonClicked_Langton();
+    void onSimulationButtonClicked_Langton();
     void cellActivation_Langton(QTableWidgetItem* index);
     void onActionEnregistrer() override;
     void onActionImporter() override;
+    void onActionEnregistrer_Langton();
+    void onActionImporter_Langton();
 };
 
 namespace Ui {
