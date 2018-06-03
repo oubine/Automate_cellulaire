@@ -90,9 +90,6 @@ public:
     Fenetre_Principale(QMainWindow *MainWindow);
     virtual void Noms(QMainWindow *MainWindow);
 
-    void Gen_aleatoire();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
-    void Gen_Un_Sur_Deux();
-
 private slots :
     virtual void onDimensionItemClicked(QListWidgetItem* item)=0;
     virtual void onAffichageButtonClicked(bool);
@@ -175,7 +172,7 @@ protected slots :
     void onActionImporter_dim1();
 };
 
-class Fenetre_AutoDim2 : protected Fenetre_AutoDim1
+class Fenetre_AutoDim2_GOL : protected Fenetre_AutoDim1
 {
     Q_OBJECT
 protected:
@@ -225,11 +222,11 @@ protected:
     //enregistrement
     bool enregistrer_autodim2;
 
-    Window_Dim2* new_Window_dim2;
+    Window_Dim2_GOL* new_Window_dim2;
 
 public:
     void Noms_dim2(QMainWindow *MainWindow);
-    Fenetre_AutoDim2(QMainWindow *MainWindow);
+    Fenetre_AutoDim2_GOL(QMainWindow *MainWindow);
     void Gen_aleatoire_dim2();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
     void Gen_Un_Sur_Deux_dim2();
     void Gen_Glider();
@@ -244,7 +241,7 @@ protected slots :
     void onActionImporter_dim2();
 };
 
-class Fenetre_AutoDim2_Langton : protected Fenetre_AutoDim2
+class Fenetre_AutoDim2_Langton : protected Fenetre_AutoDim2_GOL
 {
     Q_OBJECT
 

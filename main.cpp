@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     QMainWindow *main = new QMainWindow;
     Fenetre_AutoDim1* fendim1 = new Fenetre_AutoDim1(main);
-    Fenetre_AutoDim2* fendim2 = new Fenetre_AutoDim2(main);
+    Fenetre_AutoDim2_GOL* fendim2 = new Fenetre_AutoDim2_GOL(main);
     Fenetre_AutoDim2_Langton* fendim3 = new Fenetre_AutoDim2_Langton(main);
 
     /*

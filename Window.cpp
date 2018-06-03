@@ -233,7 +233,7 @@ void Window_Dim1::onPauseButtonClicked()
     is_play_v=false;
 }
 
-Window_Dim2::Window_Dim2(QWidget *parent) : QWidget(parent),taille(10) {
+Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent) : QWidget(parent),taille(10) {
     // Question 3
     //numero = new QLabel(QString::number(num_automate),this);
     depart = new QTableWidget(dimension, dimension);
@@ -271,7 +271,7 @@ Window_Dim2::Window_Dim2(QWidget *parent) : QWidget(parent),taille(10) {
     setLayout(couche);//on définit l'environnement global
 }
 
-Window_Dim2::Window_Dim2(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff, std::vector<short int> regle) :
+Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff, std::vector<short int> regle) :
     QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(6),regle(regle),is_play_v(1), transition_courante(0) {
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
@@ -360,7 +360,7 @@ Window_Dim2::Window_Dim2(QWidget *parent, unsigned int dim, unsigned int transit
 
 //Ici, on entre dans la partie logique pour faire fonctionner l'automate
 
-void Window_Dim2::onSuivantButtonClicked()
+void Window_Dim2_GOL::onSuivantButtonClicked()
 {
     // création de l'état
     Etat2D e(dimension,1);
@@ -400,7 +400,7 @@ void Window_Dim2::onSuivantButtonClicked()
     }
     }
 
-void Window_Dim2::launchSimulationAuto() {//méthode pour lancer la simulation
+void Window_Dim2_GOL::launchSimulationAuto() {//méthode pour lancer la simulation
     //on doit appuyer sur play pour lancer l'éxécution
     //QEventLoop loop;
     //connect(this,SIGNAL(is_play()), &loop, SLOT(quit()));
@@ -466,13 +466,13 @@ void Window_Dim2::launchSimulationAuto() {//méthode pour lancer la simulation
     }
 }
 
-void Window_Dim2::onPlayButtonClicked()
+void Window_Dim2_GOL::onPlayButtonClicked()
 {
     is_play_v=true;
     emit is_play();
 }
 
-void Window_Dim2::onPauseButtonClicked()
+void Window_Dim2_GOL::onPauseButtonClicked()
 {
     is_play_v=false;
 }

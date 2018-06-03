@@ -161,7 +161,7 @@ void Fenetre_Principale::Noms(QMainWindow *MainWindow)
     aff_auto->setText(QApplication::translate("AutoCell LO21", "Automatique", 0));
     unite_temps_aff->setText(QApplication::translate("AutoCell LO21", "sec", 0));
 
-    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Enregistrement", 0));
+    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Fichiers de config", 0));
 } // retranslateUi
 
 Fenetre_AutoDim1::Fenetre_AutoDim1(QMainWindow *MainWindow):Fenetre_Principale(MainWindow),  taille(25), enregistrer_autodim1(false)
@@ -371,7 +371,7 @@ void Fenetre_AutoDim1::Noms_dim1(QMainWindow *MainWindow)
     etat_depart_l->setText(QApplication::translate("AutoCell LO21", "\303\211tat de d\303\251part", 0));
     Simulation->setText(QApplication::translate("AutoCell LO21", "Lancer !", 0));
 
-    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Enregistrement", 0));
+    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Fichiers de config", 0));
 } // retranslateUi
 
 
@@ -682,7 +682,7 @@ void Fenetre_AutoDim1::Gen_Un_Sur_Deux()
     actionEnregistrer->setEnabled(enregistrer_autodim1);
 }
 
-Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(MainWindow), taille_dim2(25),enregistrer_autodim2(false)
+Fenetre_AutoDim2_GOL::Fenetre_AutoDim2_GOL(QMainWindow *MainWindow):Fenetre_AutoDim1(MainWindow), taille_dim2(25),enregistrer_autodim2(false)
 {
     /************************
      *
@@ -887,7 +887,7 @@ Fenetre_AutoDim2::Fenetre_AutoDim2(QMainWindow *MainWindow):Fenetre_AutoDim1(Mai
 
 }
 
-void Fenetre_AutoDim2::Noms_dim2(QMainWindow *MainWindow)
+void Fenetre_AutoDim2_GOL::Noms_dim2(QMainWindow *MainWindow)
 {
     MainWindow->setWindowTitle(QApplication::translate("AutoCell LO21", "AutoCell LO21", 0));
     actionEnregistrer->setText(QApplication::translate("AutoCell LO21", "Enregistrer", 0));
@@ -912,10 +912,10 @@ void Fenetre_AutoDim2::Noms_dim2(QMainWindow *MainWindow)
     regles_mort_l->setText(QApplication::translate("AutoCell LO21", "R\303\250gle de mort", 0));
     generateur_dim2->setTitle(QApplication::translate("AutoCell LO21", "G\303\251n\303\251rateur", 0));
     Simulation_dim2->setText(QApplication::translate("AutoCell LO21", "Lancer !", 0));
-    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Enregistrement", 0));
+    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Fichiers de config", 0));
 } // retranslateUi
 
-void Fenetre_AutoDim2::onDimensionItemClicked(QListWidgetItem* item)
+void Fenetre_AutoDim2_GOL::onDimensionItemClicked(QListWidgetItem* item)
 {
     if (select_type_automate->item(0) == item) {
             stacked_settings->setCurrentIndex(0);
@@ -930,7 +930,7 @@ void Fenetre_AutoDim2::onDimensionItemClicked(QListWidgetItem* item)
 }
 
 
-void Fenetre_AutoDim2::onSimulationButtonClicked_dim2()
+void Fenetre_AutoDim2_GOL::onSimulationButtonClicked_dim2()
 {
         int tab_regle[8];
         for(unsigned int i=0; i<8;++i)
@@ -938,7 +938,7 @@ void Fenetre_AutoDim2::onSimulationButtonClicked_dim2()
             tab_regle[i]=1+vie[i]->isChecked();
             tab_regle[i]-=mort[i]->isChecked();
         }
-        new_Window_dim2 = new Window_Dim2(nullptr, dimension_dim2, nb_transitions_dim2->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000,
+        new_Window_dim2 = new Window_Dim2_GOL(nullptr, dimension_dim2, nb_transitions_dim2->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000,
                                           std::vector<short int>(tab_regle, tab_regle + sizeof(tab_regle) / sizeof tab_regle[0]));
         new_Window_dim2->setEtatDepart(etat_depart_table_dim2);
         //new_Window_dim2->setAttribute(Qt::WA_DeleteOnClose);
@@ -949,7 +949,7 @@ void Fenetre_AutoDim2::onSimulationButtonClicked_dim2()
         }
 }
 
-void Fenetre_AutoDim2::onGenerateurButtonClicked_dim2()
+void Fenetre_AutoDim2_GOL::onGenerateurButtonClicked_dim2()
 {
         if(page_dim2->findChild<QTableWidget*>("etat_depart_table_dim2"))//on teste si le tableau existe déjà
         {
@@ -1003,7 +1003,7 @@ void Fenetre_AutoDim2::onGenerateurButtonClicked_dim2()
         }
 }
 
-void Fenetre_AutoDim2::cellActivation_dim2(QTableWidgetItem *index) {
+void Fenetre_AutoDim2_GOL::cellActivation_dim2(QTableWidgetItem *index) {
     if (etat_depart_table_dim2->item(index->row(), index->column())->backgroundColor() == "white") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
 
         etat_depart_table_dim2->item(index->row(), index->column())->setBackgroundColor("black");
@@ -1015,7 +1015,7 @@ void Fenetre_AutoDim2::cellActivation_dim2(QTableWidgetItem *index) {
     }
 }
 
-void Fenetre_AutoDim2::Gen_aleatoire_dim2()
+void Fenetre_AutoDim2_GOL::Gen_aleatoire_dim2()
 {
     srand(time(NULL));
 
@@ -1039,7 +1039,7 @@ void Fenetre_AutoDim2::Gen_aleatoire_dim2()
     actionEnregistrer->setEnabled(enregistrer_autodim2);
 }
 
-void Fenetre_AutoDim2::Gen_Un_Sur_Deux_dim2()
+void Fenetre_AutoDim2_GOL::Gen_Un_Sur_Deux_dim2()
 {
     for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
         etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
@@ -1065,7 +1065,7 @@ void Fenetre_AutoDim2::Gen_Un_Sur_Deux_dim2()
     actionEnregistrer->setEnabled(enregistrer_autodim2);
 }
 
-void Fenetre_AutoDim2::Gen_Glider()
+void Fenetre_AutoDim2_GOL::Gen_Glider()
 {
     for(unsigned int i = 0; i < dimension_dim2; ++i) {
         etat_depart_table_dim2->setRowHeight(i, taille_dim2);
@@ -1091,7 +1091,7 @@ void Fenetre_AutoDim2::Gen_Glider()
     actionEnregistrer->setEnabled(enregistrer_autodim2);
 }
 
-void Fenetre_AutoDim2::onActionEnregistrer_dim2()
+void Fenetre_AutoDim2_GOL::onActionEnregistrer_dim2()
 {
         QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_2/")));
         QDir dir;
@@ -1162,7 +1162,7 @@ void Fenetre_AutoDim2::onActionEnregistrer_dim2()
         }
 }
 
-void Fenetre_AutoDim2::onActionImporter_dim2()
+void Fenetre_AutoDim2_GOL::onActionImporter_dim2()
 {
         fichier = new QFileDialog;
         QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_2/")));
@@ -1256,7 +1256,7 @@ void Fenetre_AutoDim2::onActionImporter_dim2()
         }
 }
 
-void Fenetre_AutoDim2::onActionEnregistrer()
+void Fenetre_AutoDim2_GOL::onActionEnregistrer()
 {
     if(stacked_settings->currentIndex()==0)
     {
@@ -1268,7 +1268,7 @@ void Fenetre_AutoDim2::onActionEnregistrer()
     }
 }
 
-void Fenetre_AutoDim2::onActionImporter()
+void Fenetre_AutoDim2_GOL::onActionImporter()
 {
     if(stacked_settings->currentIndex()==0)
     {
@@ -1280,7 +1280,7 @@ void Fenetre_AutoDim2::onActionImporter()
     }
 }
 
-Fenetre_AutoDim2_Langton::Fenetre_AutoDim2_Langton(QMainWindow *MainWindow):Fenetre_AutoDim2(MainWindow), taille_langton(25), enregistrer_autolangton(false)
+Fenetre_AutoDim2_Langton::Fenetre_AutoDim2_Langton(QMainWindow *MainWindow):Fenetre_AutoDim2_GOL(MainWindow), taille_langton(25), enregistrer_autolangton(false)
 {
     /************************
      *
@@ -1454,7 +1454,7 @@ void Fenetre_AutoDim2_Langton::Noms_Langton(QMainWindow *MainWindow)
     regles_mort_l->setText(QApplication::translate("AutoCell LO21", "R\303\250gle de mort", 0));
     generateur_langton->setTitle(QApplication::translate("AutoCell LO21", "G\303\251n\303\251rateur", 0));
     Simulation_langton->setText(QApplication::translate("AutoCell LO21", "Lancer !", 0));
-    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Enregistrement", 0));
+    menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Fichiers de config", 0));
 } // retranslateUi
 
 void Fenetre_AutoDim2_Langton::onDimensionItemClicked(QListWidgetItem* item)
