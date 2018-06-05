@@ -47,6 +47,7 @@ Fenetre_Principale::Fenetre_Principale(QMainWindow *MainWindow)
        Affichage = new QGroupBox(reglages_generaux);
        Affichage->setObjectName(QString::fromUtf8("Affichage"));
        Affichage->setMaximumSize(QSize(1500, 200));
+       Affichage->setMaximumHeight(120);
        layout_affichage = new QFormLayout(Affichage);
        layout_affichage->setObjectName(QString::fromUtf8("layout_affichage"));
        layout_affichage->setFieldGrowthPolicy(QFormLayout::AllNonFixedFieldsGrow);
