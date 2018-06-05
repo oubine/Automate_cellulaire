@@ -60,11 +60,20 @@ QT_BEGIN_NAMESPACE
 // - définir le comportement de Enregistrer et Importer !!! en prenant en compte les automates déjà implantés (différencier les pages avec des if)
 
 
+/**
+ * \class Fenetre_Principale
+ * \brief Superclasse abstraite de la fenêtre principale.
+ *
+ * Fenetre_Principale constitue le squelette de la fenêtre principale, auqel viendront s'ajouter les classes correspondant aux automates implémentés.
+ * Cette classe contient le menu de gestion des fichiers, le choix du type d'automate (initialement vide), le choix du type d'affichage.
+ */
 class Fenetre_Principale : public QObject
 {
     Q_OBJECT
     //général
 protected:
+
+    /*!< Layout et widgets généraux. */
     QStatusBar *statusbar;
     QWidget *centralwidget;
     QHBoxLayout *layout_main;
@@ -72,10 +81,14 @@ protected:
     QGroupBox *reglages_generaux;
     QVBoxLayout *layout_reglages_generaux;
 
+    /*!< Choix du type d'automate. */
+
     QGroupBox *type_automate;
     QHBoxLayout *layout_type_automate;
     QListWidget *select_type_automate;
     QStackedWidget *stacked_settings;
+
+    /*!< Gestion des fichiers. */
 
     //enregistrement
     QAction *actionEnregistrer;
@@ -83,6 +96,8 @@ protected:
     QMenuBar *menubar;
     QMenu *menuR_glages_de_l_automate_cellulaire;
     QFileDialog* fichier;
+
+    /*!< Gestion de l'affichage. */
 
     //réglage de l'affichage
     QGroupBox *Affichage;
@@ -108,6 +123,15 @@ private slots :
     virtual void onActionImporter()=0;
 };
 
+
+/**
+ * \class Fenetre_AutoDim1
+ * \brief Classe de la configuration des automates en dimension 1.
+ *
+ * Fenetre_AutoDim1 est la classe correspondant à l'implémentation de la page "Automates 1 dimension" dans la fenêtre principale.
+ * Cette classe hérite de Fenetre_Principale.
+ * Elle implémente la configuration des règles, des générateurs et de l'état de départ des automates 1 dimension.
+ */
 class Fenetre_AutoDim1 : public Fenetre_Principale
 {
     Q_OBJECT
@@ -116,10 +140,14 @@ protected:
     //automate de dimension 1
     QVBoxLayout* couche;
 
+    /*!< Page de l'automate 1 dimension. */
+
     QWidget *page_dim1;
     QVBoxLayout *layout_page_dim1;
     QGroupBox *configuration_dim1;
     QVBoxLayout *layout_etat_depart;
+
+    /*!< Configuration des règles. */
 
     QHBoxLayout *regles_dim1;
     QGroupBox *regles_transition;
@@ -132,6 +160,8 @@ protected:
     QHBoxLayout* numeroc;
     QIntValidator* zeroOneValidator;
     unsigned int dimension;
+
+    /*!< Configuration de la génération de l'état de départ. */
 
     QGroupBox *generateur;
     QComboBox* select_generateur;
@@ -146,6 +176,8 @@ protected:
     QLabel* nb_transitions_l;
     QPushButton* bouton_generateur;
 
+    /*!< Création et affichage de l'état de départ. */
+
     QStackedWidget* stacked_etat_depart;
     unsigned int taille;
     QWidget* page_etat_0;
@@ -158,8 +190,11 @@ protected:
 
     QPushButton *Simulation;
 
-    //enregistrement
+    /*!< Gestion du menu des fichiers. */
+
     bool enregistrer_autodim1;
+
+    /*!< Fenêtre de Simulation. */
 
     Window_Dim1 *new_Window_dim1;
 public :
@@ -182,17 +217,31 @@ protected slots :
     void onActionImporter_dim1();
 };
 
+
+/**
+ * \class Fenetre_AutoDim2_GOL
+ * \brief Classe de la configuration du Jeu de la Vie.
+ *
+ * Fenetre_AutoDim2_GOL est la classe correspondant à l'implémentation de la page "Jeu de la Vie" dans la fenêtre principale.
+ * Cette classe hérite de Fenetre_AutoDim1.
+ * Elle implémente la configuration des règles, des générateurs et de l'état de départ du Jeu de la Vie.
+ */
 class Fenetre_AutoDim2_GOL : protected Fenetre_AutoDim1
 {
     Q_OBJECT
 protected:
     //automate de dimension 2
+
+    /*!< Page du Jeu de la Vie. */
+
     QWidget *page_dim2;
     QVBoxLayout *layout_page_dim2;
     QGroupBox *configuration_dim2;
     QVBoxLayout *layout_config_dim2;
     QVBoxLayout *layout_etat_depart_dim2;
 
+
+    /*!< Configuration des règles. */
 
     QHBoxLayout *regles_dim2;
     QGroupBox *regles_transition_dim2;
@@ -203,6 +252,8 @@ protected:
     QLabel *regles_mort_l;
     QCheckBox *vie[8];
     QCheckBox *mort[8];
+
+    /*!< Configuration de la génération de l'état de départ. */
 
     QGroupBox *generateur_dim2;
     QComboBox* select_generateur_dim2;
@@ -218,6 +269,8 @@ protected:
     QPushButton* bouton_generateur_dim2;
     unsigned int dimension_dim2;
 
+    /*!< Création et affichage de l'état de départ. */
+
     QStackedWidget* stacked_etat_depart_dim2;
     unsigned int taille_dim2;//taille des cases du tableau en pixels
     QWidget* page_etat_0_dim2;
@@ -229,8 +282,13 @@ protected:
     QLabel* aucun_etat_depart_dim2;
 
     QPushButton *Simulation_dim2;
+
+    /*!< Gestion du menu des fichiers. */
+
     //enregistrement
     bool enregistrer_autodim2;
+
+    /*!< Fenêtre de Simulation. */
 
     Window_Dim2_GOL* new_Window_dim2;
 
@@ -251,12 +309,25 @@ protected slots :
     void onActionImporter_dim2();
 };
 
+/**
+ * \class Fenetre_AutoDim2_Langton
+ * \brief Classe de la configuration de la Fourmi de Langton.
+ *
+ * Fenetre_AutoDim2_Langton est la classe correspondant à l'implémentation de la page "Fourmi de Langton" dans la fenêtre principale.
+ * Cette classe hérite de Fenetre_AutoDim2_GOL.
+ * Elle implémente la configuration des générateurs et de l'état de départ de la Fourmi de Langton.
+ * La partie correspondant au réglage des règles a été supprimée car l'automate n'en n'a pas besoin : les règles sont uniques pour cette implémentation.
+ */
+
 class Fenetre_AutoDim2_Langton : protected Fenetre_AutoDim2_GOL
 {
     Q_OBJECT
 
 protected:
     //automate fourmi de Langton
+
+    /*!< Page de la Fourmi de Langton. */
+
     QWidget *page_langton;
     QVBoxLayout *layout_page_langton;
     QGroupBox *configuration_langton;
@@ -265,6 +336,8 @@ protected:
 
 
     QHBoxLayout *regles_langton;
+
+    /*!< Configuration de la génération de l'état de départ. */
 
     QGroupBox *generateur_langton;
     QComboBox* select_generateur_langton;
@@ -280,6 +353,9 @@ protected:
     QPushButton* bouton_generateur_langton;
     unsigned int dimension_langton;
 
+
+    /*!< Création et affichage de l'état de départ. */
+
     QStackedWidget* stacked_etat_depart_langton;
     unsigned int taille_langton;//taille des cases du tableau en pixels
     QWidget* page_etat_0_langton;
@@ -292,7 +368,12 @@ protected:
 
     QPushButton *Simulation_langton;
     //enregistrement
+
+    /*!< Gestion du menu des fichiers. */
+
     bool enregistrer_autolangton;
+
+    /*!< Fenêtre de Simulation. */
 
     Window_Dim2_Langton* new_Window_langton;
 

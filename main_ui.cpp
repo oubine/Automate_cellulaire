@@ -140,7 +140,7 @@ Fenetre_Principale::Fenetre_Principale(QMainWindow *MainWindow)
 
        //connexion des signaux et des slots
 
-       connect(select_type_automate, SIGNAL(itemClicked(QListWidgetItem*)), this, SLOT(onDimensionItemClicked(QListWidgetItem*)));
+       connect(select_type_automate, SIGNAL(currentItemChanged(QListWidgetItem*,QListWidgetItem*)), this, SLOT(onDimensionItemClicked(QListWidgetItem*)));
        connect(aff_manuel, SIGNAL(toggled(bool)), this, SLOT(onAffichageButtonClicked(bool)));
        connect(actionEnregistrer, SIGNAL(triggered()), this, SLOT(onActionEnregistrer()));
        connect(actionImporter, SIGNAL(triggered()), this, SLOT(onActionImporter()));
