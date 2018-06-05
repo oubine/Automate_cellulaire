@@ -1645,7 +1645,7 @@ void Fenetre_AutoDim2_Langton::onActionImporter_Langton()
         QDomNode n = docElem.firstChild();
         QDomElement e = n.toElement();
 
-        QMessageBox::information(NULL, "Generateur", e.tagName());
+        //QMessageBox::information(NULL, "Generateur", e.tagName());
 
         nb_cases_langton->setValue(e.attribute("nb_cases").toInt());
 
@@ -1718,6 +1718,7 @@ void Fenetre_AutoDim2_Langton::onActionImporter_Langton()
                     QIcon ButtonIcon(pixmap);
                     etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
                 }
+                etat_depart_table_langton->item(counter, counter2)->setFlags(etat_depart_table_langton->item(counter, counter2)->flags() ^ Qt::ItemIsEditable);
                 n=n.nextSibling();
                 e=n.toElement();
             }
@@ -1727,7 +1728,7 @@ void Fenetre_AutoDim2_Langton::onActionImporter_Langton()
         etat_depart_table_langton->setParent(page_langton);
         layout_page_etat_1_langton->addWidget(etat_depart_table_langton);
         etat_depart_table_langton->setObjectName(QString::fromUtf8("etat_depart_table_langton"));
-        connect(etat_depart_table_langton, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation_langton(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+        connect(etat_depart_table_langton, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation_Langton(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
         stacked_etat_depart_langton->setCurrentIndex(1);
         Simulation_langton->setEnabled(true);
         enregistrer_autolangton=true;
