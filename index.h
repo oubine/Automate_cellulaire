@@ -1,3 +1,14 @@
+/**
+ * \file index.h
+ * \brief Fichier d'en-tête des classes index.
+ * \author{Oubine Perrin, Guillaume Sabbagh, Adrien Thuau}
+ * \version 1.0
+ * \date 16 Juin 2018
+ *
+ * Fichier d'en-tête déclarant l'architecture des index dans l'application permettant l'accès aux voisins d'une cellule.
+ *
+ */
+
 #ifndef INDEX_H
 #define INDEX_H
 #include <vector>

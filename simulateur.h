@@ -1,3 +1,14 @@
+/**
+ * \file simulateur.h
+ * \brief Fichier d'en-tête de la classe Simulateur.
+ * \author{Oubine Perrin, Guillaume Sabbagh, Adrien Thuau}
+ * \version 1.0
+ * \date 16 Juin 2018
+ *
+ * Fichier d'en-tête déclarant l'architecture du simulateur d'automates dans l'application.
+ *
+ */
+
 #ifndef SIMULATEUR
 #define SIMULATEUR
 

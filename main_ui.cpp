@@ -134,8 +134,8 @@ Fenetre_Principale::Fenetre_Principale(QMainWindow *MainWindow)
        menuR_glages_de_l_automate_cellulaire->addAction(actionEnregistrer);
        menuR_glages_de_l_automate_cellulaire->addAction(actionImporter);
 
-       Temps->setCurrentIndex(1);
-       aff_manuel->setChecked(true);
+       Temps->setCurrentIndex(0);
+       aff_auto->setChecked(true);
        stacked_settings->setCurrentIndex(0);
 
        //connexion des signaux et des slots

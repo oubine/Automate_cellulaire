@@ -1,3 +1,14 @@
+/**
+ * \file automate.h
+ * \brief Fichier d'en-tête de la superclasse d'automate
+ * \author{Oubine Perrin, Guillaume Sabbagh, Adrien Thuau}
+ * \version 1.0
+ * \date 16 Juin 2018
+ *
+ * Fichier d'en-tête déclarant la superclasse abstraite des de l'architecture des automates.
+ *
+ */
+
 #ifndef AUTOMATE_H
 #define AUTOMATE_H
 

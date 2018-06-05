@@ -206,7 +206,6 @@ void Window_Dim1::launchSimulationAuto() {//méthode pour lancer la simulation
         // on récupère le dernier état
         sim.next();
         const Etat1D& etat = sim.dernier();
-        std::cout<<etat<<std::endl;
         for(unsigned int colonne = 0; colonne < dimension; ++colonne) {
             if (etat.getCellule(colonne) == true) {
                 etats->item(step, colonne)->setBackgroundColor("black");

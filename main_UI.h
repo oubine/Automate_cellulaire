@@ -1,3 +1,14 @@
+/**
+ * \file main_ui.h
+ * \brief Fichier d'en-tête déclarant les classes de la fenêtre principale.
+ * \author{Oubine Perrin, Guillaume Sabbagh, Adrien Thuau}
+ * \version 1.0
+ * \date 16 Juin 2018
+ *
+ * Fichier d'en-tête déclarant l'architecture des classes de l'IHM correspondant aux différents automates implémentés.
+ *
+ */
+
 #ifndef PROJET_LO21
 #define PROJET_LO21
 #include "Window.h"

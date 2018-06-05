@@ -1,3 +1,13 @@
+/**
+ * \file automate1d.h
+ * \brief Fichier d'en-tête des classes d'automate 1 dimension
+ * \author{Oubine Perrin, Guillaume Sabbagh, Adrien Thuau}
+ * \version 1.0
+ * \date 16 Juin 2018
+ *
+ * Fichier d'en-tête déclarant l'architecture des automates à une dimension dans l'application.
+ *
+ */
 #ifndef AUTOMATE1D_H
 #define AUTOMATE1D_H
 

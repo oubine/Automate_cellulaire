@@ -1,3 +1,14 @@
+/**
+ * \file automate2d.h
+ * \brief Fichier d'en-tête des classes d'automate 2 dimensions
+ * \author{Oubine Perrin, Guillaume Sabbagh, Adrien Thuau}
+ * \version 1.0
+ * \date 16 Juin 2018
+ *
+ * Fichier d'en-tête déclarant l'architecture des automates à deux dimensions dans l'application.
+ *
+ */
+
 #ifndef AUTOMATE2D_H
 #define AUTOMATE2D_H
 

@@ -1,3 +1,14 @@
+/**
+ * \file Window.h
+ * \brief Fichier d'en-tête des classes des fenêtres de simulation
+ * \author{Oubine Perrin, Guillaume Sabbagh, Adrien Thuau}
+ * \version 1.0
+ * \date 16 Juin 2018
+ *
+ * Fichier d'en-tête déclarant les classes des fenêtres de simulation des automates implémentés dans l'application.
+ *
+ */
+
 #ifndef WINDOW_DIM1_H
 #define WINDOW_DIM1_H
 

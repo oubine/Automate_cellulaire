@@ -1,3 +1,14 @@
+/**
+ * \file etat.h
+ * \brief Fichier d'en-tête des classes d'état
+ * \author{Oubine Perrin, Guillaume Sabbagh, Adrien Thuau}
+ * \version 1.0
+ * \date 16 Juin 2018
+ *
+ * Fichier d'en-tête déclarant l'architecture des états dans l'application.
+ *
+ */
+
 #ifndef ETAT
 #define ETAT
 
