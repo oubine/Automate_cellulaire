@@ -56,13 +56,13 @@ class Fenetre_Principale : public QObject
 protected:
     QStatusBar *statusbar;
     QWidget *centralwidget;
-    QVBoxLayout *layout_main;
+    QHBoxLayout *layout_main;
 
     QGroupBox *reglages_generaux;
-    QHBoxLayout *layout_reglages_generaux;
+    QVBoxLayout *layout_reglages_generaux;
 
     QGroupBox *type_automate;
-    QVBoxLayout *layout_type_automate;
+    QHBoxLayout *layout_type_automate;
     QListWidget *select_type_automate;
     QStackedWidget *stacked_settings;
 
@@ -112,7 +112,6 @@ protected:
 
     QHBoxLayout *regles_dim1;
     QGroupBox *regles_transition;
-    QHBoxLayout *regles_dim1_layout;
     QSpinBox* num;
     QLineEdit* numeroBit[8];
     QLabel* numl;

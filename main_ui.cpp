@@ -6,8 +6,8 @@ Fenetre_Principale::Fenetre_Principale(QMainWindow *MainWindow)
 {
     if (MainWindow->objectName().isEmpty())
         MainWindow->setObjectName(QString::fromUtf8("Automates Cellulaires"));
-       MainWindow->resize(850, 544);
-       MainWindow->setMaximumSize(QSize(1000, 900));
+       MainWindow->resize(850, 700);
+       MainWindow->setMaximumSize(QSize(1000, 1200));
        actionEnregistrer = new QAction(MainWindow);
        actionEnregistrer->setObjectName(QString::fromUtf8("actionEnregistrer"));
        actionEnregistrer->setEnabled(false);
@@ -16,18 +16,19 @@ Fenetre_Principale::Fenetre_Principale(QMainWindow *MainWindow)
 
        centralwidget = new QWidget(MainWindow);
        centralwidget->setObjectName(QString::fromUtf8("centralwidget"));
-       layout_main = new QVBoxLayout(centralwidget);
+       layout_main = new QHBoxLayout(centralwidget);
        layout_main->setObjectName(QString::fromUtf8("layout_main"));
+       layout_main->setAlignment(Qt::AlignTop);
        reglages_generaux = new QGroupBox(centralwidget);
        reglages_generaux->setObjectName(QString::fromUtf8("reglages_generaux"));
-       reglages_generaux->setMaximumSize(QSize(1000, 200));
-       layout_reglages_generaux = new QHBoxLayout(reglages_generaux);
+       //reglages_generaux->setMaximumSize(QSize(1000, 200));
+       layout_reglages_generaux = new QVBoxLayout(reglages_generaux);
        layout_reglages_generaux->setObjectName(QString::fromUtf8("layout_reglages_generaux"));
        type_automate = new QGroupBox(reglages_generaux);
        type_automate->setObjectName(QString::fromUtf8("type_automate"));
        type_automate->setMinimumSize(QSize(260, 115));
-       type_automate->setMaximumSize(QSize(300, 200));
-       layout_type_automate = new QVBoxLayout(type_automate);
+       //type_automate->setMaximumSize(QSize(300, 200));
+       layout_type_automate = new QHBoxLayout(type_automate);
        layout_type_automate->setObjectName(QString::fromUtf8("layout_type_automate"));
         select_type_automate = new QListWidget(type_automate);
         select_type_automate->setObjectName(QString::fromUtf8("select_type_automate"));
@@ -178,6 +179,7 @@ Fenetre_AutoDim1::Fenetre_AutoDim1(QMainWindow *MainWindow):Fenetre_Principale(M
     page_dim1->setObjectName(QString::fromUtf8("page_dim1"));
     layout_page_dim1 = new QVBoxLayout(page_dim1);
     layout_page_dim1->setObjectName(QString::fromUtf8("layout_page_dim1"));
+    layout_page_dim1->setAlignment(Qt::AlignTop);
 
     //configuration dimension 1
 
@@ -187,6 +189,7 @@ Fenetre_AutoDim1::Fenetre_AutoDim1(QMainWindow *MainWindow):Fenetre_Principale(M
 
     regles_dim1 = new QHBoxLayout();
     regles_dim1->setObjectName(QString::fromUtf8("regles_dim1"));
+    regles_dim1->setAlignment(Qt::AlignTop);
 
 
     //règles de transition dimension 1
@@ -300,7 +303,7 @@ Fenetre_AutoDim1::Fenetre_AutoDim1(QMainWindow *MainWindow):Fenetre_Principale(M
 
     layout_etat_depart = new QVBoxLayout(configuration_dim1);
     layout_etat_depart->setObjectName(QString::fromUtf8("layout_etat_depart"));
-
+    layout_etat_depart->setAlignment(Qt::AlignTop);
     etat_depart_l = new QLabel(configuration_dim1);
     etat_depart_l->setObjectName(QString::fromUtf8("etat_depart_l"));
     etat_depart_l->setMinimumSize(QSize(100, 20));
@@ -317,6 +320,7 @@ Fenetre_AutoDim1::Fenetre_AutoDim1(QMainWindow *MainWindow):Fenetre_Principale(M
     page_etat_1 = new QWidget();
     page_etat_1->setObjectName(QString::fromUtf8("page_etat_1"));
     layout_page_etat_1 = new QVBoxLayout;
+    layout_page_etat_1->setAlignment(Qt::AlignTop);
     page_etat_1->setLayout(layout_page_etat_1);
     layout_page_etat_1->addWidget(etat_depart_l);
     stacked_etat_depart->addWidget(page_etat_0);
@@ -330,7 +334,7 @@ Fenetre_AutoDim1::Fenetre_AutoDim1(QMainWindow *MainWindow):Fenetre_Principale(M
     Simulation = new QPushButton(page_dim1);
     Simulation->setObjectName(QString::fromUtf8("Simulation"));
     Simulation->setMinimumSize(QSize(0, 50));
-    Simulation->setMaximumSize(QSize(1500, 50));
+    //Simulation->setMaximumSize(QSize(1500, 50));
 
     layout_page_dim1->addWidget(Simulation);
 
@@ -641,7 +645,6 @@ void Fenetre_AutoDim1::Gen_aleatoire()
 {
     srand(time(NULL));
     for(unsigned int counter = 0; counter < dimension; ++counter) {
-        etat_depart_table->setColumnWidth(counter, taille);
         if(rand()%2)
         {
             etat_depart_table->setItem(0, counter, new QTableWidgetItem());
@@ -662,7 +665,6 @@ void Fenetre_AutoDim1::Gen_aleatoire()
 void Fenetre_AutoDim1::Gen_Un_Sur_Deux()
 {
     for(unsigned int counter = 0; counter < dimension; ++counter) {
-        etat_depart_table->setColumnWidth(counter, taille);
         if(counter%2)
         {
             etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
@@ -701,7 +703,7 @@ Fenetre_AutoDim2_GOL::Fenetre_AutoDim2_GOL(QMainWindow *MainWindow):Fenetre_Auto
     layout_page_dim2->setObjectName(QString::fromUtf8("layout_page_dim2"));
     configuration_dim2 = new QGroupBox(page_dim2);
     configuration_dim2->setObjectName(QString::fromUtf8("configuration_dim2"));
-    configuration_dim2->setMaximumSize(QSize(900, 400));
+    //configuration_dim2->setMaximumSize(QSize(900, 400));
     layout_config_dim2 = new QVBoxLayout(configuration_dim2);
     layout_config_dim2->setObjectName(QString::fromUtf8("layout_config_dim2"));
     regles_dim2 = new QHBoxLayout();
@@ -960,7 +962,7 @@ void Fenetre_AutoDim2_GOL::onGenerateurButtonClicked_dim2()
         etat_depart_table_dim2 = new QTableWidget(dimension_dim2, dimension_dim2); //
         etat_depart_table_dim2->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
         etat_depart_table_dim2->verticalHeader()->setVisible(true); // masque le header vertical
-        etat_depart_table_dim2->setMaximumHeight(std::min((int)300, (int)((int)dimension_dim2*(int)taille_dim2)));
+        etat_depart_table_dim2->setMaximumHeight(std::min((int)500, (int)((int)dimension_dim2*(int)taille_dim2)));
         etat_depart_table_dim2->setMaximumWidth(taille_dim2*dimension_dim2+2);
         etat_depart_table_dim2->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
         etat_depart_table_dim2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
@@ -1020,9 +1022,7 @@ void Fenetre_AutoDim2_GOL::Gen_aleatoire_dim2()
     srand(time(NULL));
 
     for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
-        etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
         for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
-            etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
             if(rand()%6)
             {
                 etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");
@@ -1042,9 +1042,7 @@ void Fenetre_AutoDim2_GOL::Gen_aleatoire_dim2()
 void Fenetre_AutoDim2_GOL::Gen_Un_Sur_Deux_dim2()
 {
     for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
-        etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
         for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
-            etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
             if((counter+counter2)%2)
             {
                 etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
@@ -1068,9 +1066,7 @@ void Fenetre_AutoDim2_GOL::Gen_Un_Sur_Deux_dim2()
 void Fenetre_AutoDim2_GOL::Gen_Glider()
 {
     for(unsigned int i = 0; i < dimension_dim2; ++i) {
-        etat_depart_table_dim2->setRowHeight(i, taille_dim2);
         for(unsigned int j=0; j<dimension_dim2; ++j){
-            etat_depart_table_dim2->setColumnWidth(j, taille_dim2);
             if((i==0&&j==2)||(i==1&&j==2)||(i==2&&j==2)||(i==2&&j==1)||(i==1&&j==0))
             {
                 etat_depart_table_dim2->setItem(i, j, new QTableWidgetItem(""));
@@ -1214,8 +1210,9 @@ void Fenetre_AutoDim2_GOL::onActionImporter_dim2()
             etat_depart_table_dim2 = new QTableWidget(dimension_dim2, dimension_dim2); //
             etat_depart_table_dim2->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
             etat_depart_table_dim2->verticalHeader()->setVisible(true); // masque le header vertical
-            etat_depart_table_dim2->setMinimumHeight(std::min((int)300, (int)((int)dimension_dim2*(int)taille_dim2)));
+            etat_depart_table_dim2->setMaximumHeight(std::min((int)300, (int)((int)dimension_dim2*(int)taille_dim2)));
             etat_depart_table_dim2->setMaximumWidth(taille_dim2*dimension_dim2+2);
+
             etat_depart_table_dim2->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
             etat_depart_table_dim2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
 
@@ -1299,7 +1296,7 @@ Fenetre_AutoDim2_Langton::Fenetre_AutoDim2_Langton(QMainWindow *MainWindow):Fene
     layout_page_langton->setObjectName(QString::fromUtf8("layout_page_langton"));
     configuration_langton = new QGroupBox(page_langton);
     configuration_langton->setObjectName(QString::fromUtf8("configuration_langton"));
-    configuration_langton->setMaximumSize(QSize(900, 400));
+    //configuration_langton->setMaximumSize(QSize(900, 400));
     layout_config_langton = new QVBoxLayout(configuration_langton);
     layout_config_langton->setObjectName(QString::fromUtf8("layout_config_langton"));
     regles_langton = new QHBoxLayout();
@@ -1500,8 +1497,7 @@ void Fenetre_AutoDim2_Langton::onGenerateurButtonClicked_Langton()
         etat_depart_table_langton = new QTableWidget(dimension_langton, dimension_langton); //
         etat_depart_table_langton->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
         etat_depart_table_langton->verticalHeader()->setVisible(true); // masque le header vertical
-        etat_depart_table_langton->setMinimumHeight(std::min((int)300, (int)((int)dimension_langton*(int)taille_langton)));
-        etat_depart_table_langton->setFixedHeight(std::min((int)100, (int)((int)dimension_dim2*(int)taille_dim2)));
+        //etat_depart_table_langton->setMaximumHeight(std::min((int)300, (int)((int)dimension_langton*(int)taille_langton)));
         etat_depart_table_langton->setMaximumWidth(taille_langton*dimension_langton+2);
         etat_depart_table_langton->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
         etat_depart_table_langton->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
@@ -1781,9 +1777,7 @@ void Fenetre_AutoDim2_Langton::Gen_aleatoire_langton()
     QString directions[4]={tr("right"), tr("down"), tr("left"), tr("top")};
     QString logo[4]={tr("arrow-right.png"), tr("arrow-down.png"), tr("arrow-left.png"), tr("arrow-top.png")};
     for(unsigned int counter = 0; counter < dimension_langton; ++counter) {
-        etat_depart_table_langton->setRowHeight(counter, taille_langton);
         for(unsigned int counter2=0; counter2<dimension_langton; ++counter2){
-            etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
             if(counter*dimension_langton+counter2==fourmi)
             {
                 QPixmap pixmap(logo[direction]);
