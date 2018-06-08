@@ -15,13 +15,15 @@
 #include "etat.h"
 
 
+/**
+* \brief Classe qui définit le comportement de tous les automates à une dimension.
+*
+* \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+*/
 class Automate1D : public Automate
 {
-    friend class AutomateManager;
 public:
-    Automate1D():Automate(){}
-    Automate1D(std::vector<unsigned int> regle):Automate(regle){}
-    Automate1D(std::vector<unsigned int> regle, std::vector<std::vector<int>> motif):Automate(regle,motif){}
+    Automate1D(std::vector<unsigned int> regleTransition, std::vector<std::vector<int>> motif):Automate(regleTransition,motif){}
     void appliquerTransition(const Etat& dep, Etat& dest) final;
 };
 
@@ -31,7 +33,11 @@ std::string NumToNumBit(unsigned short int num);
 std::vector<unsigned int> regleStrToVector(const std::string& regleBit);
 std::string vectorToRegleStr(const std::vector<unsigned int> &regle);
 
-
+/**
+* \brief La classe des automates élémentaires à une dimension.
+*
+* \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+*/
 class AutomateElementaire : public Automate1D
 {
 private :
@@ -42,13 +48,18 @@ public:
     AutomateElementaire(const std::string& num);
     //AutomateElementaire(const Automate1D& a) : Automate(a){this->setMotifElementaire();}
     //autres
-    void setMotifElementaire()
+    /**
+    * \brief Méthode statique qui renvoie le motif commun à tous les automates élémentaires : [-1,0,1].
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
+    static std::vector<std::vector<int>> getMotifElementaire()
     {
         std::vector<std::vector<int>> motif(3, std::vector<int>(1));
         motif[0][0] = -1;
         motif[1][0] = 0;
         motif[2][0] = 1;
-        this->setMotif(motif);
+        return motif;
     }
  };
 

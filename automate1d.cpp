@@ -1,6 +1,19 @@
 #include "automate1d.h"
 #include <math.h>
 
+
+/**
+* \brief Méthode qui définit le comportement de la méthode virtuelle appliquerTransition pour tous les automates à une dimension.
+*
+* On examine le voisinage de chaque cellule de l'état de départ et on affecte à la cellule de même index de l'état de destination
+* l'image de l'état du voisinage par la règle locale de transition.
+*
+* @param[in] dep L'état avant la transition.
+
+* @param[out] dest État dans lequel on va stocker l'état après la transition.
+*
+* \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+*/
 void Automate1D::appliquerTransition(const Etat& dep, Etat& dest) {
     if (this->getMotif().size() == 0) throw AutomateException("Motif non défini");
     if (dep.getTaille() != dest.size()) dest = dep;
@@ -8,11 +21,11 @@ void Automate1D::appliquerTransition(const Etat& dep, Etat& dest) {
     for (unsigned int i = 0; i < dep.getTaille(); i++)
     {//iExamine : index de la case de l'état de départ examinée
         for(unsigned int j = 0; j < this->getMotif().size(); j++)
-        {//this->getMotif()[j] : index relatif des voisins par rapport à la case examinée
-            this->setVoisin(j,dep.getCellule(iExamine+this->getMotif()[j]));
+        {
+            this->setVoisin(j,dep.getCellule(iExamine+motif[j]));
         }
-        unsigned int etat = baseToInt(std::vector<unsigned int>(this->getVoisinage(),this->getVoisinage()+this->nbVoisins()),dep.getValMax()+1);
-        dest.setCellule(i, this->getRegleTransition()[etat]);
+        unsigned int etat = baseToInt(std::vector<unsigned int>(valVoisinage,valVoisinage+this->nbVoisins()),dep.getValMax()+1);
+        dest.setCellule(i, regleTransition[etat]);
         iExamine++;
     }
 }
@@ -68,9 +81,16 @@ std::string vectorToRegleStr(const std::vector<unsigned int> &regle)
     return result;
 }
 
-AutomateElementaire::AutomateElementaire(unsigned short int num) : Automate1D(regleStrToVector(NumToNumBit(num))),numeroRegleTransition(num)
+
+/**
+* \brief Constructeur.
+*
+* Ce constructeur fait le lien entre numéro de l'automate élémentaire et sa règle locale de transition telle qu'on la représente dans notre classe Automate.
+*
+* \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+*/
+AutomateElementaire::AutomateElementaire(unsigned short int num) : Automate1D(regleStrToVector(NumToNumBit(num)),AutomateElementaire::getMotifElementaire()),numeroRegleTransition(num)
 {
-    this->setMotifElementaire();
     std::vector<unsigned int> temp = this->regleTransition;
     for(unsigned int i = 0; i < temp.size(); ++i)
     {
@@ -78,9 +98,8 @@ AutomateElementaire::AutomateElementaire(unsigned short int num) : Automate1D(re
     }
     regleTransition = temp;
 }
-AutomateElementaire::AutomateElementaire(const std::string& num) : Automate1D(regleStrToVector(NumToNumBit(NumBitToNum(num)))), numeroRegleTransition(NumBitToNum(num))
+AutomateElementaire::AutomateElementaire(const std::string& num) : Automate1D(regleStrToVector(NumToNumBit(NumBitToNum(num))),AutomateElementaire::getMotifElementaire()), numeroRegleTransition(NumBitToNum(num))
 {
-    this->setMotifElementaire();
     std::vector<unsigned int> temp = this->regleTransition;
     for(unsigned int i = 0; i < temp.size(); ++i)
     {

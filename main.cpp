@@ -15,25 +15,8 @@ int main(int argc, char *argv[])
     Fenetre_AutoDim2_GOL* fendim2 = new Fenetre_AutoDim2_GOL(main);
     Fenetre_AutoDim2_Langton* fendim3 = new Fenetre_AutoDim2_Langton(main);
 
-    /*
-    Etat2D e(50,9);
-    Etat2D e2(50,9);
-    FourmiLangton a;
-    //35075 elems : bytes ->841800 hauteur : 17536
-    e.setCellule(IndexTab2D(22,22,50,50),4);
-    std::cout << e << "\n";
-    for(unsigned int i = 0; i < 100000; i++)
-    {
-        a.appliquerTransition(e,e2);
-        e = e2;
 
-        std::cout << "\n i:"<<i<<std::endl;
-
-        std::cout << e <<std::endl;
-    }
-    */
-
-    std::cout << typeid(fendim1).name() << " , "<<typeid(fendim2).name()<<"\n";
+    std::cout << typeid(fendim1).name() << " , "<<typeid(fendim2).name() << " , "<<typeid(fendim3).name()<<"\n";
     main->show();
     //AutoCell autoc;
     //autoc.show();

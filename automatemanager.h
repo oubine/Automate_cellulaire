@@ -1,3 +1,4 @@
+/*
 /**
  * \file automatemanager.h
  * \brief Fichier d'en-tête de la classe AutomateManager
@@ -7,7 +8,7 @@
  *
  * Fichier d'en-tête déclarant l'architecture du manager d'automate (design pattern Singleton).
  *
- */
+ *
 #ifndef AUTOMATEMANAGER
 #define AUTOMATEMANAGER
 
@@ -34,3 +35,4 @@ public:
 
 #endif // AUTOMATEMANAGER
 
+*/

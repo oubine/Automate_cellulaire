@@ -15,7 +15,7 @@ void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
     for (unsigned int i = 0; i < dep.size(); i++)
     {//iExamine : index de la case de l'état de départ examinée
         for(unsigned int j = 0; j < this->getMotif().size(); j++)
-        {//this->getMotif()[j] : index relatif des voisins par rapport à la case examinée
+        {
             valVoisinage[j] = dep.getCellule(iExamine+motif[j]);
         }
         etat = baseToInt(std::vector<unsigned int>(valVoisinage,valVoisinage+nbVoisins()),dep.getValMax()+1);
