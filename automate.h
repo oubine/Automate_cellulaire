@@ -44,7 +44,7 @@ en utilisant - la méthode setMotif et le constructeur Automate(regle)
 /**
 * \brief La classe Automate est abstraite, elle généralise les Automate1D et Automate2D.
 *
-* Cette classe contient deux informations des 4-uplet que sont les automates cellulaires : la règle locale de transition et le voisinage des cellules.
+* Cette classe contient trois informations des 4-uplet que sont les automates cellulaires : la règle locale de transition, l'alphabet et le voisinage des cellules.
 * Les attributs sont protected et non private afin que les classes filles puissent accéder plus rapidement aux attributs (les getter étaient lents).
 * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
 */
@@ -98,6 +98,16 @@ protected:
     * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
     */
     unsigned int *valVoisinage;
+
+
+    /**
+    * \brief La valeur max de l'alphabet de l'automate.
+    *
+    * L'alphabet de l'automate est l'intervalle discrète [0,valMax].
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
+    unsigned int valMax;
 
 public:
     //constructeurs / destructeurs
@@ -154,6 +164,7 @@ public:
     unsigned int* getVoisinage() {return valVoisinage;}
     unsigned int nbVoisins() {return motif.size();}
     std::vector<unsigned int> getRegleTransition() const {return regleTransition;}
+    unsigned int getValMax() const {return valMax;}
 
 };
 
