@@ -1,3 +1,14 @@
+/**
+ * \file Window.cpp
+ * \brief Fichier source des classes des fenêtres de simulation
+ * \author{Oubine Perrin, Guillaume Sabbagh, Adrien Thuau}
+ * \version 1.0
+ * \date 16 Juin 2018
+ *
+ * Fichier source définissant les classes des fenêtres de simulation des automates implémentés dans l'application.
+ *
+ */
+
 #include "Window.h"
 #include "automate.h"
 #include "automate1d.h"
@@ -92,6 +103,18 @@ Window_Dim1::Window_Dim1(QWidget *parent, unsigned int dim, unsigned int transit
         connect(play, SIGNAL(clicked()), this, SLOT(onPlayButtonClicked()));
     }
 
+    raz = new QPushButton;
+    raz->setObjectName(QString::fromUtf8("raz"));
+    raz->setMinimumSize(QSize(0, 20));
+    raz->setMaximumSize(QSize(20, 20));
+    raz->setFlat(true);
+    QPixmap pixmap("raz.png");
+    QIcon ButtonIcon(pixmap);
+    raz->setIcon(ButtonIcon);
+    raz->setIconSize(QSize(24,24));
+    layout_boutons->addWidget(raz);
+
+    connect(raz, SIGNAL(clicked()), this, SLOT(onRazButtonClicked()));
 
 
     //layout_boutons->setAlignment(Qt::AlignRight);
@@ -228,7 +251,25 @@ void Window_Dim1::onPauseButtonClicked()
     is_play_v=false;
 }
 
-Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent) : QWidget(parent),taille(10) {
+void Window_Dim1::onRazButtonClicked()
+{
+    is_play_v=false;
+    transition_courante=0;
+    transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
+    for(unsigned int i=0; i<nb_transitions; ++i)
+    {
+        for(unsigned int j=0; j<dimension; ++j)
+        {
+            etats->item(i,j)->setBackgroundColor("white");
+        }
+    }
+    if(!affichage_manuel)
+    {
+        this->launchSimulationAuto();
+    }
+}
+
+Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent) : QWidget(parent),taille(10),e(Etat2D(dimension,1)) {
     // Question 3
     //numero = new QLabel(QString::number(num_automate),this);
     depart = new QTableWidget(dimension, dimension);
@@ -267,7 +308,7 @@ Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent) : QWidget(parent),taille(10) {
 }
 
 Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff, std::vector<short int> regle) :
-    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(6),regle(regle),is_play_v(1), transition_courante(0) {
+    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(6),regle(regle),is_play_v(1), transition_courante(0), e(Etat2D(dimension,1)) {
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
@@ -314,7 +355,18 @@ Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent, unsigned int dim, unsigned int
         connect(play, SIGNAL(clicked()), this, SLOT(onPlayButtonClicked()));
     }
 
+    raz = new QPushButton;
+    raz->setObjectName(QString::fromUtf8("raz"));
+    raz->setMinimumSize(QSize(0, 20));
+    raz->setMaximumSize(QSize(20, 20));
+    raz->setFlat(true);
+    QPixmap pixmap("raz.png");
+    QIcon ButtonIcon(pixmap);
+    raz->setIcon(ButtonIcon);
+    raz->setIconSize(QSize(24,24));
+    layout_boutons->addWidget(raz);
 
+    connect(raz, SIGNAL(clicked()), this, SLOT(onRazButtonClicked()));
 
     //layout_boutons->setAlignment(Qt::AlignRight);
     depart = new QTableWidget(dimension,dimension);
@@ -358,15 +410,21 @@ Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent, unsigned int dim, unsigned int
 void Window_Dim2_GOL::onSuivantButtonClicked()
 {
     // création de l'état
-    Etat2D e(dimension,1);
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
 
-    for(unsigned int counter = 0; counter < dimension; ++counter) {
-        for(unsigned int counter2=0; counter2<dimension; ++counter2){
-            if(depart->item(counter, counter2)->backgroundColor() != "white") {
-                    e.setCellule(IndexTab2D(counter,counter2,dimension,dimension),1);
+    if(transition_courante==0)
+    {
+        for(unsigned int counter = 0; counter < dimension; ++counter) {
+            for(unsigned int counter2=0; counter2<dimension; ++counter2){
+                if(depart->item(counter, counter2)->backgroundColor() != "white") {
+                        e.setCellule(IndexTab2D(counter,counter2,dimension,dimension),1);
+                }
             }
         }
+        // on récupère l'automate correspondant au numéro de l'interface graphique, en utilisant l'AutomateManager
+        // à noter, il n'est pas nécessaire d'instancier un objet AutomateManager, comme il s'agit d'un singleton,
+        // on peut considérer que l'objet existe déjà dans le système
+        // on construit l'objet simulateur correspondant
     }
     VarianteJeuDeLaVie a(regle);
     if(transition_courante<nb_transitions)
@@ -386,7 +444,6 @@ void Window_Dim2_GOL::onSuivantButtonClicked()
             }
             index++;
         }
-        depart=etats;
         transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
     }
     }
@@ -398,7 +455,6 @@ void Window_Dim2_GOL::launchSimulationAuto() {//méthode pour lancer la simulati
     //loop.exec();
 
     // création de l'état
-    Etat2D e(dimension,1);
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
     for(unsigned int counter = 0; counter < dimension; ++counter) {
         for(unsigned int counter2=0; counter2<dimension; ++counter2){
@@ -411,15 +467,15 @@ void Window_Dim2_GOL::launchSimulationAuto() {//méthode pour lancer la simulati
     VarianteJeuDeLaVie a(regle);
     connect(this,SIGNAL(is_play()), &loop2, SLOT(quit()));
 
-    for(unsigned int step = 0; step < nb_transitions; ++step) {
+    for(transition_courante=1; transition_courante <= nb_transitions; ++transition_courante) {
         auto start = std::chrono::high_resolution_clock::now();
         if(!is_play_v)
         {
             loop2.exec();//si on est sur pause, on attend de réappuyer sur play pour continuer l'exécution
         }
-        if(isVisible())
+        if(isVisible() && transition_courante<=nb_transitions)
         {
-            transition_courante++;
+            //transition_courante++;
             transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
             // on récupère le dernier état
             Etat2D e2(dimension,1);
@@ -433,7 +489,7 @@ void Window_Dim2_GOL::launchSimulationAuto() {//méthode pour lancer la simulati
                 } else {
                     etats->item(index.getI(), index.getJ())->setBackgroundColor("white");
                 }
-                index++;
+                ++index;
             }
 
             QCoreApplication::processEvents();
@@ -461,6 +517,25 @@ void Window_Dim2_GOL::onPlayButtonClicked()
 void Window_Dim2_GOL::onPauseButtonClicked()
 {
     is_play_v=false;
+}
+
+void Window_Dim2_GOL::onRazButtonClicked()
+{
+    is_play_v=false;
+    transition_courante=0;
+    transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
+    for(unsigned int i=0; i<dimension; ++i)
+    {
+        for(unsigned int j=0; j<dimension; ++j)
+        {
+            etats->item(i,j)->setBackgroundColor("white");
+            e.setCellule(IndexTab2D(i,j,dimension,dimension),0);
+        }
+    }
+    if(!affichage_manuel)
+    {
+        this->launchSimulationAuto();
+    }
 }
 
 Window_Dim2_Langton::Window_Dim2_Langton(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff) :
@@ -510,6 +585,20 @@ Window_Dim2_Langton::Window_Dim2_Langton(QWidget *parent, unsigned int dim, unsi
         connect(pause, SIGNAL(clicked()), this, SLOT(onPauseButtonClicked()));
         connect(play, SIGNAL(clicked()), this, SLOT(onPlayButtonClicked()));
     }
+
+
+    raz = new QPushButton;
+    raz->setObjectName(QString::fromUtf8("raz"));
+    raz->setMinimumSize(QSize(0, 20));
+    raz->setMaximumSize(QSize(20, 20));
+    raz->setFlat(true);
+    QPixmap pixmap("raz.png");
+    QIcon ButtonIcon(pixmap);
+    raz->setIcon(ButtonIcon);
+    raz->setIconSize(QSize(24,24));
+    layout_boutons->addWidget(raz);
+
+    connect(raz, SIGNAL(clicked()), this, SLOT(onRazButtonClicked()));
 
 
 
@@ -576,7 +665,7 @@ void Window_Dim2_Langton::onSuivantButtonClicked()
     }
 
 
-    if(transition_courante < nb_transitions){
+    if(transition_courante <= nb_transitions){
         if(isVisible())
         {
             FourmiLangton a;
@@ -630,15 +719,15 @@ void Window_Dim2_Langton::launchSimulationAuto() {//méthode pour lancer la simu
     FourmiLangton a;
     connect(this,SIGNAL(is_play()), &loop2, SLOT(quit()));
 
-    for(unsigned int step = 0; step < nb_transitions; ++step) {
+    for(transition_courante=1; transition_courante <= nb_transitions; ++transition_courante) {
         auto start = std::chrono::high_resolution_clock::now();
         if(!is_play_v)
         {
             loop2.exec();//si on est sur pause, on attend de réappuyer sur play pour continuer l'exécution
         }
-        if(isVisible())
+        if(isVisible() && transition_courante<=nb_transitions)
         {
-            transition_courante++;
+            //transition_courante++;
             transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
             // on récupère le dernier état
             Etat2D e2(dimension,9);
@@ -670,7 +759,6 @@ void Window_Dim2_Langton::launchSimulationAuto() {//méthode pour lancer la simu
                 QCoreApplication::processEvents();
             }
         }
-
     }
 }
 
@@ -683,4 +771,24 @@ void Window_Dim2_Langton::onPlayButtonClicked()
 void Window_Dim2_Langton::onPauseButtonClicked()
 {
     is_play_v=false;
+}
+
+void Window_Dim2_Langton::onRazButtonClicked()
+{
+    is_play_v=false;
+    transition_courante=0;
+    transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
+    for(unsigned int i=0; i<dimension; ++i)
+    {
+        for(unsigned int j=0; j<dimension; ++j)
+        {
+            etats->item(i,j)->setBackgroundColor("white");
+            e.setCellule(IndexTab2D(i,j,dimension,dimension),0);
+        }
+    }
+    if(!affichage_manuel)
+    {
+        transition_courante=0;
+        this->launchSimulationAuto();
+    }
 }

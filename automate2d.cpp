@@ -18,6 +18,7 @@
 */
 void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
 {
+    auto start = std::chrono::high_resolution_clock::now();
     unsigned int etat;
     if (motif.size() == 0) throw AutomateException("Motif non défini");
     if (dep.getTaille() != dest.getTaille()) dest = dep;
@@ -33,6 +34,9 @@ void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
         dest.setCellule(i, regleTransition[etat]);
         iExamine++;
     }
+    auto finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = finish - start;
+    std::cout << "Elapsed time transition: " << elapsed.count() << " s\n";
 }
 
 /**
