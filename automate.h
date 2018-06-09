@@ -130,9 +130,13 @@ public:
     * (la \f$ k^{eme} \f$ decimale de \f$ n \f$ écrit en base \f$ | Q | \f$ représente la \f$ k^{eme} \f$ cellule du voisinage)
     *
     * @param[in] motif Motif du voisinage sous la forme d'un vector d'index (un index 1D est un vector<int> à une case, un index2D un vector<int> à deux cases représentant abscisse et ordonnée).
+    *
+    * @param[in] valMaxAlphabet L'alphabet de l'automate est l'intervalle discrète [0,valMaxAlphabet]
+    *
     * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
     */
-    Automate(std::vector<unsigned int> regle,std::vector<std::vector<int>> motif) : regleTransition(regle), motif(motif), valVoisinage(new unsigned int[motif.size()]){}
+    Automate(std::vector<unsigned int> regle,std::vector<std::vector<int>> motif, unsigned int valMaxAlphabet):
+        regleTransition(regle), motif(motif), valVoisinage(new unsigned int[motif.size()]),valMax(valMaxAlphabet){}
 
 
     Automate(const Automate& a);

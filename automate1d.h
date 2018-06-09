@@ -23,7 +23,7 @@
 class Automate1D : public Automate
 {
 public:
-    Automate1D(std::vector<unsigned int> regleTransition, std::vector<std::vector<int>> motif):Automate(regleTransition,motif){}
+    Automate1D(std::vector<unsigned int> regleTransition, std::vector<std::vector<int>> motif, unsigned int valMaxAlphabet):Automate(regleTransition,motif,valMaxAlphabet){}
     void appliquerTransition(const Etat& dep, Etat& dest) final;
 };
 

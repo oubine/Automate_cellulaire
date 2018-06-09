@@ -21,6 +21,7 @@ void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
     auto start = std::chrono::high_resolution_clock::now();
     unsigned int etat;
     if (motif.size() == 0) throw AutomateException("Motif non défini");
+    if (valMax != dep.getValMax()) throw AutomateException("appel de appliquerTransition sur un état ayant un alphabet différent de celui accepté par l'automate.");
     if (dep.getTaille() != dest.getTaille()) dest = dep;
     auto iExamine = IndexTab2D(0,0,dep.getTaille(),dep.getTaille());
 
