@@ -22,6 +22,7 @@
 
 /**
 * La classe AutomateException permet de gérer les exceptions liées aux automates.
+*
 * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
 */
 class AutomateException {

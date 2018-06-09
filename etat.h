@@ -39,10 +39,35 @@ private:
 */
 class Etat
 {
-protected:
-    unsigned int taille;//c'est la taille du côté du tableau représentant un état de l'automate
+private:
+    /**
+    * \brief L'attribut taille est le nombre de cellules dans un côté du tableau contenant les valuations.
+    *
+    * Pour avoir la taille totale du tableau, utiliser la méthode size().
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
+    unsigned int taille;
+
+    /**
+    * \brief La dimension du réseau.
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
     const unsigned short int dimension;
+
+    /**
+    * \brief Le tableau contenant les valuations des chaque cellule de la région du réseau.
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
     unsigned int* valeur;
+
+    /**
+    * \brief La valeur max de l'alphabet dans lequel les cellules prennent leur valeur.
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
     unsigned int valMax; // les cellules de l'état prennent leur valeur dans l'intervalle [0,valMax]
 public:
 
