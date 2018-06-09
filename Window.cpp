@@ -82,18 +82,18 @@ Window_Dim1::Window_Dim1(QWidget *parent, unsigned int dim, unsigned int transit
         play->setMinimumSize(QSize(0, 20));
         play->setMaximumSize(QSize(20, 20));
         play->setFlat(true);
-        QPixmap pixmap("play.png");
+        QPixmap pixmap(":/play.png");
         QIcon ButtonIcon(pixmap);
         play->setIcon(ButtonIcon);
         play->setIconSize(pixmap.rect().size());
         layout_boutons->addWidget(play);
 
         pause = new QPushButton;
-        pause->setObjectName(QString::fromUtf8("pause"));
+        pause->setObjectName(QString::fromUtf8(":/pause"));
         pause->setMinimumSize(QSize(0, 20));
         pause->setMaximumSize(QSize(20, 20));
         pause->setFlat(true);
-        QPixmap pixmap2("pause.png");
+        QPixmap pixmap2(":/pause.png");
         QIcon ButtonIcon2(pixmap2);
         pause->setIcon(ButtonIcon2);
         pause->setIconSize(pixmap2.rect().size());
@@ -108,7 +108,7 @@ Window_Dim1::Window_Dim1(QWidget *parent, unsigned int dim, unsigned int transit
     raz->setMinimumSize(QSize(0, 20));
     raz->setMaximumSize(QSize(20, 20));
     raz->setFlat(true);
-    QPixmap pixmap("raz.png");
+    QPixmap pixmap(":/raz.png");
     QIcon ButtonIcon(pixmap);
     raz->setIcon(ButtonIcon);
     raz->setIconSize(QSize(24,24));
@@ -334,7 +334,7 @@ Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent, unsigned int dim, unsigned int
         play->setMinimumSize(QSize(0, 20));
         play->setMaximumSize(QSize(20, 20));
         play->setFlat(true);
-        QPixmap pixmap("play.png");
+        QPixmap pixmap(":/play.png");
         QIcon ButtonIcon(pixmap);
         play->setIcon(ButtonIcon);
         play->setIconSize(pixmap.rect().size());
@@ -345,7 +345,7 @@ Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent, unsigned int dim, unsigned int
         pause->setMinimumSize(QSize(0, 20));
         pause->setMaximumSize(QSize(20, 20));
         pause->setFlat(true);
-        QPixmap pixmap2("pause.png");
+        QPixmap pixmap2(":/pause.png");
         QIcon ButtonIcon2(pixmap2);
         pause->setIcon(ButtonIcon2);
         pause->setIconSize(pixmap2.rect().size());
@@ -360,7 +360,7 @@ Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent, unsigned int dim, unsigned int
     raz->setMinimumSize(QSize(0, 20));
     raz->setMaximumSize(QSize(20, 20));
     raz->setFlat(true);
-    QPixmap pixmap("raz.png");
+    QPixmap pixmap(":/raz.png");
     QIcon ButtonIcon(pixmap);
     raz->setIcon(ButtonIcon);
     raz->setIconSize(QSize(24,24));
@@ -565,7 +565,7 @@ Window_Dim2_Langton::Window_Dim2_Langton(QWidget *parent, unsigned int dim, unsi
         play->setMinimumSize(QSize(0, 20));
         play->setMaximumSize(QSize(20, 20));
         play->setFlat(true);
-        QPixmap pixmap("play.png");
+        QPixmap pixmap(":/play.png");
         QIcon ButtonIcon(pixmap);
         play->setIcon(ButtonIcon);
         play->setIconSize(pixmap.rect().size());
@@ -576,7 +576,7 @@ Window_Dim2_Langton::Window_Dim2_Langton(QWidget *parent, unsigned int dim, unsi
         pause->setMinimumSize(QSize(0, 20));
         pause->setMaximumSize(QSize(20, 20));
         pause->setFlat(true);
-        QPixmap pixmap2("pause.png");
+        QPixmap pixmap2(":/pause.png");
         QIcon ButtonIcon2(pixmap2);
         pause->setIcon(ButtonIcon2);
         pause->setIconSize(pixmap2.rect().size());
@@ -592,7 +592,7 @@ Window_Dim2_Langton::Window_Dim2_Langton(QWidget *parent, unsigned int dim, unsi
     raz->setMinimumSize(QSize(0, 20));
     raz->setMaximumSize(QSize(20, 20));
     raz->setFlat(true);
-    QPixmap pixmap("raz.png");
+    QPixmap pixmap(":/raz.png");
     QIcon ButtonIcon(pixmap);
     raz->setIcon(ButtonIcon);
     raz->setIconSize(QSize(24,24));

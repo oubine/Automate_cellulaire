@@ -31,3 +31,6 @@ SOURCES += \
     automate2d.cpp \
     Window.cpp \
     intervalleabr.cpp
+
+RESOURCES+=\
+    ressources.qrc

@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>raz.png</file>
+        <file>play.png</file>
+        <file>pause.png</file>
+        <file>arrow-up.png</file>
+        <file>arrow-right.png</file>
+        <file>arrow-left.png</file>
+        <file>arrow-down.png</file>
+    </qresource>
+</RCC>

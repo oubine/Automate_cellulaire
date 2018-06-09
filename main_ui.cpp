@@ -1790,28 +1790,28 @@ void Fenetre_AutoDim2_Langton::onGenerateurButtonClicked_Langton()
 
 void Fenetre_AutoDim2_Langton::cellActivation_Langton(QTableWidgetItem *index) {//méthode pour changer l'état
     if (etat_depart_table_langton->item(index->row(), index->column())->text() == "") {
-        QPixmap pixmap("arrow-right.png");
+        QPixmap pixmap(":/arrow-right.png");
         QIcon ButtonIcon(pixmap);
         etat_depart_table_langton->item(index->row(), index->column())->setIcon(ButtonIcon);
         etat_depart_table_langton->item(index->row(), index->column())->setText("right");
 
     } else if(etat_depart_table_langton->item(index->row(), index->column())->text() == "right") {
 
-        QPixmap pixmap("arrow-down.png");
+        QPixmap pixmap(":/arrow-down.png");
         QIcon ButtonIcon(pixmap);
         etat_depart_table_langton->item(index->row(), index->column())->setIcon(ButtonIcon);
         etat_depart_table_langton->item(index->row(), index->column())->setText("down");
     }
     else if(etat_depart_table_langton->item(index->row(), index->column())->text() == "down") {
 
-            QPixmap pixmap("arrow-left.png");
+            QPixmap pixmap(":/arrow-left.png");
             QIcon ButtonIcon(pixmap);
             etat_depart_table_langton->item(index->row(), index->column())->setIcon(ButtonIcon);
             etat_depart_table_langton->item(index->row(), index->column())->setText("left");
         }
     else if(etat_depart_table_langton->item(index->row(), index->column())->text() == "left") {
 
-            QPixmap pixmap("arrow-up.png");
+            QPixmap pixmap(":/arrow-up.png");
             QIcon ButtonIcon(pixmap);
             etat_depart_table_langton->item(index->row(), index->column())->setIcon(ButtonIcon);
             etat_depart_table_langton->item(index->row(), index->column())->setText("up");
@@ -1970,7 +1970,7 @@ void Fenetre_AutoDim2_Langton::onActionImporter_Langton()
                     {
                         etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
                         etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("right"));
-                        QPixmap pixmap("arrow-right.png");
+                        QPixmap pixmap(":/arrow-right.png");
                         QIcon ButtonIcon(pixmap);
                         etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
                     }
@@ -1978,7 +1978,7 @@ void Fenetre_AutoDim2_Langton::onActionImporter_Langton()
                     {
                         etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
                         etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("down"));
-                        QPixmap pixmap("arrow-down.png");
+                        QPixmap pixmap(":/arrow-down.png");
                         QIcon ButtonIcon(pixmap);
                         etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
                     }
@@ -1986,14 +1986,14 @@ void Fenetre_AutoDim2_Langton::onActionImporter_Langton()
                     {
                         etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
                         etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("left"));
-                        QPixmap pixmap("arrow-left.png");
+                        QPixmap pixmap(":/arrow-left.png");
                         QIcon ButtonIcon(pixmap);
                         etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
                     }
                     else if(e.attribute("active")=="up"){
                         etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
                         etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("up"));
-                        QPixmap pixmap("arrow-up.png");
+                        QPixmap pixmap(":/arrow-up.png");
                         QIcon ButtonIcon(pixmap);
                         etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
                     }
@@ -2068,7 +2068,7 @@ void Fenetre_AutoDim2_Langton::Gen_aleatoire_langton()
     unsigned int fourmi = rand()%(dimension_langton*dimension_langton);
     int direction = rand()%4;
     QString directions[4]={tr("right"), tr("down"), tr("left"), tr("top")};
-    QString logo[4]={tr("arrow-right.png"), tr("arrow-down.png"), tr("arrow-left.png"), tr("arrow-top.png")};
+    QString logo[4]={tr(":/arrow-right.png"), tr(":/arrow-down.png"), tr(":/arrow-left.png"), tr(":/arrow-top.png")};
     for(unsigned int counter = 0; counter < dimension_langton; ++counter) {
         for(unsigned int counter2=0; counter2<dimension_langton; ++counter2){
             if(counter*dimension_langton+counter2==fourmi)
