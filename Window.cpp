@@ -11,8 +11,8 @@
 
 #include "Window.h"
 #include "automate.h"
+#include "automate1d.h"
 #include "automate2d.h"
-#include "automatemanager.h"
 #include "simulateur.h"
 #include "main_UI.h"
 #include <iostream>
@@ -166,10 +166,8 @@ void Window_Dim1::onSuivantButtonClicked()
         }
         else e.setCellule(counter, 0);
     }
-    // on récupère l'automate correspondant au numéro de l'interface graphique, en utilisant l'AutomateManager
-    // à noter, il n'est pas nécessaire d'instancier un objet AutomateManager, comme il s'agit d'un singleton,
-    // on peut considérer que l'objet existe déjà dans le système
-    Automate1D& a = AutomateManager::getAutomateManager().getAutomate(num_automate);
+    // on récupère l'automate correspondant au numéro de l'interface graphique
+    AutomateElementaire a = AutomateElementaire(num_automate);
     // on construit l'objet simulateur correspondant
     Simulateur sim(a, e, dimension);
     if(transition_courante<nb_transitions)
@@ -209,10 +207,8 @@ void Window_Dim1::launchSimulationAuto() {//méthode pour lancer la simulation
                 e.setCellule(counter, 1);
         }
     }
-    // on récupère l'automate correspondant au numéro de l'interface graphique, en utilisant l'AutomateManager
-    // à noter, il n'est pas nécessaire d'instancier un objet AutomateManager, comme il s'agit d'un singleton,
-    // on peut considérer que l'objet existe déjà dans le système
-    Automate1D& a = AutomateManager::getAutomateManager().getAutomate(num_automate);
+    // on récupère l'automate correspondant au numéro de l'interface graphique
+    AutomateElementaire a = AutomateElementaire(num_automate);
     // on construit l'objet simulateur correspondant
     Simulateur sim(a, e, dimension);
     // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique
@@ -430,7 +426,6 @@ void Window_Dim2_GOL::onSuivantButtonClicked()
         // on peut considérer que l'objet existe déjà dans le système
         // on construit l'objet simulateur correspondant
     }
-
     VarianteJeuDeLaVie a(regle);
     if(transition_courante<nb_transitions)
     {
@@ -468,11 +463,6 @@ void Window_Dim2_GOL::launchSimulationAuto() {//méthode pour lancer la simulati
             }
         }
     }
-    // on récupère l'automate correspondant au numéro de l'interface graphique, en utilisant l'AutomateManager
-    // à noter, il n'est pas nécessaire d'instancier un objet AutomateManager, comme il s'agit d'un singleton,
-    // on peut considérer que l'objet existe déjà dans le système
-    // on construit l'objet simulateur correspondant
-    // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique
     QEventLoop loop2;
     VarianteJeuDeLaVie a(regle);
     connect(this,SIGNAL(is_play()), &loop2, SLOT(quit()));
@@ -725,11 +715,6 @@ void Window_Dim2_Langton::launchSimulationAuto() {//méthode pour lancer la simu
             }
         }
     }
-    // on récupère l'automate correspondant au numéro de l'interface graphique, en utilisant l'AutomateManager
-    // à noter, il n'est pas nécessaire d'instancier un objet AutomateManager, comme il s'agit d'un singleton,
-    // on peut considérer que l'objet existe déjà dans le système
-    // on construit l'objet simulateur correspondant
-    // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique
     QEventLoop loop2;
     FourmiLangton a;
     connect(this,SIGNAL(is_play()), &loop2, SLOT(quit()));

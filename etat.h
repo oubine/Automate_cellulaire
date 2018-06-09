@@ -18,6 +18,11 @@
 #include <math.h>
 #include "index.h"
 
+/**
+* La classe EtatException permet de gérer les exceptions liées aux états.
+*
+* \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+*/
 class EtatException {
 public:
     EtatException(const std::string& message) :info(message) {}
@@ -26,10 +31,16 @@ private:
     std::string info;
 };
 
+
+/**
+* \brief La classe Etat représente une valuation de chaque cellule d'une région torique et carrée d'un réseau \f$ Z^d \f$.
+*
+* \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+*/
 class Etat
 {
 protected:
-    unsigned int taille;//ce qu'on appelait avant dimension : c'est la taille du tableau représentant un état de l'automate
+    unsigned int taille;//c'est la taille du côté du tableau représentant un état de l'automate
     const unsigned short int dimension;
     unsigned int* valeur;
     unsigned int valMax; // les cellules de l'état prennent leur valeur dans l'intervalle [0,valMax]

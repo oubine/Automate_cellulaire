@@ -1,4 +1,4 @@
-#include "automatemanager.h"
+/*#include "automatemanager.h"
 
 AutomateManager::AutomateManager() {
     for (unsigned int i = 0; i < 256; i++) automates[i] = nullptr;
@@ -26,4 +26,4 @@ AutomateElementaire& AutomateManager::getAutomate(unsigned long int num) {
 }
 AutomateElementaire& AutomateManager::getAutomate(const std::string& numBit) {
     return getAutomate(NumBitToNum(numBit));
-}
+}*/
