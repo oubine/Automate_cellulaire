@@ -48,6 +48,8 @@ Q_OBJECT
     QPushButton* suivant;
     QPushButton* play;
     QPushButton* pause;
+    QPushButton* raz;
+
     QLabel* transition;
     bool affichage_manuel;
     unsigned int temps_affichage;
@@ -77,6 +79,8 @@ private slots :
     void onSuivantButtonClicked();
     void onPlayButtonClicked();
     void onPauseButtonClicked();
+    void onRazButtonClicked();
+
 };
 
 class Window_Dim2_GOL : public QWidget{
@@ -96,6 +100,7 @@ Q_OBJECT
     QPushButton* suivant;
     QPushButton* play;
     QPushButton* pause;
+    QPushButton* raz;
     QLabel* transition;
     bool affichage_manuel;
     unsigned int temps_affichage;
@@ -104,6 +109,8 @@ Q_OBJECT
 
     bool is_play_v;
     unsigned int transition_courante;
+    Etat2D e;
+
 
 
 
@@ -125,6 +132,8 @@ private slots :
     void onSuivantButtonClicked();
     void onPlayButtonClicked();
     void onPauseButtonClicked();
+    void onRazButtonClicked();
+
 };
 
 class Window_Dim2_Langton : public QWidget{
@@ -144,6 +153,8 @@ Q_OBJECT
     QPushButton* suivant;
     QPushButton* play;
     QPushButton* pause;
+    QPushButton* raz;
+
     QLabel* transition;
     bool affichage_manuel;
     unsigned int temps_affichage;
@@ -176,6 +187,7 @@ public slots:
 private slots :
     void onSuivantButtonClicked();
     void onPlayButtonClicked();
+    void onRazButtonClicked();
     void onPauseButtonClicked();
 };
 

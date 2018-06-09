@@ -12,8 +12,8 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
     QMainWindow *main = new QMainWindow;
     Fenetre_AutoDim1* fendim1 = new Fenetre_AutoDim1(main);
-    Fenetre_AutoDim2_GOL* fendim2 = new Fenetre_AutoDim2_GOL(main);
-    Fenetre_AutoDim2_Langton* fendim3 = new Fenetre_AutoDim2_Langton(main);
+    Fenetre_AutoDim2_GOL* fenGOT = new Fenetre_AutoDim2_GOL(main);
+    Fenetre_AutoDim2_Langton* fen_Langton = new Fenetre_AutoDim2_Langton(main);
 
     /*
     Etat2D e(50,9);
@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     }
     */
 
-    std::cout << typeid(fendim1).name() << " , "<<typeid(fendim2).name()<<"\n";
+    std::cout << typeid(fendim1).name() << " , "<<typeid(fenGOT).name()<<"\n"<<typeid(fen_Langton).name()<<std::endl;
     main->show();
     //AutoCell autoc;
     //autoc.show();

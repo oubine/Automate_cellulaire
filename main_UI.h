@@ -118,7 +118,7 @@ public:
 
 private slots :
     virtual void onDimensionItemClicked(QListWidgetItem* item)=0;
-    virtual void onAffichageButtonClicked(bool);
+    void onAffichageButtonClicked(bool);
     virtual void onActionEnregistrer()=0;
     virtual void onActionImporter()=0;
 };

@@ -1,6 +1,25 @@
+/**
+ * \file main_ui.cpp
+ * \brief Fichier source définissant les classes de la fenêtre principale.
+ * \author{Oubine Perrin, Guillaume Sabbagh, Adrien Thuau}
+ * \version 1.0
+ * \date 16 Juin 2018
+ *
+ * Fichier source définissant l'architecture des classes de l'IHM correspondant aux différents automates implémentés.
+ *
+ */
+
 #include "main_UI.h"
 #include "automate1d.h"
 #include "Window.h"
+
+/*!
+ *  \brief Constructeur
+ *
+ *  Constructeur de la classe Fenetre_Principale
+ *
+ *  \param MainWindow : Fenêtre princicpale (type Qt)
+ */
 
 Fenetre_Principale::Fenetre_Principale(QMainWindow *MainWindow)
 {
@@ -146,6 +165,14 @@ Fenetre_Principale::Fenetre_Principale(QMainWindow *MainWindow)
        connect(actionImporter, SIGNAL(triggered()), this, SLOT(onActionImporter()));
 } // setupUi
 
+/*!
+ *  \brief Méthode Noms
+ *
+ *  Méthode Noms de la classe Fenetre_Principale permettant de nommer correctement tous les widget contenant du texte
+ *
+ *  \param MainWindow : Fenêtre princicpale (type Qt)
+ */
+
 
 void Fenetre_Principale::Noms(QMainWindow *MainWindow)
 {
@@ -166,6 +193,14 @@ void Fenetre_Principale::Noms(QMainWindow *MainWindow)
     menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Fichiers de config", 0));
 } // retranslateUi
 
+
+/*!
+ *  \brief Constructeur
+ *
+ *  Construcuteur de la classe Fenetre_AutoDim1
+ *
+ *  \param MainWindow : Fenêtre princicpale (type Qt)
+ */
 Fenetre_AutoDim1::Fenetre_AutoDim1(QMainWindow *MainWindow):Fenetre_Principale(MainWindow),  taille(25), enregistrer_autodim1(false)
 {
     /***********************
@@ -353,6 +388,14 @@ Fenetre_AutoDim1::Fenetre_AutoDim1(QMainWindow *MainWindow):Fenetre_Principale(M
     QMetaObject::connectSlotsByName(MainWindow);
 }
 
+/*!
+ *  \brief Méthode Noms_dim1
+ *
+ *  Méthode Noms de la classe Fenetre_AutoDim1 permettant de nommer correctement tous les widget contenant du texte des automates à une dimension
+ *
+ *  \param MainWindow : Fenêtre princicpale (type Qt)
+ */
+
 void Fenetre_AutoDim1::Noms_dim1(QMainWindow *MainWindow)
 {
     MainWindow->setWindowTitle(QApplication::translate("AutoCell LO21", "AutoCell LO21", 0));
@@ -379,7 +422,13 @@ void Fenetre_AutoDim1::Noms_dim1(QMainWindow *MainWindow)
     menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Fichiers de config", 0));
 } // retranslateUi
 
-
+/*!
+ *  \brief Slot virtual de gestion du type d'automate
+ *
+ *  Slot permettant de gérer la liste de types d'automates. On la redéfinit dans chaque nouvelle classe afin de gérer le nouvel automate.
+ *
+ *  \param item : item qui a été cliqué dans le widget
+ */
 
 void Fenetre_AutoDim1::onDimensionItemClicked(QListWidgetItem* item)
 {
@@ -390,6 +439,13 @@ void Fenetre_AutoDim1::onDimensionItemClicked(QListWidgetItem* item)
         }
 }
 
+/*!
+ *  \brief Slot de gestion du type d'affichage
+ *
+ *  Slot permettant de gérer le type d'affichage (manuel ou automatique) de la classe Fenetre_Principale.
+ *
+ *  \param checked : booléen du radio bouton de l'affichage manuel
+ */
 void Fenetre_Principale::onAffichageButtonClicked(bool checked)
 {
     if(checked)//dans le cas de l'affichage manuel
@@ -401,6 +457,13 @@ void Fenetre_Principale::onAffichageButtonClicked(bool checked)
         Temps->setCurrentIndex(0);
     }
 }
+
+/*!
+ *  \brief Slot de gestion du générateur des automates à une dimension
+ *
+ *  Slot permettant de gérer la génération de l'état de départ d'une dimension ainsi que ses générateurs.
+ *
+ */
 
 void Fenetre_AutoDim1::onGenerateurButtonClicked_dim1()
 {
@@ -448,6 +511,13 @@ void Fenetre_AutoDim1::onGenerateurButtonClicked_dim1()
     }
 }
 
+
+/*!
+ *  \brief Slot de gestion du bouton de simulation
+ *
+ *  Slot permettant de gérer le bouton de simulation (Lancer !) afin de créer la fenêtre correspondant au bon automate en appelant le constructeur avec les bons paramètres.
+ *
+ */
 void Fenetre_AutoDim1::onSimulationButtonClicked_dim1()
 {
         new_Window_dim1 = new Window_Dim1(nullptr, dimension, nb_transitions->value(), num->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
@@ -459,6 +529,14 @@ void Fenetre_AutoDim1::onSimulationButtonClicked_dim1()
         }
 }
 
+/*!
+ *  \brief Slot de gestion des cliques sur l'état de départ des automates à une dimension
+ *
+ *  Slot permettant de gérer l'activation des cellules de l'état de départ.
+ *
+ *  \param index : index de la cellule cliquée
+ */
+
 void Fenetre_AutoDim1::cellActivation_dim1(QTableWidgetItem *index) {//méthode pour changer l'état
     if (etat_depart_table->item(0, index->column())->backgroundColor() == "white") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
         etat_depart_table->item(0, index->column())->setBackgroundColor("black");
@@ -467,6 +545,14 @@ void Fenetre_AutoDim1::cellActivation_dim1(QTableWidgetItem *index) {//méthode 
     }
 }
 
+/*!
+ *  \brief Méthode de synchronization du numéro de l'automate à une dimension (décimal vers binaire)
+ *
+ *  Méthode permettant de mettre à jour le numéro binaire de l'automate lorsque le numéro décimal est changé
+ *
+ *  \param i : numéro décimal de l'automate
+ */
+
 void Fenetre_AutoDim1::synchronizeNumToNumBit(int i) {//synchronisation de numéro de l'automate en décimal vers binaire
     std::string numBit = NumToNumBit(i);//string correspondant au numéro en binaire
     for(unsigned int counter = 0; counter < 8; ++counter) {
@@ -474,6 +560,14 @@ void Fenetre_AutoDim1::synchronizeNumToNumBit(int i) {//synchronisation de numé
     }
 }
 
+
+/*!
+ *  \brief Méthode de synchronization du numéro de l'automate à une dimension (binaire vers décimal)
+ *
+ *  Méthode permettant de mettre à jour le numéro décimal de l'automate lorsque le numéro binaire est changé
+ *
+ *  \param i : numéro binaire de l'automate (sous forme de QString)
+ */
 void Fenetre_AutoDim1::synchronizeNumBitToNum(const QString& s) {//synchronisation de numéro de l'automate en binaire vers décimal
     if (s == "") {//on vérifie si la chaîne est vide
         return;
@@ -484,6 +578,13 @@ void Fenetre_AutoDim1::synchronizeNumBitToNum(const QString& s) {//synchronisati
     }
     num->setValue(NumBitToNum(numBit));//on utilise la méthode fournie dans l'autre TD
 }
+
+/*!
+ *  \brief Slot de gestion de l'enregistrement des automates à une dimension
+ *
+ *  Slot permettant d'enregistrer les automates à une dimension dans un fichier XML du répertoire HOME de l'utilisateur.
+ *
+ */
 
 void Fenetre_AutoDim1::onActionEnregistrer_dim1()
 {
@@ -544,10 +645,24 @@ void Fenetre_AutoDim1::onActionEnregistrer_dim1()
         }
 }
 
+
+/*!
+ *  \brief Slot de gestion de l'import des automates à une dimension
+ *
+ *  Slot permettant d'importer les automates à une dimension à partir d'un fichier XML du répertoire HOME de l'utilisateur.
+ *
+ */
 void Fenetre_AutoDim1::onActionImporter_dim1()
 {
+    QDir dir;
+    QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_1/")));
+    if(!dir.exists(path))
+    {
+        QMessageBox::information(NULL, "Information", "Aucune configuration n'a été préalablement enregistrée \n Aucune configuration à importer.");
+    }
+    else
+    {
         fichier = new QFileDialog;
-        QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_1/")));
         QString nom_fichier = fichier->getOpenFileName(centralwidget,
                                  QString::fromUtf8("Enregistrement de configuration"),
                                  path);
@@ -624,8 +739,15 @@ void Fenetre_AutoDim1::onActionImporter_dim1()
 
             file.close();
         }
+    }
 }
 
+/*!
+ *  \brief Slot virtual de gestion de l'enregistrement des automates
+ *
+ *  Slot permettant de gérer les actions d'enregistrement selon le type d'automate implémenté.
+ *
+ */
 void Fenetre_AutoDim1::onActionEnregistrer()
 {
     if(stacked_settings->currentIndex()==0)
@@ -634,6 +756,13 @@ void Fenetre_AutoDim1::onActionEnregistrer()
     }
 }
 
+/*!
+ *  \brief Slot virtual de gestion de l'import des automates
+ *
+ *  Slot permettant de gérer les actions d'import selon le type d'automate implémenté.
+ *
+ */
+
 void Fenetre_AutoDim1::onActionImporter()
 {
     if(stacked_settings->currentIndex()==0)
@@ -641,6 +770,13 @@ void Fenetre_AutoDim1::onActionImporter()
         emit onActionImporter_dim1();
     }
 }
+
+/*!
+ *  \brief Méthode de génération aléatoire d'un état de départ à une dimension.
+ *
+ *  Méthode permettant de définir le comportement du générateur aléatoire pour les automates à une dimension : les cases sont générées aléatoirement vivantes ou mortes, avec une chance sur deux d'être vivante ou morte.
+ *
+ */
 
 void Fenetre_AutoDim1::Gen_aleatoire()
 {
@@ -662,6 +798,13 @@ void Fenetre_AutoDim1::Gen_aleatoire()
     enregistrer_autodim1=true;
     actionEnregistrer->setEnabled(enregistrer_autodim1);
 }
+
+/*!
+ *  \brief Méthode de génération d'une cellule sur deux d'un état de départ à une dimension.
+ *
+ *  Méthode permettant de définir le comportement du générateur d'une cellule sur deux pour les automates à une dimension.
+ */
+
 
 void Fenetre_AutoDim1::Gen_Un_Sur_Deux()
 {
@@ -685,6 +828,14 @@ void Fenetre_AutoDim1::Gen_Un_Sur_Deux()
     actionEnregistrer->setEnabled(enregistrer_autodim1);
 }
 
+
+/*!
+ *  \brief Constructeur
+ *
+ *  Constructeur de la classe Fenetre_AutoDim2_GOL
+ *
+ *  \param MainWindow : Fenêtre princicpale (type Qt)
+ */
 Fenetre_AutoDim2_GOL::Fenetre_AutoDim2_GOL(QMainWindow *MainWindow):Fenetre_AutoDim1(MainWindow), taille_dim2(25),enregistrer_autodim2(false)
 {
     /************************
@@ -890,6 +1041,14 @@ Fenetre_AutoDim2_GOL::Fenetre_AutoDim2_GOL(QMainWindow *MainWindow):Fenetre_Auto
 
 }
 
+
+/*!
+*  \brief Méthode Noms_dim2
+*
+*  Méthode Noms de la classe Fenetre_AutoDim2_GOL permettant de nommer correctement tous les widget contenant du texte du Jeu de la Vie
+*
+*  \param MainWindow : Fenêtre princicpale (type Qt)
+*/
 void Fenetre_AutoDim2_GOL::Noms_dim2(QMainWindow *MainWindow)
 {
     MainWindow->setWindowTitle(QApplication::translate("AutoCell LO21", "AutoCell LO21", 0));
@@ -933,6 +1092,13 @@ void Fenetre_AutoDim2_GOL::onDimensionItemClicked(QListWidgetItem* item)
 }
 
 
+/*!
+*  \brief Slot de gestion du bouton de simulation du Jeu de la Vie
+*
+*  Slot permettant de gérer le bouton de simulation (Lancer !) afin de créer la fenêtre correspondant au Jeu de la Vie en appelant le constructeur avec les bons paramètres.
+*
+*/
+
 void Fenetre_AutoDim2_GOL::onSimulationButtonClicked_dim2()
 {
         int tab_regle[8];
@@ -951,6 +1117,13 @@ void Fenetre_AutoDim2_GOL::onSimulationButtonClicked_dim2()
             new_Window_dim2->launchSimulationAuto();
         }
 }
+
+/*!
+ *  \brief Slot de gestion du générateur du Jeu de la Vie
+ *
+ *  Slot permettant de gérer la génération de l'état de départ du Jeu de la Vie ainsi que ses générateurs.
+ *
+ */
 
 void Fenetre_AutoDim2_GOL::onGenerateurButtonClicked_dim2()
 {
@@ -1006,6 +1179,14 @@ void Fenetre_AutoDim2_GOL::onGenerateurButtonClicked_dim2()
         }
 }
 
+/*!
+*  \brief Slot de gestion des cliques sur l'état de départ du Jeu de la Vie.
+*
+*  Slot permettant de gérer l'activation des cellules de l'état de départ.
+*
+*  \param index : index de la cellule cliquée
+*/
+
 void Fenetre_AutoDim2_GOL::cellActivation_dim2(QTableWidgetItem *index) {
     if (etat_depart_table_dim2->item(index->row(), index->column())->backgroundColor() == "white") {//si la cellule était morte, on la fait vivre (elle passe du blanc au noir)
 
@@ -1018,6 +1199,12 @@ void Fenetre_AutoDim2_GOL::cellActivation_dim2(QTableWidgetItem *index) {
     }
 }
 
+/*!
+*  \brief Méthode de génération aléatoire d'un état de départ du Jeu de la Vie.
+*
+*  Méthode permettant de générer aléatoirement des cellules en vie pour l'état de départ du Jeu de la Vie (une cellule a une chance sur 6 d'être vivante)
+*
+*/
 void Fenetre_AutoDim2_GOL::Gen_aleatoire_dim2()
 {
     srand(time(NULL));
@@ -1040,6 +1227,11 @@ void Fenetre_AutoDim2_GOL::Gen_aleatoire_dim2()
     actionEnregistrer->setEnabled(enregistrer_autodim2);
 }
 
+/*!
+ *  \brief Méthode de génération d'une cellule sur deux d'un état de départ du Jeu de la Vie.
+ *
+ *  Méthode permettant de définir le comportement du générateur d'une cellule sur deux pour le Jeu de la Vie.
+ */
 void Fenetre_AutoDim2_GOL::Gen_Un_Sur_Deux_dim2()
 {
     for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
@@ -1064,6 +1256,12 @@ void Fenetre_AutoDim2_GOL::Gen_Un_Sur_Deux_dim2()
     actionEnregistrer->setEnabled(enregistrer_autodim2);
 }
 
+/*!
+ *  \brief Méthode de génération d'un glider pour le Jeu de la Vie.
+ *
+ *  Méthode permettant de définir le comportement du générateur d'un glider (pattern suivant une route rectiligne) pour le Jeu de la Vie.
+ */
+
 void Fenetre_AutoDim2_GOL::Gen_Glider()
 {
     for(unsigned int i = 0; i < dimension_dim2; ++i) {
@@ -1087,6 +1285,13 @@ void Fenetre_AutoDim2_GOL::Gen_Glider()
     enregistrer_autodim2=true;
     actionEnregistrer->setEnabled(enregistrer_autodim2);
 }
+
+/*!
+ *  \brief Slot de gestion de l'enregistrement des automates du Jeu de la Vie
+ *
+ *  Slot permettant d'enregistrer les automates du Jeu de la Vie dans un fichier XML du répertoire HOME de l'utilisateur.
+ *
+ */
 
 void Fenetre_AutoDim2_GOL::onActionEnregistrer_dim2()
 {
@@ -1159,10 +1364,24 @@ void Fenetre_AutoDim2_GOL::onActionEnregistrer_dim2()
         }
 }
 
+/*!
+ *  \brief Slot de gestion de l'import des automates du Jeu de la Vie
+ *
+ *  Slot permettant d'importer des automates du Jeu de la Vie à partir d'un fichier XML du répertoire HOME de l'utilisateur.
+ *
+ */
+
 void Fenetre_AutoDim2_GOL::onActionImporter_dim2()
 {
+    QDir dir;
+    QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_2/")));
+    if(!dir.exists(path))
+    {
+        QMessageBox::information(NULL, "Information", "Aucune configuration n'a été préalablement enregistrée \nAucune configuration à importer.");
+    }
+    else
+    {
         fichier = new QFileDialog;
-        QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_dim_2/")));
         QString nom_fichier = fichier->getOpenFileName(centralwidget,
                                  QString::fromUtf8("Import de configuration"),
                                  path);
@@ -1252,6 +1471,7 @@ void Fenetre_AutoDim2_GOL::onActionImporter_dim2()
 
             file.close();
         }
+    }
 }
 
 void Fenetre_AutoDim2_GOL::onActionEnregistrer()
@@ -1277,6 +1497,14 @@ void Fenetre_AutoDim2_GOL::onActionImporter()
         emit onActionImporter_dim2();
     }
 }
+
+/*!
+ *  \brief Constructeur
+ *
+ *  Constructeur de la classe Fenetre_AutoDim2_Langton
+ *
+ *  \param MainWindow : Fenêtre princicpale (type Qt)
+ */
 
 Fenetre_AutoDim2_Langton::Fenetre_AutoDim2_Langton(QMainWindow *MainWindow):Fenetre_AutoDim2_GOL(MainWindow), taille_langton(25), enregistrer_autolangton(false)
 {
@@ -1428,6 +1656,15 @@ Fenetre_AutoDim2_Langton::Fenetre_AutoDim2_Langton(QMainWindow *MainWindow):Fene
 
 }
 
+
+/*!
+*  \brief Méthode Noms_Langton
+*
+*  Méthode Noms de la classe Fenetre_AutoDim2_Langton permettant de nommer correctement tous les widget contenant du texte des automates de la Fourmi de Langton
+*
+*  \param MainWindow : Fenêtre princicpale (type Qt)
+*/
+
 void Fenetre_AutoDim2_Langton::Noms_Langton(QMainWindow *MainWindow)
 {
     MainWindow->setWindowTitle(QApplication::translate("AutoCell LO21", "AutoCell LO21", 0));
@@ -1475,6 +1712,12 @@ void Fenetre_AutoDim2_Langton::onDimensionItemClicked(QListWidgetItem* item)
 
 }
 
+/*!
+*  \brief Slot de gestion du bouton de simulation
+*
+*  Slot permettant de gérer le bouton de simulation (Lancer !) afin de créer la fenêtre correspondant à la Fourmi de Langton en appelant le constructeur avec les bons paramètres.
+*
+*/
 
 void Fenetre_AutoDim2_Langton::onSimulationButtonClicked_Langton()
 {
@@ -1486,6 +1729,13 @@ void Fenetre_AutoDim2_Langton::onSimulationButtonClicked_Langton()
             new_Window_langton->launchSimulationAuto();
         }
 }
+
+/*!
+ *  \brief Slot de gestion du générateur de la Fourmi de Langton
+ *
+ *  Slot permettant de gérer la génération de l'état de départ de la Fourmi de Langton ainsi que ses générateurs.
+ *
+ */
 
 void Fenetre_AutoDim2_Langton::onGenerateurButtonClicked_Langton()
 {
@@ -1530,6 +1780,14 @@ void Fenetre_AutoDim2_Langton::onGenerateurButtonClicked_Langton()
         }
 }
 
+/*!
+*  \brief Slot de gestion des cliques sur l'état de départ des automates de la Fourmi de Langton
+*
+*  Slot permettant de gérer l'activation des cellules de l'état de départ.
+*
+*  \param index : index de la cellule cliquée
+*/
+
 void Fenetre_AutoDim2_Langton::cellActivation_Langton(QTableWidgetItem *index) {//méthode pour changer l'état
     if (etat_depart_table_langton->item(index->row(), index->column())->text() == "") {
         QPixmap pixmap("arrow-right.png");
@@ -1567,6 +1825,13 @@ void Fenetre_AutoDim2_Langton::cellActivation_Langton(QTableWidgetItem *index) {
     }
 
 }
+
+/*!
+ *  \brief Slot de gestion de l'enregistrement des automates de la Fourmi de Langton
+ *
+ *  Slot permettant d'enregistrer les automates de la Fourmi de Langton dans un fichier XML du répertoire HOME de l'utilisateur.
+ *
+ */
 
 void Fenetre_AutoDim2_Langton::onActionEnregistrer_Langton()
 {
@@ -1628,114 +1893,130 @@ void Fenetre_AutoDim2_Langton::onActionEnregistrer_Langton()
     }
 }
 
+/*!
+ *  \brief Slot de gestion de l'import des automates de la Fourmi de Langton
+ *
+ *  Slot permettant d'importer les automates de la Fourmi de Langton à partir d'un fichier XML du répertoire HOME de l'utilisateur.
+ *
+ */
+
 void Fenetre_AutoDim2_Langton::onActionImporter_Langton()
 {
-    fichier = new QFileDialog;
+    QDir dir;
     QString path =QDir::homePath().append(QDir::toNativeSeparators(QString::fromUtf8("/Configs_langton/")));
-    QString nom_fichier = fichier->getOpenFileName(centralwidget,
-                             QString::fromUtf8("Import de configuration"),
-                             path);
 
-    QDomDocument dom;
-    QFile file(nom_fichier);
-
-    if ((file.open(QIODevice::ReadOnly)) && (dom.setContent(&file)))
+    if(!dir.exists(path))
     {
-        QDomElement docElem = dom.documentElement();
-        QDomNode n = docElem.firstChild();
-        QDomElement e = n.toElement();
-
-        //QMessageBox::information(NULL, "Generateur", e.tagName());
-
-        nb_cases_langton->setValue(e.attribute("nb_cases").toInt());
-
-        nb_transitions_langton->setValue(e.attribute("nb_transitions").toInt());
-        //QMessageBox::information(NULL, "Transitions", e.tagName());
-
-        select_generateur_langton->setCurrentIndex(e.attribute("generation").toInt());
-
-        n=e.nextSibling();
-        n=n.firstChild();
-        e=n.toElement();
-
-        //QMessageBox::information(NULL, "Etat_depart", e.tagName());
-
-        if(page_langton->findChild<QTableWidget*>("etat_depart_table_langton"))//on teste si le tableau existe déjà
-        {
-            layout_page_etat_1_langton->removeWidget(etat_depart_table_langton);
-            delete etat_depart_table_langton;
-        }
-
-        dimension_langton=nb_cases_langton->value();
-        etat_depart_table_langton = new QTableWidget(dimension_langton, dimension_langton); //
-        etat_depart_table_langton->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
-        etat_depart_table_langton->verticalHeader()->setVisible(true); // masque le header vertical
-        etat_depart_table_langton->setMinimumHeight(std::min((int)300, (int)((int)dimension_langton*(int)taille_langton)));
-        etat_depart_table_langton->setMaximumWidth(taille_langton*dimension_langton+2);
-        etat_depart_table_langton->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
-        etat_depart_table_langton->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
-
-
-        for(unsigned int counter = 0; counter < dimension_langton; ++counter) {
-            etat_depart_table_langton->setRowHeight(counter, taille_langton);
-            for(unsigned int counter2=0; counter2<dimension_langton; ++counter2){
-                if(e.attribute("active")=="")
-                {
-                    etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
-                    etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem(""));
-                    QPixmap pixmap("");
-                    QIcon ButtonIcon(pixmap);
-                    etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
-                }
-                else if(e.attribute("active")=="right")
-                {
-                    etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
-                    etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("right"));
-                    QPixmap pixmap("arrow-right.png");
-                    QIcon ButtonIcon(pixmap);
-                    etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
-                }
-                else if(e.attribute("active")=="down")
-                {
-                    etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
-                    etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("down"));
-                    QPixmap pixmap("arrow-down.png");
-                    QIcon ButtonIcon(pixmap);
-                    etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
-                }
-                else if(e.attribute("active")=="left")
-                {
-                    etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
-                    etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("left"));
-                    QPixmap pixmap("arrow-left.png");
-                    QIcon ButtonIcon(pixmap);
-                    etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
-                }
-                else if(e.attribute("active")=="up"){
-                    etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
-                    etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("up"));
-                    QPixmap pixmap("arrow-up.png");
-                    QIcon ButtonIcon(pixmap);
-                    etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
-                }
-                etat_depart_table_langton->item(counter, counter2)->setFlags(etat_depart_table_langton->item(counter, counter2)->flags() ^ Qt::ItemIsEditable);
-                n=n.nextSibling();
-                e=n.toElement();
-            }
-        }
-
-
-        etat_depart_table_langton->setParent(page_langton);
-        layout_page_etat_1_langton->addWidget(etat_depart_table_langton);
-        etat_depart_table_langton->setObjectName(QString::fromUtf8("etat_depart_table_langton"));
-        connect(etat_depart_table_langton, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation_Langton(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
-        stacked_etat_depart_langton->setCurrentIndex(1);
-        Simulation_langton->setEnabled(true);
-        enregistrer_autolangton=true;
-        actionEnregistrer->setEnabled(enregistrer_autolangton);
-
-        file.close();
+        QMessageBox::information(NULL, "Information", "Aucune configuration n'a été préalablement enregistrée \nAucune configuration à importer.");
     }
+    else
+    {
+        fichier = new QFileDialog;
+        QString nom_fichier = fichier->getOpenFileName(centralwidget,
+                                 QString::fromUtf8("Import de configuration"),
+                                 path);
+        QDomDocument dom;
+        QFile file(nom_fichier);
+
+        if ((file.open(QIODevice::ReadOnly)) && (dom.setContent(&file)))
+        {
+            QDomElement docElem = dom.documentElement();
+            QDomNode n = docElem.firstChild();
+            QDomElement e = n.toElement();
+
+            //QMessageBox::information(NULL, "Generateur", e.tagName());
+
+            nb_cases_langton->setValue(e.attribute("nb_cases").toInt());
+
+            nb_transitions_langton->setValue(e.attribute("nb_transitions").toInt());
+            //QMessageBox::information(NULL, "Transitions", e.tagName());
+
+            select_generateur_langton->setCurrentIndex(e.attribute("generation").toInt());
+
+            n=e.nextSibling();
+            n=n.firstChild();
+            e=n.toElement();
+
+            //QMessageBox::information(NULL, "Etat_depart", e.tagName());
+
+            if(page_langton->findChild<QTableWidget*>("etat_depart_table_langton"))//on teste si le tableau existe déjà
+            {
+                layout_page_etat_1_langton->removeWidget(etat_depart_table_langton);
+                delete etat_depart_table_langton;
+            }
+
+            dimension_langton=nb_cases_langton->value();
+            etat_depart_table_langton = new QTableWidget(dimension_langton, dimension_langton); //
+            etat_depart_table_langton->horizontalHeader()->setVisible(true); // masque le header (numéro des cases) horizontal
+            etat_depart_table_langton->verticalHeader()->setVisible(true); // masque le header vertical
+            etat_depart_table_langton->setMinimumHeight(std::min((int)300, (int)((int)dimension_langton*(int)taille_langton)));
+            etat_depart_table_langton->setMaximumWidth(taille_langton*dimension_langton+2);
+            etat_depart_table_langton->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
+            etat_depart_table_langton->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
+
+
+            for(unsigned int counter = 0; counter < dimension_langton; ++counter) {
+                etat_depart_table_langton->setRowHeight(counter, taille_langton);
+                for(unsigned int counter2=0; counter2<dimension_langton; ++counter2){
+                    if(e.attribute("active")=="")
+                    {
+                        etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
+                        etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem(""));
+                        QPixmap pixmap("");
+                        QIcon ButtonIcon(pixmap);
+                        etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
+                    }
+                    else if(e.attribute("active")=="right")
+                    {
+                        etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
+                        etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("right"));
+                        QPixmap pixmap("arrow-right.png");
+                        QIcon ButtonIcon(pixmap);
+                        etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
+                    }
+                    else if(e.attribute("active")=="down")
+                    {
+                        etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
+                        etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("down"));
+                        QPixmap pixmap("arrow-down.png");
+                        QIcon ButtonIcon(pixmap);
+                        etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
+                    }
+                    else if(e.attribute("active")=="left")
+                    {
+                        etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
+                        etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("left"));
+                        QPixmap pixmap("arrow-left.png");
+                        QIcon ButtonIcon(pixmap);
+                        etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
+                    }
+                    else if(e.attribute("active")=="up"){
+                        etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
+                        etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("up"));
+                        QPixmap pixmap("arrow-up.png");
+                        QIcon ButtonIcon(pixmap);
+                        etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
+                    }
+                    etat_depart_table_langton->item(counter, counter2)->setFlags(etat_depart_table_langton->item(counter, counter2)->flags() ^ Qt::ItemIsEditable);
+                    n=n.nextSibling();
+                    e=n.toElement();
+                }
+            }
+
+
+            etat_depart_table_langton->setParent(page_langton);
+            layout_page_etat_1_langton->addWidget(etat_depart_table_langton);
+            etat_depart_table_langton->setObjectName(QString::fromUtf8("etat_depart_table_langton"));
+            connect(etat_depart_table_langton, SIGNAL(itemClicked(QTableWidgetItem*)), this, SLOT(cellActivation_Langton(QTableWidgetItem*)));//on connecte un click avec l'activation d'une cellule sur l'état de départ
+            stacked_etat_depart_langton->setCurrentIndex(1);
+            Simulation_langton->setEnabled(true);
+            enregistrer_autolangton=true;
+            actionEnregistrer->setEnabled(enregistrer_autolangton);
+
+            file.close();
+        }
+    }
+
 }
 
 void Fenetre_AutoDim2_Langton::onActionEnregistrer()
@@ -1770,6 +2051,16 @@ void Fenetre_AutoDim2_Langton::onActionImporter()
         emit onActionImporter_Langton();
     }
 }
+
+
+/*!
+*  \brief Méthode de génération aléatoire d'un état de départ de la Fourmi de Langton.
+*
+*  Méthode permettant de définir le comportement du générateur aléatoire pour les automates de la Fourmi de Langton :
+* on place une fourmi sur une cellule choisie pseudo-aléatoirement.
+* Sa direction est aussi choisie pseudo-aléatoirement
+*
+*/
 
 void Fenetre_AutoDim2_Langton::Gen_aleatoire_langton()
 {
