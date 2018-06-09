@@ -14,6 +14,12 @@
 #include <vector>
 #include <iostream>
 
+
+/**
+* La classe IndexException permet de gérer les exceptions liées aux index.
+*
+* \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+*/
 class IndexException {
 public:
     IndexException(const std::string& message) :info(message) {}
@@ -22,20 +28,45 @@ private:
     std::string info;
 };
 
+
+/**
+* \brief La classe abstraite Index généralise les IndexTab1D et les IndexTab2D afin de pouvoir utiliser le polymorphisme.
+*
+* \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+*/
 class Index
-//classe abstraite permettant le polymorphisme des index
 {
 public:
     virtual unsigned int getIndex() const = 0;
     virtual void setIndex(int iAbsolu)= 0;
 };
 
-
+/**
+* \brief Classe qui permet d'accéder aux éléments d'un Etat1D en simplifiant les opérations.
+*
+* Permet notamment d'avoir des index toriques, si on veut accéder à la cellule d'index -1 de l'état, on va accéder au dernier élément de l'état et inversement.
+*
+* \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+*/
 class IndexTab1D : public Index
 //permet d'accéder aux éléments d'un tableau1D en simplifiant les opérations sur les index (gère les index négatifs)
 {
 private:
+    /**
+    * \brief Valeur de l'index.
+    *
+    * Les opérations sont réalisées de manière à ce que i appartiennent toujours à l'intervalle discète [0,taillTab-1].
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
     int i;
+    /**
+    * \brief Taille du tableau pour lequel on va utiliser cet index.
+    *
+    * Les opérations sont réalisées de manière à ce que i appartiennent toujours à l'intervalle discète [0,taillTab-1].
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
     unsigned int tailleTab;
 public:
     //constructeurs
@@ -67,8 +98,14 @@ public:
 
 std::ostream& operator<<(std::ostream& f, const IndexTab1D& i);
 
+/**
+* \brief Classe qui permet d'accéder aux éléments d'un Etat2D en simplifiant les opérations.
+*
+* Permet notamment d'avoir des index toriques et d'additionner deux index2D.
+*
+* \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+*/
 class IndexTab2D : public Index
-//permet d'accéder aux éléments d'un tableau2D en simplifiant les opérations sur les index
 {
 private:
     IndexTab1D i;
@@ -77,6 +114,16 @@ private:
 public:
     //constructeurs
     IndexTab2D(const IndexTab2D& index):i(index.getIndexI()), j(index.getIndexJ()),tailleTab(index.getTailleTab()) {}
+    /**
+    * \brief Constructeur d'un Index2D pour un tableau 2D.
+    *
+    * @param i_ ordonnée
+    * @param j_ abscisse
+    * @param tailleTabI ordonnée maximum +1
+    * @param tailleTabJ abscisse maximum +1
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
     IndexTab2D(int i_, int j_, unsigned int tailleTabI, unsigned int tailleTabJ):i(i_,tailleTabI),j(j_,tailleTabJ),tailleTab(tailleTabI*tailleTabJ){}
     //getter/setter
     IndexTab1D getIndexI() const {return i;}
