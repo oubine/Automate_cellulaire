@@ -22,6 +22,7 @@
 
 /**
 * La classe AutomateException permet de gérer les exceptions liées aux automates.
+*
 * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
 */
 class AutomateException {
@@ -43,7 +44,7 @@ en utilisant - la méthode setMotif et le constructeur Automate(regle)
 /**
 * \brief La classe Automate est abstraite, elle généralise les Automate1D et Automate2D.
 *
-* Cette classe contient deux informations des 4-uplet que sont les automates cellulaires : la règle locale de transition et le voisinage des cellules.
+* Cette classe contient trois informations des 4-uplet que sont les automates cellulaires : la règle locale de transition, l'alphabet et le voisinage des cellules.
 * Les attributs sont protected et non private afin que les classes filles puissent accéder plus rapidement aux attributs (les getter étaient lents).
 * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
 */
@@ -98,6 +99,16 @@ protected:
     */
     unsigned int *valVoisinage;
 
+
+    /**
+    * \brief La valeur max de l'alphabet de l'automate.
+    *
+    * L'alphabet de l'automate est l'intervalle discrète [0,valMax].
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
+    unsigned int valMax;
+
 public:
     //constructeurs / destructeurs
     /**
@@ -119,9 +130,13 @@ public:
     * (la \f$ k^{eme} \f$ decimale de \f$ n \f$ écrit en base \f$ | Q | \f$ représente la \f$ k^{eme} \f$ cellule du voisinage)
     *
     * @param[in] motif Motif du voisinage sous la forme d'un vector d'index (un index 1D est un vector<int> à une case, un index2D un vector<int> à deux cases représentant abscisse et ordonnée).
+    *
+    * @param[in] valMaxAlphabet L'alphabet de l'automate est l'intervalle discrète [0,valMaxAlphabet]
+    *
     * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
     */
-    Automate(std::vector<unsigned int> regle,std::vector<std::vector<int>> motif) : regleTransition(regle), motif(motif), valVoisinage(new unsigned int[motif.size()]){}
+    Automate(std::vector<unsigned int> regle,std::vector<std::vector<int>> motif, unsigned int valMaxAlphabet):
+        regleTransition(regle), motif(motif), valVoisinage(new unsigned int[motif.size()]),valMax(valMaxAlphabet){}
 
 
     Automate(const Automate& a);
@@ -153,6 +168,7 @@ public:
     unsigned int* getVoisinage() {return valVoisinage;}
     unsigned int nbVoisins() {return motif.size();}
     std::vector<unsigned int> getRegleTransition() const {return regleTransition;}
+    unsigned int getValMax() const {return valMax;}
 
 };
 

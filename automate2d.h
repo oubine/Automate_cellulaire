@@ -23,7 +23,8 @@
 class Automate2D : public Automate
 {
 public:
-    Automate2D(std::vector<unsigned int> regleTransition, std::vector<std::vector<int>> motif):Automate(regleTransition,motif){}
+    Automate2D(std::vector<unsigned int> regleTransition, std::vector<std::vector<int>> motif, unsigned int valMaxAlphabet):
+        Automate(regleTransition,motif,valMaxAlphabet){}
     void appliquerTransition(const Etat& dep, Etat& dest) final;
 };
 
@@ -37,18 +38,19 @@ public:
      *
      * Le constructeur d'une variante du jeu de la vie accepte une règle sous la forme d'un vector de short int
      * qui prennent leur valeur dans l'intervalle [0,2] où 0 = mort, 1 = pas d'effet et 2 = naissance et où l'index
-     * du short int représente le nombre de voisins
+     * du short int représente le nombre de voisins en vie
      * exemple avec le règle du jeu de la vie classique : vector(0,0,1,2,0,0,0,0,0)
      *                                     nb de voisins en vie  0 1 2 3 4 5 6 7 8
      */
-    VarianteJeuDeLaVie(std::vector<short int> regleNaissMort):Automate2D(fromRegleNaissMortToRegleTransition(regleNaissMort),VarianteJeuDeLaVie::getMotifElementaire()){}
+    VarianteJeuDeLaVie(std::vector<short int> regleNaissMort):
+        Automate2D(fromRegleNaissMortToRegleTransition(regleNaissMort),VarianteJeuDeLaVie::getMotifElementaire(),1){}
     static std::vector<std::vector<int>> getMotifElementaire();
 };
 
 class FourmiLangton : public Automate2D
 {
 public:
-    FourmiLangton():Automate2D(FourmiLangton::getRegle(),FourmiLangton::getMotif()){}
+    FourmiLangton():Automate2D(FourmiLangton::getRegle(),FourmiLangton::getMotif(),9){}
     static std::vector<std::vector<int>> getMotif();
     static std::vector<unsigned int> getRegle();
 };

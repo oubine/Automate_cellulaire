@@ -39,14 +39,45 @@ private:
 */
 class Etat
 {
-protected:
-    unsigned int taille;//c'est la taille du côté du tableau représentant un état de l'automate
+private:
+    /**
+    * \brief L'attribut taille est le nombre de cellules dans un côté du tableau contenant les valuations.
+    *
+    * Pour avoir la taille totale du tableau, utiliser la méthode size().
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
+    unsigned int taille;
+
+    /**
+    * \brief La dimension du réseau.
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
     const unsigned short int dimension;
+
+    /**
+    * \brief Le tableau contenant les valuations des chaque cellule de la région du réseau.
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
     unsigned int* valeur;
+
+    /**
+    * \brief La valeur max de l'alphabet dans lequel les cellules prennent leur valeur.
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
     unsigned int valMax; // les cellules de l'état prennent leur valeur dans l'intervalle [0,valMax]
 public:
 
-    //Etat(const unsigned short int dim):taille(0),dimension(dim),valeur(nullptr){}
+    /**
+    * @param taille La taille du côté de la région du réseau \f$ Z^{dim}\f$ considérée. Pour un Etat1D la taille de l'état, pour un Etat2D la taille du côté de la grille.
+    * @param dim La dimension de l'état.
+    * @param valMax La valeur max de l'alphabet de l'état.
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
     Etat(unsigned int taille, unsigned short int dim, unsigned int valMax):taille(taille),dimension(dim),valeur(new unsigned int [(int)(pow(taille,dim))]()),valMax(valMax){}
     virtual ~Etat() { delete[] valeur; }
     Etat(const Etat& e): taille(e.taille), dimension(e.dimension), valeur(new unsigned int[(int)(pow(e.taille,e.dimension))]),valMax(e.valMax)
@@ -61,19 +92,51 @@ public:
     void setCellule(const Index& i, unsigned int val) {this->setCellule(i.getIndex(),val);}
     virtual unsigned int getCellule(unsigned int index) const;
     unsigned int getCellule(const Index& i) const { return this->getCellule(i.getIndex());}
+    /**
+    * \brief Le nombre total de cellules dans la région considérée.
+    *
+    * \f$ taille^{dimension} \f$
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
     unsigned int size() const {return (unsigned int) pow(taille,dimension);}
 };
 
-
+/**
+* \brief La classe des états à une dimension.
+*
+* Appelle simplement le constructeur de Etat avec la bonne dimension.
+*
+* \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+*/
 class Etat1D : public Etat
 {
 public:
+    /**
+    * @param taille La taille du côté de la région du réseau \f$ Z^{dim}\f$ considérée. Pour un Etat1D la taille de l'état, pour un Etat2D la taille du côté de la grille.
+    * @param valMax La valeur max de l'alphabet de l'état.
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
     Etat1D(unsigned int taille, unsigned int valMax): Etat(taille,1,valMax){}
 };
 
+/**
+* \brief La classe des états à deux dimensions.
+*
+* Appelle simplement le constructeur de Etat avec la bonne dimension.
+*
+* \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+*/
 class Etat2D : public Etat
 {
 public:
+    /**
+    * @param taille La taille du côté de la région du réseau \f$ Z^{dim}\f$ considérée. Pour un Etat1D la taille de l'état, pour un Etat2D la taille du côté de la grille.
+    * @param valMax La valeur max de l'alphabet de l'état.
+    *
+    * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
+    */
     Etat2D(unsigned int taille, unsigned int valMax): Etat(taille,2,valMax){}
 };
 

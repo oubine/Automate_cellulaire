@@ -15,7 +15,8 @@
 * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
 */
 void Automate1D::appliquerTransition(const Etat& dep, Etat& dest) {
-    if (this->getMotif().size() == 0) throw AutomateException("Motif non défini");
+    if (motif.size() == 0) throw AutomateException("Motif non défini");
+    if (valMax != dep.getValMax()) throw AutomateException("appel de appliquerTransition sur un état ayant un alphabet différent de celui accepté par l'automate.");
     if (dep.getTaille() != dest.size()) dest = dep;
     auto iExamine = IndexTab1D(0,dep.getTaille());
     for (unsigned int i = 0; i < dep.getTaille(); i++)
@@ -89,7 +90,7 @@ std::string vectorToRegleStr(const std::vector<unsigned int> &regle)
 *
 * \author Oubine Perrin, Guillaume Sabbagh, Adrien Thuau
 */
-AutomateElementaire::AutomateElementaire(unsigned short int num) : Automate1D(regleStrToVector(NumToNumBit(num)),AutomateElementaire::getMotifElementaire()),numeroRegleTransition(num)
+AutomateElementaire::AutomateElementaire(unsigned short int num) : Automate1D(regleStrToVector(NumToNumBit(num)),AutomateElementaire::getMotifElementaire(),1),numeroRegleTransition(num)
 {
     std::vector<unsigned int> temp = this->regleTransition;
     for(unsigned int i = 0; i < temp.size(); ++i)
@@ -98,7 +99,7 @@ AutomateElementaire::AutomateElementaire(unsigned short int num) : Automate1D(re
     }
     regleTransition = temp;
 }
-AutomateElementaire::AutomateElementaire(const std::string& num) : Automate1D(regleStrToVector(NumToNumBit(NumBitToNum(num))),AutomateElementaire::getMotifElementaire()), numeroRegleTransition(NumBitToNum(num))
+AutomateElementaire::AutomateElementaire(const std::string& num) : Automate1D(regleStrToVector(NumToNumBit(NumBitToNum(num))),AutomateElementaire::getMotifElementaire(),1), numeroRegleTransition(NumBitToNum(num))
 {
     std::vector<unsigned int> temp = this->regleTransition;
     for(unsigned int i = 0; i < temp.size(); ++i)

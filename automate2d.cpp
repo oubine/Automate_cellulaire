@@ -21,6 +21,7 @@ void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
     auto start = std::chrono::high_resolution_clock::now();
     unsigned int etat;
     if (motif.size() == 0) throw AutomateException("Motif non défini");
+    if (valMax != dep.getValMax()) throw AutomateException("appel de appliquerTransition sur un état ayant un alphabet différent de celui accepté par l'automate.");
     if (dep.getTaille() != dest.getTaille()) dest = dep;
     auto iExamine = IndexTab2D(0,0,dep.getTaille(),dep.getTaille());
 
@@ -44,7 +45,7 @@ void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
 *
 * La règle regleNaissMort est sous la forme d'un vector de short int
 * qui prennent leur valeur dans l'intervalle [0,2] où 0 = mort, 1 = pas d'effet et 2 = naissance
-*  et où l'index du short int représente le nombre de voisins
+*  et où l'index du short int représente le nombre de voisins en vie
 * exemple avec le règle du jeu de la vie classique : vector(0,0,1,2,0,0,0,0,0)
 *                                     nb de voisins en vie  0 1 2 3 4 5 6 7 8
 * On doit la transformer en une règle de transition qui à chaque
