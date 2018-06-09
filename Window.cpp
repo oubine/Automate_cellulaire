@@ -792,3 +792,4 @@ void Window_Dim2_Langton::onRazButtonClicked()
         this->launchSimulationAuto();
     }
 }
+

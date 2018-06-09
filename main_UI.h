@@ -115,6 +115,11 @@ protected:
 public:
     Fenetre_Principale(QMainWindow *MainWindow);
     virtual void Noms(QMainWindow *MainWindow);
+    virtual void readSettings(){}
+
+public slots:
+    virtual void writeSettings(){}
+
 
 private slots :
     virtual void onDimensionItemClicked(QListWidgetItem* item)=0;
@@ -226,7 +231,7 @@ protected slots :
  * Cette classe hérite de Fenetre_AutoDim1.
  * Elle implémente la configuration des règles, des générateurs et de l'état de départ du Jeu de la Vie.
  */
-class Fenetre_AutoDim2_GOL : protected Fenetre_AutoDim1
+class Fenetre_AutoDim2_GOL : public Fenetre_AutoDim1
 {
     Q_OBJECT
 protected:
@@ -319,7 +324,7 @@ protected slots :
  * La partie correspondant au réglage des règles a été supprimée car l'automate n'en n'a pas besoin : les règles sont uniques pour cette implémentation.
  */
 
-class Fenetre_AutoDim2_Langton : protected Fenetre_AutoDim2_GOL
+class Fenetre_AutoDim2_Langton : public Fenetre_AutoDim2_GOL
 {
     Q_OBJECT
 
@@ -381,6 +386,9 @@ public:
     void Noms_Langton(QMainWindow *MainWindow);
     Fenetre_AutoDim2_Langton(QMainWindow *MainWindow);
     void Gen_aleatoire_langton();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
+    void readSettings();
+    void writeSettings();
+
 protected slots :
     void onDimensionItemClicked(QListWidgetItem*);
     void onGenerateurButtonClicked_Langton();

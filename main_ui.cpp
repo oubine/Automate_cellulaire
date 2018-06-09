@@ -1652,6 +1652,7 @@ Fenetre_AutoDim2_Langton::Fenetre_AutoDim2_Langton(QMainWindow *MainWindow):Fene
     mort[6]->setChecked(true);
     mort[7]->setChecked(true);
     Simulation_langton->setEnabled(false);
+
     QMetaObject::connectSlotsByName(MainWindow);
 
 }
@@ -2068,7 +2069,7 @@ void Fenetre_AutoDim2_Langton::Gen_aleatoire_langton()
     unsigned int fourmi = rand()%(dimension_langton*dimension_langton);
     int direction = rand()%4;
     QString directions[4]={tr("right"), tr("down"), tr("left"), tr("top")};
-    QString logo[4]={tr(":/arrow-right.png"), tr(":/arrow-down.png"), tr(":/arrow-left.png"), tr(":/arrow-top.png")};
+    QString logo[4]={tr(":/arrow-right.png"), tr(":/arrow-down.png"), tr(":/arrow-left.png"), tr(":/arrow-up.png")};
     for(unsigned int counter = 0; counter < dimension_langton; ++counter) {
         for(unsigned int counter2=0; counter2<dimension_langton; ++counter2){
             if(counter*dimension_langton+counter2==fourmi)
@@ -2085,4 +2086,32 @@ void Fenetre_AutoDim2_Langton::Gen_aleatoire_langton()
     enregistrer_autolangton=true;
     actionEnregistrer->setEnabled(enregistrer_autolangton);
 }
+
+void Fenetre_AutoDim2_Langton::writeSettings()
+{
+    QSettings settings("AutoCell", "UTC");
+
+    settings.beginGroup("MainWindow");
+
+    settings.beginGroup("General");
+    settings.setValue("automate", stacked_settings->currentIndex());
+    settings.setValue("affichage", aff_manuel->isChecked());
+    settings.endGroup();
+
+    settings.endGroup();
+}
+void Fenetre_AutoDim2_Langton::readSettings()
+{
+    QSettings settings("AutoCell", "UTC");
+
+    settings.beginGroup("MainWindow");
+
+    settings.beginGroup("General");
+    select_type_automate->setCurrentItem(select_type_automate->item(settings.value("automate").toInt()));
+    aff_manuel->setChecked(settings.value("affichage").toBool());
+    settings.endGroup();
+
+    settings.endGroup();
+}
+
 
