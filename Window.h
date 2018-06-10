@@ -28,8 +28,10 @@
 #include <iostream>
 #include "automate2d.h"
 
-class Window_Dim1 : public QWidget{
-Q_OBJECT
+class Window:public QWidget{
+
+    Q_OBJECT
+protected:
     QWidget *centralwidget;
     QVBoxLayout* couche;
     QHBoxLayout* layout_boutons;
@@ -38,9 +40,7 @@ Q_OBJECT
 
     QTableWidget* etats;
     unsigned int dimension;
-    QLabel  *numero;
     QTableWidget* depart;
-    int num_automate;
     unsigned int nb_transitions;
 
 
@@ -59,17 +59,40 @@ Q_OBJECT
 
 
 public:
-    explicit Window_Dim1(QWidget* parent = nullptr);
-    explicit Window_Dim1(QWidget* parent = nullptr, unsigned int taille=1, unsigned int transitions=1, int num=0, bool aff=1, unsigned int tps_aff=500);
+    Window(QWidget *parent,int dimension=20, int nb_transitions=20, bool aff=false, unsigned int temps=1, unsigned int taille=10, bool play=true):
+        QWidget(parent),dimension(dimension), nb_transitions(nb_transitions), affichage_manuel(aff), temps_affichage(temps), taille(taille), is_play_v(play),transition_courante(0){}
     int getDimension() const {return dimension;}
-    QLabel* getNumLabel() const {return numero;}
     QTableWidget* getDepart() const {return depart;}
-    int getNumAutomate() const {return num_automate;}
-    void setNumAutomate(int i){num_automate=i;}
     void setEtatDepart(QTableWidget* dep){depart=dep;}
     void setDimension(unsigned int i){dimension=i;}
     void setNbTransitions(unsigned int i){dimension=i;}
     void setAffichage(bool b){affichage_manuel=b;}
+
+signals:
+    void is_play();
+public slots:
+    virtual void launchSimulationAuto()=0;
+private slots :
+    virtual void onSuivantButtonClicked()=0;
+    virtual void onPlayButtonClicked()=0;
+    virtual void onPauseButtonClicked()=0;
+    virtual void onRazButtonClicked()=0;
+
+};
+
+class Window_Dim1 : public Window{
+
+    Q_OBJECT
+
+    QLabel  *numero;
+    int num_automate;
+
+public:
+    explicit Window_Dim1(QWidget *parent);
+    explicit Window_Dim1(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, int num=0, bool aff=1, unsigned int tps_aff=500);
+    QLabel* getNumLabel() const {return numero;}
+    int getNumAutomate() const {return num_automate;}
+    void setNumAutomate(int i){num_automate=i;}
 
 signals:
     void is_play();
@@ -83,32 +106,11 @@ private slots :
 
 };
 
-class Window_Dim2_GOL : public QWidget{
-Q_OBJECT
-    QWidget *centralwidget;
-    QVBoxLayout* couche;
-    QHBoxLayout* layout_boutons;
-    QVBoxLayout* layout_numero;
-    QGroupBox* boutons;
+class Window_Dim2_GOL : public Window{
 
-    QTableWidget* etats;
-    unsigned int dimension;
-    QTableWidget* depart;
-
-    unsigned int nb_transitions;
-    //temps
-    QPushButton* suivant;
-    QPushButton* play;
-    QPushButton* pause;
-    QPushButton* raz;
-    QLabel* transition;
-    bool affichage_manuel;
-    unsigned int temps_affichage;
-    unsigned int taille;
+    Q_OBJECT
     std::vector<short int> regle;
 
-    bool is_play_v;
-    unsigned int transition_courante;
     Etat2D e;
 
 
@@ -117,12 +119,6 @@ Q_OBJECT
 public:
     explicit Window_Dim2_GOL(QWidget* parent = nullptr);
     explicit Window_Dim2_GOL(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500, std::vector<short int> regle={0,0,1,2,0,0,0,0,0});
-    int getDimension() const {return dimension;}
-    QTableWidget* getDepart() const {return depart;}
-    void setEtatDepart(QTableWidget* dep){depart=dep;}
-    void setDimension(unsigned int i){dimension=i;}
-    void setNbTransitions(unsigned int i){dimension=i;}
-    void setAffichage(bool b){affichage_manuel=b;}
 
 signals:
     void is_play();
@@ -136,49 +132,18 @@ private slots :
 
 };
 
-class Window_Dim2_Langton : public QWidget{
-Q_OBJECT
-    QWidget *centralwidget;
-    QVBoxLayout* couche;
-    QHBoxLayout* layout_boutons;
-    QVBoxLayout* layout_numero;
-    QGroupBox* boutons;
+class Window_Dim2_Langton : public Window{
 
-    QTableWidget* etats;
-    unsigned int dimension;
-    QTableWidget* depart;
-
-    unsigned int nb_transitions;
-    //temps
-    QPushButton* suivant;
-    QPushButton* play;
-    QPushButton* pause;
-    QPushButton* raz;
-
-    QLabel* transition;
-    bool affichage_manuel;
-    unsigned int temps_affichage;
+    Q_OBJECT
 
     std::vector<short int> regle;
-    unsigned int taille;
     Etat2D e;
-    bool is_play_v;
-
-
-    unsigned int transition_courante;
-
 
 
 
 public:
     explicit Window_Dim2_Langton(QWidget* parent = nullptr);
     explicit Window_Dim2_Langton(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500);
-    int getDimension() const {return dimension;}
-    QTableWidget* getDepart() const {return depart;}
-    void setEtatDepart(QTableWidget* dep){depart=dep;}
-    void setDimension(unsigned int i){dimension=i;}
-    void setNbTransitions(unsigned int i){dimension=i;}
-    void setAffichage(bool b){affichage_manuel=b;}
 
 signals:
     void is_play();

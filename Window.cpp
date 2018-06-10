@@ -17,7 +17,7 @@
 #include "main_UI.h"
 #include <iostream>
 
-Window_Dim1::Window_Dim1(QWidget *parent) : QWidget(parent),taille(10) {
+Window_Dim1::Window_Dim1(QWidget *parent) : Window(parent) {
     // Question 3
     //numero = new QLabel(QString::number(num_automate),this);
     depart = new QTableWidget(1, dimension);
@@ -54,7 +54,7 @@ Window_Dim1::Window_Dim1(QWidget *parent) : QWidget(parent),taille(10) {
 }
 
 Window_Dim1::Window_Dim1(QWidget *parent, unsigned int dim, unsigned int transitions, int num, bool aff, unsigned int tps_aff) :
-    QWidget(parent), dimension(dim), num_automate(num), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(10), is_play_v(1), transition_courante(0) {
+    Window(parent, dim, transitions, aff, tps_aff),  num_automate(num){
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
@@ -213,7 +213,7 @@ void Window_Dim1::launchSimulationAuto() {//méthode pour lancer la simulation
     Simulateur sim(a, e, dimension);
     // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique
     QEventLoop loop2;
-    connect(this,SIGNAL(is_play()), &loop2, SLOT(quit()));
+    QObject::connect(this,SIGNAL(is_play()), &loop2, SLOT(quit()));
 
     for(unsigned int step = 0; step < nb_transitions; ++step) {
         if(!is_play_v)
@@ -269,7 +269,7 @@ void Window_Dim1::onRazButtonClicked()
     }
 }
 
-Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent) : QWidget(parent),taille(10),e(Etat2D(dimension,1)) {
+Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent) : Window(parent),e(Etat2D(dimension,1)) {
     // Question 3
     //numero = new QLabel(QString::number(num_automate),this);
     depart = new QTableWidget(dimension, dimension);
@@ -308,8 +308,8 @@ Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent) : QWidget(parent),taille(10),e
 }
 
 Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff, std::vector<short int> regle) :
-    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(6),regle(regle),is_play_v(1), transition_courante(0), e(Etat2D(dimension,1)) {
-    // Question 3
+    Window(parent,dim,transitions,aff,tps_aff,6,true),regle(regle), e(Etat2D(dimension,1)) {
+
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
     layout_numero=new QVBoxLayout;
@@ -539,7 +539,7 @@ void Window_Dim2_GOL::onRazButtonClicked()
 }
 
 Window_Dim2_Langton::Window_Dim2_Langton(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff) :
-    QWidget(parent), dimension(dim), nb_transitions(transitions), affichage_manuel(aff), temps_affichage(tps_aff),taille(6),e(Etat2D(dimension,9)), is_play_v(1), transition_courante(0){
+   Window(parent,dim, transitions,aff,tps_aff,6,1),e(Etat2D(dimension,9)){
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
@@ -663,6 +663,8 @@ void Window_Dim2_Langton::onSuivantButtonClicked()
             }
         }
     }
+
+    transition_courante++;
 
 
     if(transition_courante <= nb_transitions){
@@ -788,7 +790,6 @@ void Window_Dim2_Langton::onRazButtonClicked()
     }
     if(!affichage_manuel)
     {
-        transition_courante=0;
         this->launchSimulationAuto();
     }
 }
