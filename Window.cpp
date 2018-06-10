@@ -17,7 +17,7 @@
 #include "main_UI.h"
 #include <iostream>
 
-Window_Dim1::Window_Dim1(QWidget *parent) : Window(parent) {
+Window_Simulation_Dim1::Window_Simulation_Dim1(QWidget *parent) : Window_Simulation(parent) {
     // Question 3
     //numero = new QLabel(QString::number(num_automate),this);
     depart = new QTableWidget(1, dimension);
@@ -53,8 +53,8 @@ Window_Dim1::Window_Dim1(QWidget *parent) : Window(parent) {
     setLayout(couche);//on définit l'environnement global
 }
 
-Window_Dim1::Window_Dim1(QWidget *parent, unsigned int dim, unsigned int transitions, int num, bool aff, unsigned int tps_aff) :
-    Window(parent, dim, transitions, aff, tps_aff),  num_automate(num){
+Window_Simulation_Dim1::Window_Simulation_Dim1(QWidget *parent, unsigned int dim, unsigned int transitions, int num, bool aff, unsigned int tps_aff) :
+    Window_Simulation(parent, dim, transitions, aff, tps_aff),  num_automate(num){
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
@@ -155,7 +155,7 @@ Window_Dim1::Window_Dim1(QWidget *parent, unsigned int dim, unsigned int transit
 //Ici, on entre dans la partie logique pour faire fonctionner l'automate
 
 
-void Window_Dim1::onSuivantButtonClicked()
+void Window_Simulation_Dim1::onSuivantButtonClicked()
 {
     // création de l'état
     Etat1D e(dimension,1);
@@ -193,7 +193,7 @@ void Window_Dim1::onSuivantButtonClicked()
     }
     }
 
-void Window_Dim1::launchSimulationAuto() {//méthode pour lancer la simulation
+void Window_Simulation_Dim1::launchSimulationAuto() {//méthode pour lancer la simulation
     //on doit appuyer sur play pour lancer l'éxécution
     //QEventLoop loop;
     //connect(this,SIGNAL(is_play()), &loop, SLOT(quit()));
@@ -240,18 +240,18 @@ void Window_Dim1::launchSimulationAuto() {//méthode pour lancer la simulation
     }
 }
 
-void Window_Dim1::onPlayButtonClicked()
+void Window_Simulation_Dim1::onPlayButtonClicked()
 {
     is_play_v=true;
     emit is_play();
 }
 
-void Window_Dim1::onPauseButtonClicked()
+void Window_Simulation_Dim1::onPauseButtonClicked()
 {
     is_play_v=false;
 }
 
-void Window_Dim1::onRazButtonClicked()
+void Window_Simulation_Dim1::onRazButtonClicked()
 {
     is_play_v=false;
     transition_courante=0;
@@ -269,7 +269,7 @@ void Window_Dim1::onRazButtonClicked()
     }
 }
 
-Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent) : Window(parent),e(Etat2D(dimension,1)) {
+Window_Simulation_Dim2_GOL::Window_Simulation_Dim2_GOL(QWidget *parent) : Window_Simulation(parent),e(Etat2D(dimension,1)) {
     // Question 3
     //numero = new QLabel(QString::number(num_automate),this);
     depart = new QTableWidget(dimension, dimension);
@@ -307,8 +307,8 @@ Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent) : Window(parent),e(Etat2D(dime
     setLayout(couche);//on définit l'environnement global
 }
 
-Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff, std::vector<short int> regle) :
-    Window(parent,dim,transitions,aff,tps_aff,6,true),regle(regle), e(Etat2D(dimension,1)) {
+Window_Simulation_Dim2_GOL::Window_Simulation_Dim2_GOL(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff, std::vector<short int> regle) :
+    Window_Simulation(parent,dim,transitions,aff,tps_aff,6,true),regle(regle), e(Etat2D(dimension,1)) {
 
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
@@ -407,7 +407,7 @@ Window_Dim2_GOL::Window_Dim2_GOL(QWidget *parent, unsigned int dim, unsigned int
 
 //Ici, on entre dans la partie logique pour faire fonctionner l'automate
 
-void Window_Dim2_GOL::onSuivantButtonClicked()
+void Window_Simulation_Dim2_GOL::onSuivantButtonClicked()
 {
     // création de l'état
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
@@ -448,7 +448,7 @@ void Window_Dim2_GOL::onSuivantButtonClicked()
     }
     }
 
-void Window_Dim2_GOL::launchSimulationAuto() {//méthode pour lancer la simulation
+void Window_Simulation_Dim2_GOL::launchSimulationAuto() {//méthode pour lancer la simulation
     //on doit appuyer sur play pour lancer l'éxécution
     //QEventLoop loop;
     //connect(this,SIGNAL(is_play()), &loop, SLOT(quit()));
@@ -508,18 +508,18 @@ void Window_Dim2_GOL::launchSimulationAuto() {//méthode pour lancer la simulati
     }
 }
 
-void Window_Dim2_GOL::onPlayButtonClicked()
+void Window_Simulation_Dim2_GOL::onPlayButtonClicked()
 {
     is_play_v=true;
     emit is_play();
 }
 
-void Window_Dim2_GOL::onPauseButtonClicked()
+void Window_Simulation_Dim2_GOL::onPauseButtonClicked()
 {
     is_play_v=false;
 }
 
-void Window_Dim2_GOL::onRazButtonClicked()
+void Window_Simulation_Dim2_GOL::onRazButtonClicked()
 {
     is_play_v=false;
     transition_courante=0;
@@ -538,8 +538,8 @@ void Window_Dim2_GOL::onRazButtonClicked()
     }
 }
 
-Window_Dim2_Langton::Window_Dim2_Langton(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff) :
-   Window(parent,dim, transitions,aff,tps_aff,6,1),e(Etat2D(dimension,9)){
+Window_Simulation_Dim2_Langton::Window_Simulation_Dim2_Langton(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff) :
+   Window_Simulation(parent,dim, transitions,aff,tps_aff,6,1),e(Etat2D(dimension,9)){
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
@@ -641,7 +641,7 @@ Window_Dim2_Langton::Window_Dim2_Langton(QWidget *parent, unsigned int dim, unsi
 
 //Ici, on entre dans la partie logique pour faire fonctionner l'automate
 
-void Window_Dim2_Langton::onSuivantButtonClicked()
+void Window_Simulation_Dim2_Langton::onSuivantButtonClicked()
 {
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
     if(transition_courante==0)
@@ -692,7 +692,7 @@ void Window_Dim2_Langton::onSuivantButtonClicked()
 
 }
 
-void Window_Dim2_Langton::launchSimulationAuto() {//méthode pour lancer la simulation
+void Window_Simulation_Dim2_Langton::launchSimulationAuto() {//méthode pour lancer la simulation
     //on doit appuyer sur play pour lancer l'éxécution
     //QEventLoop loop;
     //connect(this,SIGNAL(is_play()), &loop, SLOT(quit()));
@@ -764,18 +764,18 @@ void Window_Dim2_Langton::launchSimulationAuto() {//méthode pour lancer la simu
     }
 }
 
-void Window_Dim2_Langton::onPlayButtonClicked()
+void Window_Simulation_Dim2_Langton::onPlayButtonClicked()
 {
     is_play_v=true;
     emit is_play();
 }
 
-void Window_Dim2_Langton::onPauseButtonClicked()
+void Window_Simulation_Dim2_Langton::onPauseButtonClicked()
 {
     is_play_v=false;
 }
 
-void Window_Dim2_Langton::onRazButtonClicked()
+void Window_Simulation_Dim2_Langton::onRazButtonClicked()
 {
     is_play_v=false;
     transition_courante=0;

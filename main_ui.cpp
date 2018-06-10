@@ -520,12 +520,12 @@ void Fenetre_AutoDim1::onGenerateurButtonClicked_dim1()
  */
 void Fenetre_AutoDim1::onSimulationButtonClicked_dim1()
 {
-        new_Window_dim1 = new Window_Dim1(nullptr, dimension, nb_transitions->value(), num->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
-        new_Window_dim1->setEtatDepart(etat_depart_table);
-        new_Window_dim1->show();
+        new_Window_Simulation_Dim1 = new Window_Simulation_Dim1(nullptr, dimension, nb_transitions->value(), num->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
+        new_Window_Simulation_Dim1->setEtatDepart(etat_depart_table);
+        new_Window_Simulation_Dim1->show();
         if(!aff_manuel->isChecked())
         {
-            new_Window_dim1->launchSimulationAuto();
+            new_Window_Simulation_Dim1->launchSimulationAuto();
         }
 }
 
@@ -1107,14 +1107,14 @@ void Fenetre_AutoDim2_GOL::onSimulationButtonClicked_dim2()
             tab_regle[i]=1+vie[i]->isChecked();
             tab_regle[i]-=mort[i]->isChecked();
         }
-        new_Window_dim2 = new Window_Dim2_GOL(nullptr, dimension_dim2, nb_transitions_dim2->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000,
+        new_Window_Simulation_Dim2 = new Window_Simulation_Dim2_GOL(nullptr, dimension_dim2, nb_transitions_dim2->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000,
                                           std::vector<short int>(tab_regle, tab_regle + sizeof(tab_regle) / sizeof tab_regle[0]));
-        new_Window_dim2->setEtatDepart(etat_depart_table_dim2);
-        //new_Window_dim2->setAttribute(Qt::WA_DeleteOnClose);
-        new_Window_dim2->show();
+        new_Window_Simulation_Dim2->setEtatDepart(etat_depart_table_dim2);
+        //new_Window_Simulation_Dim2->setAttribute(Qt::WA_DeleteOnClose);
+        new_Window_Simulation_Dim2->show();
         if(!aff_manuel->isChecked())
         {
-            new_Window_dim2->launchSimulationAuto();
+            new_Window_Simulation_Dim2->launchSimulationAuto();
         }
 }
 
@@ -1722,7 +1722,7 @@ void Fenetre_AutoDim2_Langton::onDimensionItemClicked(QListWidgetItem* item)
 
 void Fenetre_AutoDim2_Langton::onSimulationButtonClicked_Langton()
 {
-        new_Window_langton = new Window_Dim2_Langton(nullptr, dimension_langton, nb_transitions_langton->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
+        new_Window_langton = new Window_Simulation_Dim2_Langton(nullptr, dimension_langton, nb_transitions_langton->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000);
         new_Window_langton->setEtatDepart(etat_depart_table_langton);
         new_Window_langton->show();
         if(!aff_manuel->isChecked())
@@ -2087,6 +2087,12 @@ void Fenetre_AutoDim2_Langton::Gen_aleatoire_langton()
     actionEnregistrer->setEnabled(enregistrer_autolangton);
 }
 
+/*!
+*  \brief Méthode de sauvegarde de l'état de l'interface à sa fermeture
+*
+*  Méthode permettant de sauvegarder la page courante de l'automate ainsi que le type d'affichage à la fermeture du programme grâce à la classe QSettings.
+*/
+
 void Fenetre_AutoDim2_Langton::writeSettings()
 {
     QSettings settings("AutoCell", "UTC");
@@ -2100,6 +2106,12 @@ void Fenetre_AutoDim2_Langton::writeSettings()
 
     settings.endGroup();
 }
+
+/*!
+*  \brief Méthode de restaurer de l'état de l'interface à son ouverture
+*
+*  Méthode permettant de restaurer la page courante de l'automate ainsi que le type d'affichage à l'ouverture du programme grâce à la classe QSettings.
+*/
 void Fenetre_AutoDim2_Langton::readSettings()
 {
     QSettings settings("AutoCell", "UTC");

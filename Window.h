@@ -9,8 +9,8 @@
  *
  */
 
-#ifndef WINDOW_DIM1_H
-#define WINDOW_DIM1_H
+#ifndef Window_Simulation_Dim1_H
+#define Window_Simulation_Dim1_H
 
 #include <QWidget>
 #include <QSpinBox>
@@ -28,7 +28,7 @@
 #include <iostream>
 #include "automate2d.h"
 
-class Window:public QWidget{
+class Window_Simulation:public QWidget{
 
     Q_OBJECT
 protected:
@@ -59,7 +59,7 @@ protected:
 
 
 public:
-    Window(QWidget *parent,int dimension=20, int nb_transitions=20, bool aff=false, unsigned int temps=1, unsigned int taille=10, bool play=true):
+    Window_Simulation(QWidget *parent,int dimension=20, int nb_transitions=20, bool aff=false, unsigned int temps=1, unsigned int taille=10, bool play=true):
         QWidget(parent),dimension(dimension), nb_transitions(nb_transitions), affichage_manuel(aff), temps_affichage(temps), taille(taille), is_play_v(play),transition_courante(0){}
     int getDimension() const {return dimension;}
     QTableWidget* getDepart() const {return depart;}
@@ -80,7 +80,7 @@ private slots :
 
 };
 
-class Window_Dim1 : public Window{
+class Window_Simulation_Dim1 : public Window_Simulation{
 
     Q_OBJECT
 
@@ -88,8 +88,8 @@ class Window_Dim1 : public Window{
     int num_automate;
 
 public:
-    explicit Window_Dim1(QWidget *parent);
-    explicit Window_Dim1(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, int num=0, bool aff=1, unsigned int tps_aff=500);
+    explicit Window_Simulation_Dim1(QWidget *parent);
+    explicit Window_Simulation_Dim1(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, int num=0, bool aff=1, unsigned int tps_aff=500);
     QLabel* getNumLabel() const {return numero;}
     int getNumAutomate() const {return num_automate;}
     void setNumAutomate(int i){num_automate=i;}
@@ -106,7 +106,7 @@ private slots :
 
 };
 
-class Window_Dim2_GOL : public Window{
+class Window_Simulation_Dim2_GOL : public Window_Simulation{
 
     Q_OBJECT
     std::vector<short int> regle;
@@ -117,8 +117,8 @@ class Window_Dim2_GOL : public Window{
 
 
 public:
-    explicit Window_Dim2_GOL(QWidget* parent = nullptr);
-    explicit Window_Dim2_GOL(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500, std::vector<short int> regle={0,0,1,2,0,0,0,0,0});
+    explicit Window_Simulation_Dim2_GOL(QWidget* parent = nullptr);
+    explicit Window_Simulation_Dim2_GOL(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500, std::vector<short int> regle={0,0,1,2,0,0,0,0,0});
 
 signals:
     void is_play();
@@ -132,7 +132,7 @@ private slots :
 
 };
 
-class Window_Dim2_Langton : public Window{
+class Window_Simulation_Dim2_Langton : public Window_Simulation{
 
     Q_OBJECT
 
@@ -142,8 +142,8 @@ class Window_Dim2_Langton : public Window{
 
 
 public:
-    explicit Window_Dim2_Langton(QWidget* parent = nullptr);
-    explicit Window_Dim2_Langton(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500);
+    explicit Window_Simulation_Dim2_Langton(QWidget* parent = nullptr);
+    explicit Window_Simulation_Dim2_Langton(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, bool aff=1, unsigned int tps_aff=500);
 
 signals:
     void is_play();
@@ -156,4 +156,4 @@ private slots :
     void onPauseButtonClicked();
 };
 
-#endif // WINDOW_DIM1_H
+#endif // Window_Simulation_Dim1_H

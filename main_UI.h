@@ -201,7 +201,7 @@ protected:
 
     /*!< Fenêtre de Simulation. */
 
-    Window_Dim1 *new_Window_dim1;
+    Window_Simulation_Dim1 *new_Window_Simulation_Dim1;
 public :
     Fenetre_AutoDim1(QMainWindow *MainWindow);
     void Gen_aleatoire();//on a choisi un remplissage aléatoire mais pas une taille aléatoire
@@ -295,7 +295,7 @@ protected:
 
     /*!< Fenêtre de Simulation. */
 
-    Window_Dim2_GOL* new_Window_dim2;
+    Window_Simulation_Dim2_GOL* new_Window_Simulation_Dim2;
 
 public:
     void Noms_dim2(QMainWindow *MainWindow);
@@ -380,7 +380,7 @@ protected:
 
     /*!< Fenêtre de Simulation. */
 
-    Window_Dim2_Langton* new_Window_langton;
+    Window_Simulation_Dim2_Langton* new_Window_langton;
 
 public:
     void Noms_Langton(QMainWindow *MainWindow);
