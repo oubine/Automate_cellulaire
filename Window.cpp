@@ -17,6 +17,14 @@
 #include "main_UI.h"
 #include <iostream>
 
+/*!
+*  \brief Constructeur de la classe Window_Simulation_Dim1
+*
+*  Constructeur avec un seul argument permettant d'instancier une fenêtre de simulation pour un automate à une dimension avec les paramètres par défaut.
+*
+*  \param parent : widget parent de la fenêtre (MainWindow, la fenêtre principale dans notre cas).
+*/
+
 Window_Simulation_Dim1::Window_Simulation_Dim1(QWidget *parent) : Window_Simulation(parent) {
     // Question 3
     //numero = new QLabel(QString::number(num_automate),this);
@@ -52,6 +60,14 @@ Window_Simulation_Dim1::Window_Simulation_Dim1(QWidget *parent) : Window_Simulat
     couche->addWidget(etats);//on ajoute le tableau à l interface
     setLayout(couche);//on définit l'environnement global
 }
+
+/*!
+*  \brief Constructeur de la classe Window_Simulation_Dim1
+*
+*  Constructeur avec tous les arguments de configuration permettant d'instancier une fenêtre de simulation pour un automate à une dimension avec des paramètres choisis par l'utilisateur dans la fenêtre principale.
+*
+*  \param parent : widget parent de la fenêtre (MainWindow, la fenêtre principale dans notre cas), dim (dimension de l'état de départ), transitions (nombre de transitions), num (numéro de l'automate), aff (type d'affichage), tps_aff (temps éventuel entre les transitions).
+*/
 
 Window_Simulation_Dim1::Window_Simulation_Dim1(QWidget *parent, unsigned int dim, unsigned int transitions, int num, bool aff, unsigned int tps_aff) :
     Window_Simulation(parent, dim, transitions, aff, tps_aff),  num_automate(num){
@@ -155,6 +171,13 @@ Window_Simulation_Dim1::Window_Simulation_Dim1(QWidget *parent, unsigned int dim
 //Ici, on entre dans la partie logique pour faire fonctionner l'automate
 
 
+/*!
+*  \brief Slot de transition manuelle de la classe Window_Simulation_Dim1
+*
+*  Slot qui gère la transition manuelle entre deux générations quand on appuie sur le bouton next pour les automates à une dimension.
+*  Les générations s'affichent les unes sous les autres en appelant la méthode AppliquerTransition et en utilisant la classe Simulateur.
+*/
+
 void Window_Simulation_Dim1::onSuivantButtonClicked()
 {
     // création de l'état
@@ -192,6 +215,14 @@ void Window_Simulation_Dim1::onSuivantButtonClicked()
         transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
     }
     }
+
+/*!
+*  \brief Slot de transition automatique de la classe Window_Simulation_Dim1
+*
+*  Slot qui gère la transition automatique entre deux générations pour les automates à une dimension.
+*  Les générations s'affichent les unes sous les autres en appelant la méthode AppliquerTransition et en utilisant la classe Simulateur.
+*  Cette méthode gère les appels aux boutons de gestion de la simulation (play,pause,reset).
+*/
 
 void Window_Simulation_Dim1::launchSimulationAuto() {//méthode pour lancer la simulation
     //on doit appuyer sur play pour lancer l'éxécution
@@ -240,16 +271,44 @@ void Window_Simulation_Dim1::launchSimulationAuto() {//méthode pour lancer la s
     }
 }
 
+/*!
+*  \brief Slot virtual de gestion de l'appuie sur le bouton play.
+*
+*  Slot qui gère l'appuie sur le bouton play. Il permet de modifier la variable is_play_v de la fenêtre afin de savoir si la simulation est en cours de marche.
+*  Cette méthode permet à la méthode launchSimulationAuto() de gérer l'interaction avec le bouton play de la fenêtre pour modifier l'état de la simulation.
+*
+*   Elle émet le signal is_play() créé afin d'avertir la méthode launchSimulationAuto() qu'il faut démarrer la simulation
+*/
+
 void Window_Simulation_Dim1::onPlayButtonClicked()
 {
     is_play_v=true;
     emit is_play();
 }
 
+/*!
+*  \brief Slot virtual de gestion de l'appuie sur le bouton pause.
+*
+*  Slot qui gère l'appuie sur le bouton pause. Il permet de modifier la variable is_play_v de la fenêtre afin de savoir si la simulation est stopée.
+*  Cette méthode permet à la méthode launchSimulationAuto() de gérer l'interaction avec le bouton pause de la fenêtre pour modifier l'état de la simulation.
+*
+*/
+
 void Window_Simulation_Dim1::onPauseButtonClicked()
 {
     is_play_v=false;
 }
+
+
+/*!
+*  \brief Slot virtual de gestion de l'appuie sur le bouton reset.
+*
+*  Slot qui gère l'appuie sur le bouton reset. Il permet de modifier la variable is_play_v de la fenêtre afin de savoir si la simulation a été reset.
+*  De plus, il réinitialise la grille d'affichage de la simulation, l'état de la simulation et remet à zéro la transition courante.
+*  Si la simulation est dans le mode automatique, la méthode launchSimulationAuto() est appelée.
+*  Cette méthode permet de gérer l'interaction avec le bouton reset de la fenêtre pour modifier relancer la simulation avec la méthode launchSimulationAuto().
+*
+*/
 
 void Window_Simulation_Dim1::onRazButtonClicked()
 {
@@ -268,6 +327,14 @@ void Window_Simulation_Dim1::onRazButtonClicked()
         this->launchSimulationAuto();
     }
 }
+
+/*!
+*  \brief Constructeur de la classe Window_Simulation_Dim2_GOL
+*
+*  Constructeur avec un seul argument permettant d'instancier une fenêtre de simulation pour le Jeu de la Vie avec les paramètres par défaut.
+*
+*  \param parent : widget parent de la fenêtre (MainWindow, la fenêtre principale dans notre cas).
+*/
 
 Window_Simulation_Dim2_GOL::Window_Simulation_Dim2_GOL(QWidget *parent) : Window_Simulation(parent),e(Etat2D(dimension,1)) {
     // Question 3
@@ -306,6 +373,14 @@ Window_Simulation_Dim2_GOL::Window_Simulation_Dim2_GOL(QWidget *parent) : Window
     couche->addWidget(etats);//on ajoute le tableau à l interface
     setLayout(couche);//on définit l'environnement global
 }
+
+/*!
+*  \brief Constructeur de la classe Window_Simulation_Dim2_GOL
+*
+*  Constructeur avec tous les arguments de configuration permettant d'instancier une fenêtre de simulation pour le Jeu de la Vie avec des paramètres choisis par l'utilisateur dans la fenêtre principale.
+*
+*  \param parent : widget parent de la fenêtre (MainWindow, la fenêtre principale dans notre cas), dim (dimension de l'état de départ), transitions (nombre de transitions), aff (type d'affichage), tps_aff (temps éventuel entre les transitions), regle (vecteur correspondant à la règle de transition).
+*/
 
 Window_Simulation_Dim2_GOL::Window_Simulation_Dim2_GOL(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff, std::vector<short int> regle) :
     Window_Simulation(parent,dim,transitions,aff,tps_aff,6,true),regle(regle), e(Etat2D(dimension,1)) {
@@ -407,6 +482,13 @@ Window_Simulation_Dim2_GOL::Window_Simulation_Dim2_GOL(QWidget *parent, unsigned
 
 //Ici, on entre dans la partie logique pour faire fonctionner l'automate
 
+/*!
+*  \brief Slot de transition manuelle de la classe Window_Simulation_Dim2_GOL
+*
+*  Slot qui gère la transition manuelle entre deux générations quand on appuie sur le bouton next pour le Jeu de la Vie.
+*  Les générations s'affichent les unes sur les autres en appelant la méthode AppliquerTransition et en utilisant la classe Simulateur.
+*/
+
 void Window_Simulation_Dim2_GOL::onSuivantButtonClicked()
 {
     // création de l'état
@@ -447,6 +529,14 @@ void Window_Simulation_Dim2_GOL::onSuivantButtonClicked()
         transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
     }
     }
+
+/*!
+*  \brief Slot de transition automatique de la classe Window_Simulation_Dim2_GOL
+*
+*  Slot qui gère la transition automatique entre deux générations pour le Jeu de la Vie.
+*  Les générations s'affichent les unes sous les autres en appelant la méthode AppliquerTransition et en utilisant la classe Simulateur.
+*  Cette méthode gère les appels aux boutons de gestion de la simulation (play,pause,reset).
+*/
 
 void Window_Simulation_Dim2_GOL::launchSimulationAuto() {//méthode pour lancer la simulation
     //on doit appuyer sur play pour lancer l'éxécution
@@ -537,6 +627,15 @@ void Window_Simulation_Dim2_GOL::onRazButtonClicked()
         this->launchSimulationAuto();
     }
 }
+
+/*!
+*  \brief Constructeur de la classe Window_Simulation_Dim2_Langton
+*
+*  Constructeur avec tous les arguments de configuration permettant d'instancier une fenêtre de simulation pour la Fourmi de Langton avec des paramètres choisis par l'utilisateur dans la fenêtre principale.
+*
+*  \param parent : widget parent de la fenêtre (MainWindow, la fenêtre principale dans notre cas), dim (dimension de l'état de départ), transitions (nombre de transitions), aff (type d'affichage), tps_aff (temps éventuel entre les transitions).
+*/
+
 
 Window_Simulation_Dim2_Langton::Window_Simulation_Dim2_Langton(QWidget *parent, unsigned int dim, unsigned int transitions, bool aff, unsigned int tps_aff) :
    Window_Simulation(parent,dim, transitions,aff,tps_aff,6,1),e(Etat2D(dimension,9)){
@@ -641,6 +740,13 @@ Window_Simulation_Dim2_Langton::Window_Simulation_Dim2_Langton(QWidget *parent, 
 
 //Ici, on entre dans la partie logique pour faire fonctionner l'automate
 
+/*!
+*  \brief Slot de transition manuelle de la classe Window_Simulation_Dim2_Langton
+*
+*  Slot qui gère la transition manuelle entre deux générations quand on appuie sur le bouton next pour la Fourmi de Langton.
+*  Les générations s'affichent les unes sur les autres en appelant la méthode AppliquerTransition et en utilisant la classe Simulateur.
+*/
+
 void Window_Simulation_Dim2_Langton::onSuivantButtonClicked()
 {
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
@@ -691,6 +797,14 @@ void Window_Simulation_Dim2_Langton::onSuivantButtonClicked()
      }
 
 }
+
+/*!
+*  \brief Slot de transition automatique de la classe Window_Simulation_Dim2_Langton
+*
+*  Slot qui gère la transition automatique entre deux générations pour la Fourmi de Langton.
+*  Les générations s'affichent les unes sous les autres en appelant la méthode AppliquerTransition et en utilisant la classe Simulateur.
+*  Cette méthode gère les appels aux boutons de gestion de la simulation (play,pause,reset).
+*/
 
 void Window_Simulation_Dim2_Langton::launchSimulationAuto() {//méthode pour lancer la simulation
     //on doit appuyer sur play pour lancer l'éxécution

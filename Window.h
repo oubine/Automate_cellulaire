@@ -28,10 +28,21 @@
 #include <iostream>
 #include "automate2d.h"
 
+/**
+ * \class Window_Simulation
+ * \brief Superclasse abstraite des fenêtres de simulation.
+ *
+ * Window_Simulation constitue le squelette des fenêtres de simulation. Les fenêtres correspondant aux classes implémentées hériteront de ce squelette.
+ * Cette classe contient les boutons de l'affichage manuel (next et reset), ceux de l'affichage automatique (play, pause, reset), ainsi que tous les layout et une grille d'affichage.
+ */
+
 class Window_Simulation:public QWidget{
 
     Q_OBJECT
 protected:
+
+    /*!< Layout et widgets généraux. */
+
     QWidget *centralwidget;
     QVBoxLayout* couche;
     QHBoxLayout* layout_boutons;
@@ -45,12 +56,17 @@ protected:
 
 
     //temps
+    /*!< Boutons de gestion de la simulation */
+
     QPushButton* suivant;
     QPushButton* play;
     QPushButton* pause;
     QPushButton* raz;
 
     QLabel* transition;
+
+    /*!< Variables de gestion de la simulation. */
+
     bool affichage_manuel;
     unsigned int temps_affichage;
     unsigned int taille;
@@ -80,6 +96,14 @@ private slots :
 
 };
 
+/**
+ * \class Window_Simulation_Dim1
+ * \brief Classe de la fenêtre de simulation des automates à une dimension.
+ *
+ * Window_Simulation_Dim1 correspond à la classe de la fenêtre de simulation des automates à une dimension construite à partir du squelette de la classe abstraite Window_Simulation
+ * Elle inclut en plus un numéro d'automate accompagné de ses getters et setters. Elle définit aussi les méthodes virtuelles pures de la classe abstraite.
+ */
+
 class Window_Simulation_Dim1 : public Window_Simulation{
 
     Q_OBJECT
@@ -105,6 +129,14 @@ private slots :
     void onRazButtonClicked();
 
 };
+
+/**
+ * \class Window_Simulation_Dim2_GOL
+ * \brief Classe de la fenêtre de simulation du Jeu de la Vie.
+ *
+ * Window_Simulation_Dim2_GOL correspond à la classe de la fenêtre de simulation du Jeu de la Vie construite à partir du squelette de la classe abstraite Window_Simulation.
+ * Elle inclut en plus un vector correspondant à la règle définie par l'utilisateur, ainsi qu'un Etat2D correspondant à l'état de la transition en cours (pour des raisons d'optimisation). Elle définit aussi les méthodes virtuelles pures de la classe abstraite.
+ */
 
 class Window_Simulation_Dim2_GOL : public Window_Simulation{
 
@@ -132,11 +164,18 @@ private slots :
 
 };
 
+/**
+ * \class Window_Simulation_Dim2_Langton
+ * \brief Classe de la fenêtre de simulation de la Fourmi de Langton.
+ *
+ * Window_Simulation_Dim2_Langton correspond à la classe de la fenêtre de simulation de la Fourmi de Langton construite à partir du squelette de la classe abstraite Window_Simulation.
+ * Elle inclue en plus un Etat2D correspondant à l'état de la transition en cours (pour des raisons d'optimisation). Elle définit aussi les méthodes virtuelles pures de la classe abstraite.
+ */
+
 class Window_Simulation_Dim2_Langton : public Window_Simulation{
 
     Q_OBJECT
 
-    std::vector<short int> regle;
     Etat2D e;
 
 
