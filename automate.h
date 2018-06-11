@@ -15,7 +15,6 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "intervalleabr.h"
 #include "etat.h"
 #include "motif.h"
 

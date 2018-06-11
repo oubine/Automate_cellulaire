@@ -1142,11 +1142,12 @@ void Fenetre_AutoDim2_GOL::onGenerateurButtonClicked_dim2()
         etat_depart_table_dim2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
         // création des items du QTableWidget, initialisés à "" avec un fond blanc
         //on initialise toutes les cases avec un symbole représentant une case à l'état 0, ici, c'est "", une chaîne vide.
+        etat_depart_table_dim2->verticalHeader()->setDefaultSectionSize(taille_dim2);
+        etat_depart_table_dim2->horizontalHeader()->setDefaultSectionSize(taille_dim2);
 
         for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
-            etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
             for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
-                etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
+                //etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
                 etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
                 etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");//vide donc couleur = blanc
                 etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");//idem, on ne veut pas voir le texte à l'intérieur (même pas besoin car c'est une chaîne vide)

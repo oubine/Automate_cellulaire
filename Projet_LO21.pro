@@ -14,8 +14,7 @@ HEADERS += \
     index.h \
     automate1d.h \
     automate2d.h \
-    Window.h \
-    intervalleabr.h
+    Window.h
 
 SOURCES += \
     main.cpp \
@@ -27,8 +26,7 @@ SOURCES += \
     index.cpp \
     automate1d.cpp \
     automate2d.cpp \
-    Window.cpp \
-    intervalleabr.cpp
+    Window.cpp
 
 RESOURCES+=\
     ressources.qrc
