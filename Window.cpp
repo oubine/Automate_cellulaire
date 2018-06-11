@@ -13,7 +13,6 @@
 #include "automate.h"
 #include "automate1d.h"
 #include "automate2d.h"
-#include "simulateur.h"
 #include "main_UI.h"
 #include <iostream>
 
