@@ -192,20 +192,20 @@ void Window_Simulation_Dim1::onSuivantButtonClicked()
     // on récupère l'automate correspondant au numéro de l'interface graphique
     AutomateElementaire a = AutomateElementaire(num_automate);
     // on construit l'objet simulateur correspondant
-    Simulateur sim(a, e, dimension);
     if(transition_courante<nb_transitions)
     {
         transition_courante++;
+        Etat1D e2(dimension,1);
+        a.appliquerTransition(e,e2);
+        e = e2;
 
         // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique
         for(unsigned int step = 0; step < transition_courante; ++step) {
             // on applique la transition
-            sim.next();
             // on récupère le dernier état
-            const Etat1D& etat = sim.dernier();
             // on l'affiche
             for(unsigned int colonne = 0; colonne < dimension; ++colonne) {
-                if (etat.getCellule(colonne) == true) {
+                if (e.getCellule(colonne) == true) {
                     etats->item(step, colonne)->setBackgroundColor("black");
                 } else {
                     etats->item(step, colonne)->setBackgroundColor("white");
@@ -241,7 +241,6 @@ void Window_Simulation_Dim1::launchSimulationAuto() {//méthode pour lancer la s
     // on récupère l'automate correspondant au numéro de l'interface graphique
     AutomateElementaire a = AutomateElementaire(num_automate);
     // on construit l'objet simulateur correspondant
-    Simulateur sim(a, e, dimension);
     // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique
     QEventLoop loop2;
     QObject::connect(this,SIGNAL(is_play()), &loop2, SLOT(quit()));
@@ -251,22 +250,28 @@ void Window_Simulation_Dim1::launchSimulationAuto() {//méthode pour lancer la s
         {
             loop2.exec();//si on est sur pause, on attend de réappuyer sur play pour continuer l'exécution
         }
-        transition_courante++;
-        transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
-        // on récupère le dernier état
-        sim.next();
-        const Etat1D& etat = sim.dernier();
-        for(unsigned int colonne = 0; colonne < dimension; ++colonne) {
-            if (etat.getCellule(colonne) == true) {
-                etats->item(step, colonne)->setBackgroundColor("black");
-            } else {
-                etats->item(step, colonne)->setBackgroundColor("white");
-            }
-        }
-        for(unsigned int counter=0; counter<temps_affichage/4; counter++)//ça c'est de la bidouille pour actualiser pause/play plus souvent
+        if(isVisible() && transition_courante < nb_transitions)
         {
-            QThread::msleep(4);
-            QCoreApplication::processEvents();
+            transition_courante++;
+            transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
+            // on récupère le dernier état
+            //sim.next();
+            Etat1D e2(dimension,1);
+            a.appliquerTransition(e,e2);
+            e = e2;
+
+            for(unsigned int colonne = 0; colonne < dimension; ++colonne) {
+                if (e.getCellule(colonne) == true) {
+                    etats->item(step, colonne)->setBackgroundColor("black");
+                } else {
+                    etats->item(step, colonne)->setBackgroundColor("white");
+                }
+            }
+            for(unsigned int counter=0; counter<temps_affichage/4; counter++)//ça c'est de la bidouille pour actualiser pause/play plus souvent
+            {
+                QThread::msleep(4);
+                QCoreApplication::processEvents();
+            }
         }
     }
 }

@@ -95,7 +95,7 @@ Fenetre_Principale::Fenetre_Principale(QMainWindow *MainWindow)
        aff_temps_n->setObjectName(QString::fromUtf8("aff_temps_n"));
        aff_temps_n->setDecimals(3);
        aff_temps_n->setMaximum(60);
-       aff_temps_n->setSingleStep(0.05);
+       aff_temps_n->setSingleStep(0.01);
        aff_temps_n->setValue(0.05);
 
        temps_aff->addWidget(aff_temps_n);
@@ -2103,6 +2103,7 @@ void Fenetre_AutoDim2_Langton::writeSettings()
     settings.beginGroup("General");
     settings.setValue("automate", stacked_settings->currentIndex());
     settings.setValue("affichage", aff_manuel->isChecked());
+    settings.setValue("temps",aff_temps_n->value());
     settings.endGroup();
 
     settings.endGroup();
@@ -2122,6 +2123,7 @@ void Fenetre_AutoDim2_Langton::readSettings()
     settings.beginGroup("General");
     select_type_automate->setCurrentItem(select_type_automate->item(settings.value("automate").toInt()));
     aff_manuel->setChecked(settings.value("affichage").toBool());
+    aff_temps_n->setValue(settings.value("temps").toDouble());
     settings.endGroup();
 
     settings.endGroup();

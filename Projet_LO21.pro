@@ -9,7 +9,6 @@ HEADERS += \
     main_UI.h \
     automate.h \
     etat.h \
-    simulateur.h \
     motif.h \
     index.h \
     automate1d.h \
@@ -21,7 +20,6 @@ SOURCES += \
     main_ui.cpp \
     automate.cpp \
     etat.cpp \
-    simulateur.cpp \
     motif.cpp \
     index.cpp \
     automate1d.cpp \
