@@ -14,7 +14,6 @@
 #include "automate1d.h"
 #include "automate2d.h"
 #include "main_UI.h"
-#include <iostream>
 
 /*!
 *  \brief Constructeur de la classe Window_Simulation_Dim1
@@ -562,7 +561,6 @@ void Window_Simulation_Dim2_GOL::launchSimulationAuto() {//méthode pour lancer 
     connect(this,SIGNAL(is_play()), &loop2, SLOT(quit()));
 
     for(transition_courante=1; transition_courante <= nb_transitions; ++transition_courante) {
-        auto start = std::chrono::high_resolution_clock::now();
         if(!is_play_v)
         {
             loop2.exec();//si on est sur pause, on attend de réappuyer sur play pour continuer l'exécution
@@ -588,9 +586,6 @@ void Window_Simulation_Dim2_GOL::launchSimulationAuto() {//méthode pour lancer 
 
             QCoreApplication::processEvents();
             //QThread::msleep(temps_affichage);
-            auto finish = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> elapsed = finish - start;
-            std::cout << "Elapsed time affichage: " << elapsed.count() << " s\n";
 
             for(unsigned int counter=0; counter<temps_affichage/50; counter++)//ça c'est de la bidouille pour actualiser pause/play plus souvent
             {
@@ -840,7 +835,6 @@ void Window_Simulation_Dim2_Langton::launchSimulationAuto() {//méthode pour lan
     connect(this,SIGNAL(is_play()), &loop2, SLOT(quit()));
 
     for(transition_courante=1; transition_courante <= nb_transitions; ++transition_courante) {
-        auto start = std::chrono::high_resolution_clock::now();
         if(!is_play_v)
         {
             loop2.exec();//si on est sur pause, on attend de réappuyer sur play pour continuer l'exécution
@@ -852,10 +846,6 @@ void Window_Simulation_Dim2_Langton::launchSimulationAuto() {//méthode pour lan
             // on récupère le dernier état
             Etat2D e2(dimension,9);
             a.appliquerTransition(e,e2);
-            auto finish = std::chrono::high_resolution_clock::now();
-            std::chrono::duration<double> elapsed = finish - start;
-            std::cout << "Elapsed time appliquer transition: " << elapsed.count() << " s\n";
-            start = std::chrono::high_resolution_clock::now();
             e = e2;
 
             IndexTab2D index(0,0,dimension,dimension);
@@ -870,9 +860,6 @@ void Window_Simulation_Dim2_Langton::launchSimulationAuto() {//méthode pour lan
 
             QCoreApplication::processEvents();
             //QThread::msleep(temps_affichage);
-            finish = std::chrono::high_resolution_clock::now();
-            elapsed = finish - start;
-            std::cout << "Elapsed time affichage: " << elapsed.count() << " s\n";
             for(unsigned int counter=0; counter<temps_affichage/50; counter++)//ça c'est de la bidouille pour actualiser pause/play plus souvent
             {
                 QThread::msleep(50);

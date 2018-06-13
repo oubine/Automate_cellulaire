@@ -251,12 +251,12 @@ protected:
     QHBoxLayout *regles_dim2;
     QGroupBox *regles_transition_dim2;
     QGridLayout *gridLayout;
-    QLabel* voisins[8];
+    QLabel* voisins[9];
     QLabel *regles_creation_l;
     QLabel *voisins_n_l;
     QLabel *regles_mort_l;
-    QCheckBox *vie[8];
-    QCheckBox *mort[8];
+    QCheckBox *vie[9];
+    QCheckBox *mort[9];
 
     /*!< Configuration de la génération de l'état de départ. */
 

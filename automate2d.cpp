@@ -2,7 +2,6 @@
 #include "etat.h"
 #include <math.h>
 #include <algorithm>
-#include <chrono>
 
 /**
 * \brief Méthode qui définit le comportement de la méthode virtuelle appliquerTransition pour tous les automates à deux dimensions.
@@ -18,7 +17,6 @@
 */
 void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
 {
-    auto start = std::chrono::high_resolution_clock::now();
     unsigned int etat;
     if (motif.size() == 0) throw AutomateException("Motif non défini");
     if (valMax != dep.getValMax()) throw AutomateException("appel de appliquerTransition sur un état ayant un alphabet différent de celui accepté par l'automate.");
@@ -35,9 +33,6 @@ void Automate2D::appliquerTransition(const Etat& dep, Etat& dest)
         dest.setCellule(i, regleTransition[etat]);
         iExamine++;
     }
-    auto finish = std::chrono::high_resolution_clock::now();
-    std::chrono::duration<double> elapsed = finish - start;
-    std::cout << "Elapsed time transition: " << elapsed.count() << " s\n";
 }
 
 /**

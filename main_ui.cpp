@@ -885,22 +885,22 @@ Fenetre_AutoDim2_GOL::Fenetre_AutoDim2_GOL(QMainWindow *MainWindow):Fenetre_Auto
 
     gridLayout->addWidget(regles_mort_l, 2, 0, 1, 1);
 
-    for(unsigned int i=0; i<8; i++)
+    for(unsigned int i=0; i<=8; i++)
     {
         voisins[i]=new QLabel(regles_transition_dim2);
         gridLayout->addWidget(voisins[i],0,i+1,1,1);
-        voisins[i]->setObjectName(QString::fromUtf8("voisin").append(QString::number(i+1)));
+        voisins[i]->setObjectName(QString::fromUtf8("voisin").append(QString::number(i)));
         voisins[i]->raise();
-        voisins[i]->setText(QApplication::translate("AutoCell LO21", QString::number(i+1).toUtf8(), 0));
+        voisins[i]->setText(QApplication::translate("AutoCell LO21", QString::number(i).toUtf8(), 0));
 
         vie[i]=new QCheckBox(regles_transition_dim2);
-        vie[i]->setObjectName(QString::fromUtf8("vie").append(QString::number(i+1)));
+        vie[i]->setObjectName(QString::fromUtf8("vie").append(QString::number(i)));
         gridLayout->addWidget(vie[i],1,i+1,1,1);
         vie[i]->raise();
         vie[i]->setText(QString());
 
         mort[i]=new QCheckBox(regles_transition_dim2);
-        mort[i]->setObjectName(QString::fromUtf8("mort").append(QString::number(i+1)));
+        mort[i]->setObjectName(QString::fromUtf8("mort").append(QString::number(i)));
         gridLayout->addWidget(mort[i],2,i+1,1,1);
         mort[i]->raise();
         mort[i]->setText(QString());
@@ -1024,7 +1024,7 @@ Fenetre_AutoDim2_GOL::Fenetre_AutoDim2_GOL(QMainWindow *MainWindow):Fenetre_Auto
 
     connect(bouton_generateur_dim2, SIGNAL(clicked()), this, SLOT(onGenerateurButtonClicked_dim2()));
     connect(Simulation_dim2, SIGNAL(clicked()), this, SLOT(onSimulationButtonClicked_dim2()));
-    for(unsigned int i=0; i<8; ++i)
+    for(unsigned int i=0; i<=8; ++i)
     {
         connect(vie[i], SIGNAL(toggled(bool)), mort[i], SLOT(setDisabled(bool)));
         connect(mort[i], SIGNAL(toggled(bool)), vie[i], SLOT(setDisabled(bool)));
@@ -1036,6 +1036,7 @@ Fenetre_AutoDim2_GOL::Fenetre_AutoDim2_GOL(QMainWindow *MainWindow):Fenetre_Auto
     mort[5]->setChecked(true);
     mort[6]->setChecked(true);
     mort[7]->setChecked(true);
+    mort[8]->setChecked(true);
     Simulation_dim2->setEnabled(false);
     QMetaObject::connectSlotsByName(MainWindow);
 
@@ -1101,12 +1102,13 @@ void Fenetre_AutoDim2_GOL::onDimensionItemClicked(QListWidgetItem* item)
 
 void Fenetre_AutoDim2_GOL::onSimulationButtonClicked_dim2()
 {
-        int tab_regle[8];
-        for(unsigned int i=0; i<8;++i)
+        int tab_regle[9];
+        for(unsigned int i=0; i<=8;++i)
         {
             tab_regle[i]=1+vie[i]->isChecked();
             tab_regle[i]-=mort[i]->isChecked();
         }
+
         new_Window_Simulation_Dim2 = new Window_Simulation_Dim2_GOL(nullptr, dimension_dim2, nb_transitions_dim2->value(),aff_manuel->isChecked(), aff_temps_n->value()*1000,
                                           std::vector<short int>(tab_regle, tab_regle + sizeof(tab_regle) / sizeof tab_regle[0]));
         new_Window_Simulation_Dim2->setEtatDepart(etat_depart_table_dim2);
@@ -1327,9 +1329,9 @@ void Fenetre_AutoDim2_GOL::onActionEnregistrer_dim2()
 
             QDomElement regles_root = dom.createElement("Regles");
             QDomElement regles[8];
-            for(unsigned int i=0; i<8; ++i)
+            for(unsigned int i=0; i<=8; ++i)
             {
-                regles[i] = dom.createElement("Voisin"+QString::number(i+1));
+                regles[i] = dom.createElement("Voisin"+QString::number(i));
                 regles[i].setAttribute("vie", vie[i]->isChecked());
                 regles[i].setAttribute("mort", mort[i]->isChecked());
                 regles_root.appendChild(regles[i]);
@@ -1396,7 +1398,7 @@ void Fenetre_AutoDim2_GOL::onActionImporter_dim2()
             QDomNode n = docElem.firstChild();
             QDomElement e = n.firstChild().toElement();
 
-            for(unsigned int i=0; i<8; ++i)
+            for(unsigned int i=0; i<=8; ++i)
             {
                 vie[i]->setChecked(e.attribute("vie").toUInt());
                 mort[i]->setChecked(e.attribute("mort").toUInt());
@@ -1638,7 +1640,7 @@ Fenetre_AutoDim2_Langton::Fenetre_AutoDim2_Langton(QMainWindow *MainWindow):Fene
 
     connect(bouton_generateur_langton, SIGNAL(clicked()), this, SLOT(onGenerateurButtonClicked_Langton()));
     connect(Simulation_langton, SIGNAL(clicked()), this, SLOT(onSimulationButtonClicked_Langton()));
-    for(unsigned int i=0; i<8; ++i)
+    for(unsigned int i=0; i<=8; ++i)
     {
         connect(vie[i], SIGNAL(toggled(bool)), mort[i], SLOT(setDisabled(bool)));
         connect(mort[i], SIGNAL(toggled(bool)), vie[i], SLOT(setDisabled(bool)));
@@ -1684,9 +1686,6 @@ void Fenetre_AutoDim2_Langton::Noms_Langton(QMainWindow *MainWindow)
     unite_temps_aff->setText(QApplication::translate("AutoCell LO21", "sec", 0));
     configuration_langton->setTitle(QApplication::translate("AutoCell LO21", "Configuration", 0));
 
-    regles_creation_l->setText(QApplication::translate("AutoCell LO21", "R\303\250gle de cr\303\251ation", 0));
-    voisins_n_l->setText(QApplication::translate("AutoCell LO21", "Nombre de voisins : ", 0));
-    regles_mort_l->setText(QApplication::translate("AutoCell LO21", "R\303\250gle de mort", 0));
     generateur_langton->setTitle(QApplication::translate("AutoCell LO21", "G\303\251n\303\251rateur", 0));
     Simulation_langton->setText(QApplication::translate("AutoCell LO21", "Lancer !", 0));
     menuR_glages_de_l_automate_cellulaire->setTitle(QApplication::translate("AutoCell LO21", "Fichiers de config", 0));

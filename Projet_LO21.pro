@@ -3,8 +3,6 @@ QT += xml
 QMAKE_CXXFLAGS = -std=c++11
 QMAKE_LFLAGS = -std=c++11
 
-CONFIG += console
-
 HEADERS += \
     main_UI.h \
     automate.h \
