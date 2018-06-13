@@ -484,8 +484,8 @@ void Fenetre_AutoDim1::onGenerateurButtonClicked_dim1()
     // création des items du QTableWidget, initialisés à "" avec un fond blanc
     //on initialise toutes les cases avec un symbole représentant une case à l'état 0, ici, c'est "", une chaîne vide.
 
+    etat_depart_table->horizontalHeader()->setDefaultSectionSize(taille);
     for(unsigned int counter = 0; counter < dimension; ++counter) {
-        etat_depart_table->setColumnWidth(counter, taille);
         etat_depart_table->setItem(0, counter, new QTableWidgetItem(""));
         etat_depart_table->item(0, counter)->setBackgroundColor("white");
         etat_depart_table->item(0, counter)->setTextColor("white");
@@ -1436,21 +1436,19 @@ void Fenetre_AutoDim2_GOL::onActionImporter_dim2()
 
             etat_depart_table_dim2->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
             etat_depart_table_dim2->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
-
+            etat_depart_table_dim2->verticalHeader()->setDefaultSectionSize(taille_dim2);
+            etat_depart_table_dim2->horizontalHeader()->setDefaultSectionSize(taille_dim2);
 
             for(unsigned int counter = 0; counter < dimension_dim2; ++counter) {
-                etat_depart_table_dim2->setRowHeight(counter, taille_dim2);
                 for(unsigned int counter2=0; counter2<dimension_dim2; ++counter2){
                     if(e.attribute("active").toUInt())
                     {
-                        etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
                         etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem());
                         etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("black");
                         etat_depart_table_dim2->item(counter, counter2)->setTextColor("black");
                     }
                     else
                     {
-                        etat_depart_table_dim2->setColumnWidth(counter2, taille_dim2);
                         etat_depart_table_dim2->setItem(counter, counter2, new QTableWidgetItem(""));
                         etat_depart_table_dim2->item(counter, counter2)->setBackgroundColor("white");
                         etat_depart_table_dim2->item(counter, counter2)->setTextColor("white");
@@ -1757,10 +1755,11 @@ void Fenetre_AutoDim2_Langton::onGenerateurButtonClicked_Langton()
         // création des items du QTableWidget, initialisés à "" avec un fond blanc
         //on initialise toutes les cases avec un symbole représentant une case à l'état 0, ici, c'est "", une chaîne vide.
 
+        etat_depart_table_langton->verticalHeader()->setDefaultSectionSize(taille_langton);
+        etat_depart_table_langton->horizontalHeader()->setDefaultSectionSize(taille_langton);
+
         for(unsigned int counter = 0; counter < dimension_langton; ++counter) {
-            etat_depart_table_langton->setRowHeight(counter, taille_langton);
             for(unsigned int counter2=0; counter2<dimension_langton; ++counter2){
-                etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
                 etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem(""));
                 etat_depart_table_langton->item(counter, counter2)->setFlags(etat_depart_table_langton->item(counter, counter2)->flags() ^ Qt::ItemIsEditable);
             }
@@ -1956,13 +1955,13 @@ void Fenetre_AutoDim2_Langton::onActionImporter_Langton()
             etat_depart_table_langton->setVerticalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre vertical
             etat_depart_table_langton->setHorizontalScrollBarPolicy(Qt::ScrollBarAsNeeded); // désactive la scroll barre horizontal
 
+            etat_depart_table_langton->verticalHeader()->setDefaultSectionSize(taille_langton);
+            etat_depart_table_langton->horizontalHeader()->setDefaultSectionSize(taille_langton);
 
             for(unsigned int counter = 0; counter < dimension_langton; ++counter) {
-                etat_depart_table_langton->setRowHeight(counter, taille_langton);
                 for(unsigned int counter2=0; counter2<dimension_langton; ++counter2){
                     if(e.attribute("active")=="")
                     {
-                        etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
                         etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem(""));
                         QPixmap pixmap("");
                         QIcon ButtonIcon(pixmap);
@@ -1970,7 +1969,6 @@ void Fenetre_AutoDim2_Langton::onActionImporter_Langton()
                     }
                     else if(e.attribute("active")=="right")
                     {
-                        etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
                         etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("right"));
                         QPixmap pixmap(":/arrow-right.png");
                         QIcon ButtonIcon(pixmap);
@@ -1978,7 +1976,6 @@ void Fenetre_AutoDim2_Langton::onActionImporter_Langton()
                     }
                     else if(e.attribute("active")=="down")
                     {
-                        etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
                         etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("down"));
                         QPixmap pixmap(":/arrow-down.png");
                         QIcon ButtonIcon(pixmap);
@@ -1986,14 +1983,12 @@ void Fenetre_AutoDim2_Langton::onActionImporter_Langton()
                     }
                     else if(e.attribute("active")=="left")
                     {
-                        etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
                         etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("left"));
                         QPixmap pixmap(":/arrow-left.png");
                         QIcon ButtonIcon(pixmap);
                         etat_depart_table_langton->item(counter, counter2)->setIcon(ButtonIcon);
                     }
                     else if(e.attribute("active")=="up"){
-                        etat_depart_table_langton->setColumnWidth(counter2, taille_langton);
                         etat_depart_table_langton->setItem(counter, counter2, new QTableWidgetItem("up"));
                         QPixmap pixmap(":/arrow-up.png");
                         QIcon ButtonIcon(pixmap);
