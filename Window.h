@@ -111,6 +111,8 @@ class Window_Simulation_Dim1 : public Window_Simulation{
     QLabel  *numero;
     int num_automate;
 
+    Etat1D e;
+
 public:
     explicit Window_Simulation_Dim1(QWidget *parent);
     explicit Window_Simulation_Dim1(QWidget* parent = nullptr, unsigned int taille=10, unsigned int transitions=1, int num=0, bool aff=1, unsigned int tps_aff=500);

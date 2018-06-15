@@ -23,7 +23,7 @@
 *  \param parent : widget parent de la fenêtre (MainWindow, la fenêtre principale dans notre cas).
 */
 
-Window_Simulation_Dim1::Window_Simulation_Dim1(QWidget *parent) : Window_Simulation(parent) {
+Window_Simulation_Dim1::Window_Simulation_Dim1(QWidget *parent) : Window_Simulation(parent), e(Etat1D(dimension,1)) {
     // Question 3
     //numero = new QLabel(QString::number(num_automate),this);
     depart = new QTableWidget(1, dimension);
@@ -68,7 +68,7 @@ Window_Simulation_Dim1::Window_Simulation_Dim1(QWidget *parent) : Window_Simulat
 */
 
 Window_Simulation_Dim1::Window_Simulation_Dim1(QWidget *parent, unsigned int dim, unsigned int transitions, int num, bool aff, unsigned int tps_aff) :
-    Window_Simulation(parent, dim, transitions, aff, tps_aff),  num_automate(num){
+    Window_Simulation(parent, dim, transitions, aff, tps_aff),  num_automate(num), e(Etat1D(dimension,1)){
     // Question 3
     couche = new QVBoxLayout;//Nouvelle box pour l'affichage des étapes de l'automate
     layout_boutons=new QHBoxLayout;
@@ -179,40 +179,41 @@ Window_Simulation_Dim1::Window_Simulation_Dim1(QWidget *parent, unsigned int dim
 void Window_Simulation_Dim1::onSuivantButtonClicked()
 {
     // création de l'état
-    Etat1D e(dimension,1);
     // on récupère les données de l'état de l'interface graphique pour que ça corresponde à l'objet qu'on vient de créer
-    for(unsigned int counter = 0; counter < dimension; ++counter) {
-        if(depart->item(0, counter)->backgroundColor() == "black") {
-                e.setCellule(counter, 1);
+    if(transition_courante==0)
+    {
+        for(unsigned int counter = 0; counter < dimension; ++counter) {
+            if(depart->item(0, counter)->backgroundColor() == "black") {
+                    e.setCellule(counter, 1);
+            }
+            else
+                e.setCellule(counter, 0);
         }
-        else e.setCellule(counter, 0);
     }
+
     // on récupère l'automate correspondant au numéro de l'interface graphique
     AutomateElementaire a = AutomateElementaire(num_automate);
     // on construit l'objet simulateur correspondant
     if(transition_courante<nb_transitions)
     {
-        transition_courante++;
         Etat1D e2(dimension,1);
         a.appliquerTransition(e,e2);
         e = e2;
 
-        // on applique les transitions au simulateur en affichant le résultat dans l'interface graphique
-        for(unsigned int step = 0; step < transition_courante; ++step) {
-            // on applique la transition
-            // on récupère le dernier état
-            // on l'affiche
+
             for(unsigned int colonne = 0; colonne < dimension; ++colonne) {
-                if (e.getCellule(colonne) == true) {
-                    etats->item(step, colonne)->setBackgroundColor("black");
+                if (e.getCellule(colonne) == 1) {
+                    etats->item(transition_courante, colonne)->setBackgroundColor("black");
                 } else {
-                    etats->item(step, colonne)->setBackgroundColor("white");
+                    etats->item(transition_courante, colonne)->setBackgroundColor("white");
                 }
             }
+            transition_courante++;
+
         }
         transition->setText(QApplication::translate("AutoCell LO21", QString::fromUtf8("Transition courante : ").append(QString::number(transition_courante)).append(QString::fromUtf8(" sur ")).append(QString::number(nb_transitions)).toStdString().c_str(), 0));
-    }
-    }
+
+}
 
 /*!
 *  \brief Slot de transition automatique de la classe Window_Simulation_Dim1
