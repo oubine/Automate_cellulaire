@@ -19,14 +19,19 @@ void Automate1D::appliquerTransition(const Etat& dep, Etat& dest) {
     if (valMax != dep.getValMax()) throw AutomateException("appel de appliquerTransition sur un état ayant un alphabet différent de celui accepté par l'automate.");
     if (dep.getTaille() != dest.size()) dest = dep;
     auto iExamine = IndexTab1D(0,dep.getTaille());
+    /** iExamine est l'index de la cellule examinée à un instant t **/
     for (unsigned int i = 0; i < dep.getTaille(); i++)
-    {//iExamine : index de la case de l'état de départ examinée
+    {
         for(unsigned int j = 0; j < this->getMotif().size(); j++)
         {
+            /** on récupère le voisinage de la cellule examinée en fonction du motif de voisinage de l'automate **/
             this->setVoisin(j,dep.getCellule(iExamine+motif[j]));
         }
+        /** on traduit l'état du voisinage en nombre en base 10 qui représente l'index de la règle contenant l'état suivant de la cellule considérée **/
         unsigned int etat = baseToInt(std::vector<unsigned int>(valVoisinage,valVoisinage+this->nbVoisins()),dep.getValMax()+1);
+        /** on assigne à l'état de destination le nouvel état de la cellule examinée **/
         dest.setCellule(i, regleTransition[etat]);
+        /** on passe à la cellule suivante **/
         iExamine++;
     }
 }
